@@ -1,0 +1,13 @@
+---
+title: "Take-home Exercise 1: Application of Spatial Point Patterns Analysis to discover the geographical distribution of functional and non-function water points in Osun State, Nigeria"
+
+date : "2 February 2023"
+date-modified : "`r Sys.Date()`"
+number-sections : true
+format : html  
+execute: 
+  eval: true
+  echo: true
+  warning: false
+editor: visual
+---

@@ -236,5 +236,12 @@
     "title": "In-class Exercise 5: Local Co-Location Quotient in",
     "section": "",
     "text": "pacman::p_load(tmap, tidyverse,sf, tmap,sfdep)\n\n\nstudyArea <- st_read(dsn = \"data\",\n                      layer=\"study_area\")%>%\nst_transform(crs = 3829)\n\nReading layer `study_area' from data source \n  `C:\\tiffanik\\IS415-GAA\\In-class_Ex\\In-class_Ex05\\data' using driver `ESRI Shapefile'\nSimple feature collection with 7 features and 7 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 121.4836 ymin: 25.00776 xmax: 121.592 ymax: 25.09288\nGeodetic CRS:  TWD97\n\n\n\nstores <- st_read(dsn = \"data\",\nlayer = \"stores\") %>%\nst_transform(crs = 3829)\n\nReading layer `stores' from data source \n  `C:\\tiffanik\\IS415-GAA\\In-class_Ex\\In-class_Ex05\\data' using driver `ESRI Shapefile'\nSimple feature collection with 1409 features and 4 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 121.4902 ymin: 25.01257 xmax: 121.5874 ymax: 25.08557\nGeodetic CRS:  TWD97\n\n\n\nVisualising the sf layers\n\ntmap_mode (\"view\")\n\ntmap mode set to interactive viewing\n\ntm_shape(studyArea) + \n  tm_polygons () + \ntm_shape(stores)+\n tm_dots (col = \"Name\",\n          size = 0.01,\n          border.col = \"black\",\n          border.lwd = 0.5) +\n\ntm_view(set.zoom.limits = c(12, 16))\n\n\n\n\n\n\n\n\nLocal Colocation Quotients (LCLQ)\n\nnb <- include_self(\n   st_knn(st_geometry(stores), 6))\n\nwt <- st_kernel_weights (nb, \n                        stores,\n                        \"gaussian\",\n                        adaptive = TRUE)\n\n\nFamilyMart <- stores %>%\n filter(Name == \"Family Mart\")\nA <- FamilyMart$Name\n\n\nSevenEleven <- stores %>% \n  filter(Name == \"7-Eleven\")\nB <- SevenEleven$Name\n\n\nLCLQ <- local_colocation(A, B, nb, wt, 49)\n\n\nLCLQ_stores <- cbind(stores, LCLQ)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "NGUYEN MAI PHUONG : IS415-GAA",
+    "section": "",
+    "text": "Welcome to IS415 Geo spatial Analytics and Applications\nThis is the course website of IS415 I study this term. You will find my course work on this website"
   }
 ]

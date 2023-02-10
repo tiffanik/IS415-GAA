@@ -1,0 +1,74 @@
+---
+title: "In-class Excercise 4 : Spatial Point Patterns Analysis"
+date : "30 January 2023"
+date-modified : "`r Sys.Date()`"
+number-sections : true
+format : html  
+execute: 
+  eval: true
+  echo: true
+  warning: false
+editor: visual
+---
+
+# Getting Started
+
+### Installing and loading R packages
+
+```{r}
+pacman::p_load(maptools, sf, raster, spatstat, tmap)
+```
+
+```{r}
+
+
+childcare_sf <- st_read("data/child-care-services-geojson.geojson") %>%
+  st_transform(crs = 3414)
+
+
+```
+
+```{r}
+
+sg_sf <- st_read(dsn = "data/", layer="CostalOutline")
+
+```
+
+```{r}
+
+mpsz_sf <- st_read(dsn = "data/", 
+                layer = "MP14_SUBZONE_WEB_PL")
+```
+
+```{r}
+
+tmap_mode('view')
+tm_shape(childcare_sf)+
+  tm_dots()
+
+```
+
+```{r}
+
+tmap_mode('plot')
+```
+
+```{r}
+
+childcare <- as_Spatial(childcare_sf)
+mpsz <- as_Spatial(mpsz_sf)
+sg <- as_Spatial(sg_sf)
+
+```
+
+```{r}
+
+childcare_sp <- as(childcare, "SpatialPoints")
+sg_sp <- as(sg, "SpatialPolygons")
+
+```
+
+```{r}
+childcare_ppp <- as(childcare_sp, "ppp")
+childcare_ppp
+```

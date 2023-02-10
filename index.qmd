@@ -1,0 +1,12 @@
+---
+title: "NGUYEN MAI PHUONG : IS415-GAA"
+format:
+  html:
+    embed-resources: true
+---
+
+Welcome to IS415 Geo spatial Analytics and Applications
+
+This is the course website of IS415 I study this term. You will find my course work on this website
+
+![](images/74D277B2-18AD-4619-9C6E-8EC0CE43F63F.jpg)

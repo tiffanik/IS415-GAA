@@ -252,20 +252,98 @@ plot(kde_wp_functional_nigeria.ppl, main = "bw.ppl")
 2.2 Derive kernel density maps of non-functional water points
 
 ```{r}
+plot(wp_nonfunctional)
+```
+
+```{r}
+summary(wp_nonfunctional)
 
 ```
 
-### 
+```{r}
+any(duplicated(wp_nonfunctional))
+sum(multiplicity(wp_nonfunctional) > 1)
+```
+
+```{r}
+library(tmap)
+wp_non_func <- as_Spatial(wp_nonfunctional)
+wp_non_func
+```
+
+```{r}
+wp_n_f_sp <- as(wp_non_func, "SpatialPoints")
+wp_n_f_sp
+```
+
+```{r}
+wp_nonfunctional_ppp <- as(wp_n_f_sp, "ppp")
+wp_nonfunctional_ppp
+```
+
+```{r}
+plot(wp_nonfunctional_ppp)
+```
+
+```{r}
+summary(wp_nonfunctional_ppp)
+```
+
+2.2.1 Handling duplicated points
+
+```{r}
+any(duplicated(wp_nonfunctional_ppp))
+
+sum(multiplicity(wp_nonfunctional_ppp) > 1)
+```
+
+```{r}
+kde_wp_nonfunctional_bw <- density(wp_nonfunctional_ppp,
+                              sigma=bw.diggle,
+                              edge=TRUE,
+                            kernel="gaussian") 
+```
 
 2.3 Display the kernel density maps on openstreetmap of Osub State, Nigeria.
 
 ```{r}
+plot(kde_wp_nonfunctional_bw)
+```
 
+```{}
 ```
 
 ### 2.4 Describe the spatial patterns revealed by the kernel density maps. Highlight the advantage of kernel density map over point map.
 
--   dcd
+-   Kernel density maps depict a set of data points' geographic distribution and patterns. The maps depict the density of a certain variable, such as population, wealth, or crime, at various points within a geographic area. The density is estimated by applying a kernel function to each data point in the dataset, which is a mathematical representation of a smoothed density estimate.
+
+    Kernel density maps can indicate spatial patterns such as:
+
+    1\) Clustering: The presence of clusters or hotspots is indicated by a concentration of high density values in specific places.
+
+    2\) Dispersal: The dispersion or scattering of low density values across a vast region, showing a dispersed or scattered pattern.
+
+    3\) Gradients: Variations in density values throughout a geographic region that indicate the presence of a gradient or a gradual transition from high to low density levels.
+
+    4\) Outliers: Points with considerably differing density values than the surrounding area, suggesting the existence of outliers.
+
+    5\) Spatial autocorrelation: The presence of spatial autocorrelation is indicated by a link between the values of a variable in a geographic region and the values of that variable in surrounding areas.
+
+-   These patterns can give vital insights on the distribution and concentration of numerous phenomena within a geographic area, such as population, economic activity, and crime. They can also help in decision-making and planning by identifying areas that require resources or attention.
+
+-   Kernel density maps and point maps are both standard approaches for displaying the geographical distribution of data, but they differ in important ways.
+
+    The following are some advantages of kernel density maps over point maps:
+
+    1\) Smoothing: Kernel density maps smooth down the raw data points to highlight the underlying spatial patterns, whereas point maps merely depict the raw data points, resulting in a crowded and difficult-to-interpret map in some cases.
+
+    2\) Density representation: When compared to point maps, kernel density maps depict the density of a variable at each position, offering a more thorough and nuanced view of the geographical distribution of data.
+
+    3\) Better depiction of low-data-density areas: Kernel density maps can properly reflect low-data-density areas, but point maps may not offer a good image of the spatial distribution in these areas.
+
+    4\) Kernel density maps can be more visually appealing than point maps because they are more intuitive and easier to read.
+
+-   Generally, kernel density maps can give a more full and accurate image of the spatial distribution and can aid in recognizing spatial patterns and correlations in the data. When deciding between kernel density maps and point maps, it is critical to examine the unique aims and context of the study.
 
 # 3 Second-order Spatial Point Patterns Analysis
 
@@ -273,14 +351,18 @@ plot(kde_wp_functional_nigeria.ppl, main = "bw.ppl")
 
 3.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level
 
-3.2 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+The hypothesis and test are as follows:
 
-3.3 Statistical conclusions
+Ho = The distribution of Functional Water Point and Non-Functional Water Point spatially independent.
 
-# 4 Spatial Correlation Analysis
+H1= The distribution of Functional Water Point and Non-Functional Water Point are NOT at spatially independent.
 
-### 4.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+The null hypothesis will be rejected if p-value is smaller than alpha value of 0.001 (i.e. at 99.9% confident interval).
 
-4.2 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+```{r}
+WP_F_CK.csr <- envelope(wp_nonfunctional_ppp, Gest, nsim = 999)
+```
 
-4.3 Statistical conclusions
+```{r}
+plot(WP_F_CK.csr)
+```

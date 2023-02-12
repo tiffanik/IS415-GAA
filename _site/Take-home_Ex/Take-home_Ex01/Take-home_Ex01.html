@@ -235,16 +235,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#exploratory-spatial-data-analysis-esda" id="toc-exploratory-spatial-data-analysis-esda" class="nav-link" data-scroll-target="#exploratory-spatial-data-analysis-esda">2 Exploratory Spatial Data Analysis (ESDA)</a>
   <ul class="collapse">
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
-  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"></a></li>
   <li><a href="#describe-the-spatial-patterns-revealed-by-the-kernel-density-maps.-highlight-the-advantage-of-kernel-density-map-over-point-map." id="toc-describe-the-spatial-patterns-revealed-by-the-kernel-density-maps.-highlight-the-advantage-of-kernel-density-map-over-point-map." class="nav-link" data-scroll-target="#describe-the-spatial-patterns-revealed-by-the-kernel-density-maps.-highlight-the-advantage-of-kernel-density-map-over-point-map.">2.4 Describe the spatial patterns revealed by the kernel density maps. Highlight the advantage of kernel density map over point map.</a></li>
   </ul></li>
   <li><a href="#second-order-spatial-point-patterns-analysis" id="toc-second-order-spatial-point-patterns-analysis" class="nav-link" data-scroll-target="#second-order-spatial-point-patterns-analysis">3 Second-order Spatial Point Patterns Analysis</a>
   <ul class="collapse">
-  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3"></a></li>
-  </ul></li>
-  <li><a href="#spatial-correlation-analysis" id="toc-spatial-correlation-analysis" class="nav-link" data-scroll-target="#spatial-correlation-analysis">4 Spatial Correlation Analysis</a>
-  <ul class="collapse">
-  <li><a href="#formulate-the-null-hypothesis-and-alternative-hypothesis-and-select-the-confidence-level" id="toc-formulate-the-null-hypothesis-and-alternative-hypothesis-and-select-the-confidence-level" class="nav-link" data-scroll-target="#formulate-the-null-hypothesis-and-alternative-hypothesis-and-select-the-confidence-level">4.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -671,38 +666,168 @@ Window area = 1.33822e+12 square units</code></pre>
 </div>
 <p>2.2 Derive kernel density maps of non-functional water points</p>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wp_nonfunctional)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex01_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
 </div>
-</section>
-<section id="section-2" class="level3">
-<h3 class="anchored" data-anchor-id="section-2"></h3>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wp_nonfunctional)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> status_clean                Geometry    
+ Length:30966       POINT        :30966  
+ Class :character   epsg:26392   :    0  
+ Mode  :character   +proj=tmer...:    0  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(<span class="fu">duplicated</span>(wp_nonfunctional))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">multiplicity</span>(wp_nonfunctional) <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>wp_non_func <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(wp_nonfunctional)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>wp_non_func</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 30966 
+extent      : 28907.91, 1293293, 33736.93, 1092883  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=4 +lon_0=8.5 +k=0.99975 +x_0=670553.98 +y_0=0 +a=6378249.145 +rf=293.465 +towgs84=-92,-93,122,0,0,0,0 +units=m +no_defs 
+variables   : 1
+names       :                     status_clean 
+min values  :         Abandoned/Decommissioned 
+max values  : Non-Functional due to dry season </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>wp_n_f_sp <span class="ot">&lt;-</span> <span class="fu">as</span>(wp_non_func, <span class="st">"SpatialPoints"</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>wp_n_f_sp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPoints 
+features    : 30966 
+extent      : 28907.91, 1293293, 33736.93, 1092883  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=4 +lon_0=8.5 +k=0.99975 +x_0=670553.98 +y_0=0 +a=6378249.145 +rf=293.465 +towgs84=-92,-93,122,0,0,0,0 +units=m +no_defs </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>wp_nonfunctional_ppp <span class="ot">&lt;-</span> <span class="fu">as</span>(wp_n_f_sp, <span class="st">"ppp"</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>wp_nonfunctional_ppp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Planar point pattern: 30966 points
+window: rectangle = [28907.9, 1293292.9] x [33736.9, 1092882.6] units</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wp_nonfunctional_ppp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex01_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wp_nonfunctional_ppp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Planar point pattern:  30966 points
+Average intensity 2.312332e-08 points per square unit
+
+Coordinates are given to 2 decimal places
+i.e. rounded to the nearest multiple of 0.01 units
+
+Window: rectangle = [28907.9, 1293292.9] x [33736.9, 1092882.6] units
+                    (1264000 x 1059000 units)
+Window area = 1.33917e+12 square units</code></pre>
+</div>
+</div>
+<p>2.2.1 Handling duplicated points</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(<span class="fu">duplicated</span>(wp_nonfunctional_ppp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">multiplicity</span>(wp_nonfunctional_ppp) <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>kde_wp_nonfunctional_bw <span class="ot">&lt;-</span> <span class="fu">density</span>(wp_nonfunctional_ppp,</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sigma=</span>bw.diggle,</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">edge=</span><span class="cn">TRUE</span>,</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">kernel=</span><span class="st">"gaussian"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>2.3 Display the kernel density maps on openstreetmap of Osub State, Nigeria.</p>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kde_wp_nonfunctional_bw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex01_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<pre><code></code></pre>
 </section>
 <section id="describe-the-spatial-patterns-revealed-by-the-kernel-density-maps.-highlight-the-advantage-of-kernel-density-map-over-point-map." class="level3">
 <h3 class="anchored" data-anchor-id="describe-the-spatial-patterns-revealed-by-the-kernel-density-maps.-highlight-the-advantage-of-kernel-density-map-over-point-map.">2.4 Describe the spatial patterns revealed by the kernel density maps. Highlight the advantage of kernel density map over point map.</h3>
 <ul>
-<li>dcd</li>
+<li><p>Kernel density maps depict a set of data points’ geographic distribution and patterns. The maps depict the density of a certain variable, such as population, wealth, or crime, at various points within a geographic area. The density is estimated by applying a kernel function to each data point in the dataset, which is a mathematical representation of a smoothed density estimate.</p>
+<p>Kernel density maps can indicate spatial patterns such as:</p>
+<p>1) Clustering: The presence of clusters or hotspots is indicated by a concentration of high density values in specific places.</p>
+<p>2) Dispersal: The dispersion or scattering of low density values across a vast region, showing a dispersed or scattered pattern.</p>
+<p>3) Gradients: Variations in density values throughout a geographic region that indicate the presence of a gradient or a gradual transition from high to low density levels.</p>
+<p>4) Outliers: Points with considerably differing density values than the surrounding area, suggesting the existence of outliers.</p>
+<p>5) Spatial autocorrelation: The presence of spatial autocorrelation is indicated by a link between the values of a variable in a geographic region and the values of that variable in surrounding areas.</p></li>
+<li><p>These patterns can give vital insights on the distribution and concentration of numerous phenomena within a geographic area, such as population, economic activity, and crime. They can also help in decision-making and planning by identifying areas that require resources or attention.</p></li>
+<li><p>Kernel density maps and point maps are both standard approaches for displaying the geographical distribution of data, but they differ in important ways.</p>
+<p>The following are some advantages of kernel density maps over point maps:</p>
+<p>1) Smoothing: Kernel density maps smooth down the raw data points to highlight the underlying spatial patterns, whereas point maps merely depict the raw data points, resulting in a crowded and difficult-to-interpret map in some cases.</p>
+<p>2) Density representation: When compared to point maps, kernel density maps depict the density of a variable at each position, offering a more thorough and nuanced view of the geographical distribution of data.</p>
+<p>3) Better depiction of low-data-density areas: Kernel density maps can properly reflect low-data-density areas, but point maps may not offer a good image of the spatial distribution in these areas.</p>
+<p>4) Kernel density maps can be more visually appealing than point maps because they are more intuitive and easier to read.</p></li>
+<li><p>Generally, kernel density maps can give a more full and accurate image of the spatial distribution and can aid in recognizing spatial patterns and correlations in the data. When deciding between kernel density maps and point maps, it is critical to examine the unique aims and context of the study.</p></li>
 </ul>
 </section>
 </section>
 <section id="second-order-spatial-point-patterns-analysis" class="level1">
 <h1>3 Second-order Spatial Point Patterns Analysis</h1>
-<section id="section-3" class="level3">
-<h3 class="anchored" data-anchor-id="section-3"></h3>
+<section id="section-2" class="level3">
+<h3 class="anchored" data-anchor-id="section-2"></h3>
 <p>3.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level</p>
-<p>3.2 Formulate the null hypothesis and alternative hypothesis and select the confidence level</p>
-<p>3.3 Statistical conclusions</p>
-</section>
-</section>
-<section id="spatial-correlation-analysis" class="level1">
-<h1>4 Spatial Correlation Analysis</h1>
-<section id="formulate-the-null-hypothesis-and-alternative-hypothesis-and-select-the-confidence-level" class="level3">
-<h3 class="anchored" data-anchor-id="formulate-the-null-hypothesis-and-alternative-hypothesis-and-select-the-confidence-level">4.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level</h3>
-<p>4.2 Formulate the null hypothesis and alternative hypothesis and select the confidence level</p>
-<p>4.3 Statistical conclusions</p>
+<p>The hypothesis and test are as follows:</p>
+<p>Ho = The distribution of Functional Water Point and Non-Functional Water Point spatially independent.</p>
+<p>H1= The distribution of Functional Water Point and Non-Functional Water Point are NOT at spatially independent.</p>
+<p>The null hypothesis will be rejected if p-value is smaller than alpha value of 0.001 (i.e.&nbsp;at 99.9% confident interval).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>WP_F_CK.csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(wp_nonfunctional_ppp, Gest, <span class="at">nsim =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 999 simulations of CSR  ...
+1, 2, 3, ......10.........20.........30.........40.........50.........60........
+.70.........80.........90.........100.........110.........120.........130......
+...140.........150.........160.........170.........180.........190.........200....
+.....210.........220.........230.........240.........250.........260.........270..
+.......280.........290.........300.........310.........320.........330.........340
+.........350.........360.........370.........380.........390.........400........
+.410.........420.........430.........440.........450.........460.........470......
+...480.........490.........500.........510.........520.........530.........540....
+.....550.........560.........570.........580.........590.........600.........610..
+.......620.........630.........640.........650.........660.........670.........680
+.........690.........700.........710.........720.........730.........740........
+.750.........760.........770.........780.........790.........800.........810......
+...820.........830.........840.........850.........860.........870.........880....
+.....890.........900.........910.........920.........930.........940.........950..
+.......960.........970.........980.........990........ 999.
+
+Done.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(WP_F_CK.csr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex01_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>

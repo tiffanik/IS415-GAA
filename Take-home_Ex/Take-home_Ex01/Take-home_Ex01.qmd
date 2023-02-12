@@ -3,7 +3,6 @@ title: "Take-home Exercise 1: Application of Spatial Point Patterns Analysis to 
 
 date : "2 February 2023"
 date-modified : "`r Sys.Date()`"
-number-sections : true
 format : html  
 execute: 
   eval: true
@@ -11,3 +10,277 @@ execute:
   warning: false
 editor: visual
 ---
+
+# **1 Overview**
+
+### **1.1 Setting the Scene**
+
+![](/images/UN0396479.jpg)
+
+40% of the global population does not have access to sufficient clean water. By 2025, 1.8 billion people will be living in countries or regions with absolute water scarcity, according to UN-Water. The lack of water poses a major threat to several sectors, including food security.
+
+To address the issue of providing clean and sustainable water supply to the rural community, a global [Water Point Data Exchange (WPdx)](https://www.waterpointdata.org/about/) project has been initiated. The main aim of this initiative is to collect water point related data from rural areas at the water point or small water scheme level and share the data via WPdx Data Repository, a cloud-based data library. What is so special of this project is that data are collected based on [WPDx Data Standard](https://www.waterpointdata.org/wp-content/uploads/2021/04/WPDx_Data_Standard.pdf).
+
+### **1.2 Objectives**
+
+Geospatial analytics hold tremendous potential to address complex problems facing society. In this study, you are tasked to apply appropriate geospatial data wrangling methods to prepare the data for water point mapping study. For the purpose of this study, Nigeria will be used as the study country.
+
+### **1.3 The Data**
+
+```{r}
+pacman::p_load(sf, tidyverse, funModeling, raster, spatstat, tmap, maptools, sfdep)
+```
+
+#### **1.3.1 Apstial data**
+
+```{r}
+wp_nga <- read_csv("data/aspatial/wpdx__ .csv") %>%
+  filter(`#clean_country_name` == "Nigeria")
+```
+
+#### **1.3.2 Geospatial data**
+
+```{r}
+geoNGA <- st_read("data/geospatial/",
+                  layer = "geoBoundaries-NGA-ADM2") %>%
+  st_transform(crs = 26392)
+```
+
+```{r}
+NGA <- st_read("data/geospatial/",
+               layer = "nga_admbnda_adm2_osgof_20190417") %>%
+  st_transform(crs = 26392)
+```
+
+#### 
+
+1.3.3 **Converting water point data into sf point features**
+
+```{r}
+wp_nga$Geometry = st_as_sfc(wp_nga$`New Georeferenced Column`)
+wp_nga
+```
+
+```{r}
+wp_sf <- st_sf(wp_nga, crs=4326)
+wp_sf
+```
+
+**1.3.4 Transforming into Nigeria projected coordinate system**
+
+```{r}
+wp_sf <- wp_sf %>%
+  st_transform(crs = 26392)
+```
+
+#### **1.3.4 Geospatial Data Cleaning**
+
+##### **1.3.4.1 Excluding redundent fields**
+
+```{r}
+NGA <- NGA %>%
+   dplyr::select(c(3:4, 8:9))
+```
+
+##### 1.3.4.2 **Checking for duplicate name**
+
+```{r}
+NGA$ADM2_EN[duplicated(NGA$ADM2_EN)==TRUE]
+```
+
+```{r}
+NGA$ADM2_EN[94] <- "Bassa, Kogi"
+NGA$ADM2_EN[95] <- "Bassa, Plateau"
+NGA$ADM2_EN[304] <- "Ifelodun, Kwara"
+NGA$ADM2_EN[305] <- "Ifelodun, Osun"
+NGA$ADM2_EN[355] <- "Irepodun, Kwara"
+NGA$ADM2_EN[356] <- "Irepodun, Osun"
+NGA$ADM2_EN[519] <- "Nasarawa, Kano"
+NGA$ADM2_EN[520] <- "Nasarawa, Nasarawa"
+NGA$ADM2_EN[546] <- "Obi, Benue"
+NGA$ADM2_EN[547] <- "Obi, Nasarawa"
+NGA$ADM2_EN[693] <- "Surulere, Lagos"
+NGA$ADM2_EN[694] <- "Surulere, Oyo"
+```
+
+```{r}
+NGA$ADM2_EN[duplicated(NGA$ADM2_EN)==TRUE]
+```
+
+### 1.3.5 **Data Wrangling for Water Point Data**
+
+```{r}
+funModeling::freq(data = wp_sf,
+     input = '#status_clean')
+```
+
+```{r}
+wp_sf_nga <- wp_sf %>% 
+  rename(status_clean = '#status_clean') %>%
+  dplyr::select(status_clean) %>%
+  mutate(status_clean = replace_na(
+    status_clean, "unknown"))
+```
+
+**1.3.5.1 Extracting Water Point Data**
+
+```{r}
+wp_functional <- wp_sf_nga %>%
+  filter(status_clean %in%
+           c("Functional",
+             "Functional but not in use",
+             "Functional but needs repair"))
+```
+
+```{r}
+wp_nonfunctional <- wp_sf_nga %>%
+  filter(status_clean %in%
+           c("Abandoned/Decommissioned",
+             "Abandoned",
+             "Non-Functional due to dry season",
+             "Non-Functional",
+             "Non functional due to dry season"))
+```
+
+```{r}
+wp_unknown <- wp_sf_nga %>%
+  filter(status_clean == "unknown")
+```
+
+```{r}
+funModeling::freq(data = wp_functional,
+     input = 'status_clean')
+```
+
+```{r}
+funModeling::freq(data = wp_nonfunctional,
+     input = 'status_clean')
+```
+
+```{r}
+funModeling::freq(data = wp_unknown,
+     input = 'status_clean')
+```
+
+# 2 Exploratory Spatial Data Analysis (ESDA)
+
+### 
+
+2.1 Derive kernel density maps of functional water points
+
+```{r}
+plot(wp_functional)
+
+```
+
+```{r}
+summary(wp_functional)
+```
+
+```{r}
+any(duplicated(wp_functional))
+sum(multiplicity(wp_functional) > 1)
+```
+
+```{r}
+library(tmap)
+wp_func <- as_Spatial(wp_functional)
+wp_func
+```
+
+```{r}
+wp_f_sp <- as(wp_func, "SpatialPoints")
+wp_f_sp
+```
+
+```{r}
+wp_functional_ppp <- as(wp_f_sp, "ppp")
+wp_functional_ppp
+```
+
+```{r}
+plot(wp_functional_ppp)
+```
+
+```{r}
+summary(wp_functional_ppp)
+```
+
+2.1.1 Handling duplicated points
+
+```{r}
+any(duplicated(wp_functional_ppp))
+
+sum(multiplicity(wp_functional_ppp) > 1)
+```
+
+```{r}
+kde_wp_functional_bw <- density(wp_functional_ppp,
+                              sigma=bw.diggle,
+                              edge=TRUE,
+                            kernel="gaussian") 
+```
+
+```{r}
+plot(kde_wp_functional_bw)
+```
+
+```{r}
+bw <- bw.diggle(wp_functional_ppp)
+bw
+```
+
+```{r}
+wp_functional_ppp.km <- rescale(wp_functional_ppp, 1000, "km")
+```
+
+```{r}
+kde_wp_functional_nigeria.bw <- density(wp_functional_ppp.km, sigma=bw.diggle, edge=TRUE, kernel="gaussian")
+plot(kde_wp_functional_nigeria.bw)
+```
+
+```{r}
+kde_wp_functional_nigeria.ppl <- density(wp_functional_ppp.km, 
+                               sigma=bw.ppl, 
+                               edge=TRUE,
+                               kernel="gaussian")
+par(mfrow=c(1,2))
+plot(kde_wp_functional_nigeria.bw, main = "bw.diggle")
+plot(kde_wp_functional_nigeria.ppl, main = "bw.ppl")
+```
+
+2.2 Derive kernel density maps of non-functional water points
+
+```{r}
+
+```
+
+### 
+
+2.3 Display the kernel density maps on openstreetmap of Osub State, Nigeria.
+
+```{r}
+
+```
+
+### 2.4 Describe the spatial patterns revealed by the kernel density maps. Highlight the advantage of kernel density map over point map.
+
+-   dcd
+
+# 3 Second-order Spatial Point Patterns Analysis
+
+### 
+
+3.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+
+3.2 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+
+3.3 Statistical conclusions
+
+# 4 Spatial Correlation Analysis
+
+### 4.1 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+
+4.2 Formulate the null hypothesis and alternative hypothesis and select the confidence level
+
+4.3 Statistical conclusions

@@ -310,9 +310,6 @@ kde_wp_nonfunctional_bw <- density(wp_nonfunctional_ppp,
 plot(kde_wp_nonfunctional_bw)
 ```
 
-```{}
-```
-
 ### 2.4 Describe the spatial patterns revealed by the kernel density maps. Highlight the advantage of kernel density map over point map.
 
 -   Kernel density maps depict a set of data points' geographic distribution and patterns. The maps depict the density of a certain variable, such as population, wealth, or crime, at various points within a geographic area. The density is estimated by applying a kernel function to each data point in the dataset, which is a mathematical representation of a smoothed density estimate.
@@ -360,7 +357,7 @@ H1= The distribution of Functional Water Point and Non-Functional Water Point ar
 The null hypothesis will be rejected if p-value is smaller than alpha value of 0.001 (i.e. at 99.9% confident interval).
 
 ```{r}
-WP_F_CK.csr <- envelope(wp_nonfunctional_ppp, Gest, nsim = 999)
+WP_F_CK.csr <- envelope(wp_functional_ppp, Gest, nsim = 999)
 ```
 
 ```{r}

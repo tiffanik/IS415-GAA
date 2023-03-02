@@ -200,7 +200,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex07/In-class_Ex07.html">
- <span class="dropdown-text">In-class Exercise 7</span></a>
+ <span class="dropdown-text">In-class Exercise 7: GLSA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex07_02/In-class_Ex07_02.html">
+ <span class="dropdown-text">In-class Exercise 7: EHSA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex08/In-class_Ex08.html">
+ <span class="dropdown-text">In-class Exercise 8</span></a>
   </li>  
     </ul>
   </li>
@@ -254,16 +262,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#global-measures-of-spatial-association" id="toc-global-measures-of-spatial-association" class="nav-link" data-scroll-target="#global-measures-of-spatial-association"><strong>Global Measures of Spatial Association</strong></a>
   <ul class="collapse">
-  <li><a href="#deriving-contiguity-weights-queens-method" id="toc-deriving-contiguity-weights-queens-method" class="nav-link" data-scroll-target="#deriving-contiguity-weights-queens-method"><strong>Deriving contiguity weights: Queen's method</strong></a></li>
-  <li><a href="#computing-global-moran-i" id="toc-computing-global-moran-i" class="nav-link" data-scroll-target="#computing-global-moran-i"><strong>Computing Global Moran' I</strong></a></li>
-  <li><a href="#performing-global-moransi-test" id="toc-performing-global-moransi-test" class="nav-link" data-scroll-target="#performing-global-moransi-test"><strong>Performing Global Moran'sI test</strong></a></li>
-  <li><a href="#performing-global-morani-permutation-test" id="toc-performing-global-morani-permutation-test" class="nav-link" data-scroll-target="#performing-global-morani-permutation-test"><strong>Performing Global Moran'I permutation test</strong></a></li>
+  <li><a href="#deriving-contiguity-weights-queens-method" id="toc-deriving-contiguity-weights-queens-method" class="nav-link" data-scroll-target="#deriving-contiguity-weights-queens-method"><strong>Deriving contiguity weights: Queen’s method</strong></a></li>
+  <li><a href="#computing-global-moran-i" id="toc-computing-global-moran-i" class="nav-link" data-scroll-target="#computing-global-moran-i"><strong>Computing Global Moran’ I</strong></a></li>
+  <li><a href="#performing-global-moransi-test" id="toc-performing-global-moransi-test" class="nav-link" data-scroll-target="#performing-global-moransi-test"><strong>Performing Global Moran’sI test</strong></a></li>
+  <li><a href="#performing-global-morani-permutation-test" id="toc-performing-global-morani-permutation-test" class="nav-link" data-scroll-target="#performing-global-morani-permutation-test"><strong>Performing Global Moran’I permutation test</strong></a></li>
   </ul></li>
-  <li><a href="#computing-local-morans-i" id="toc-computing-local-morans-i" class="nav-link" data-scroll-target="#computing-local-morans-i"><strong>Computing local Moran's I</strong></a>
+  <li><a href="#computing-local-morans-i" id="toc-computing-local-morans-i" class="nav-link" data-scroll-target="#computing-local-morans-i"><strong>Computing local Moran’s I</strong></a>
   <ul class="collapse">
-  <li><a href="#visualising-local-morans-i" id="toc-visualising-local-morans-i" class="nav-link" data-scroll-target="#visualising-local-morans-i"><strong>Visualising local Moran's I</strong></a></li>
-  <li><a href="#visualising-p-value-of-local-morans-i" id="toc-visualising-p-value-of-local-morans-i" class="nav-link" data-scroll-target="#visualising-p-value-of-local-morans-i"><strong>Visualising p-value of local Moran's I</strong></a></li>
-  <li><a href="#visuaising-local-morans-i-and-p-value" id="toc-visuaising-local-morans-i-and-p-value" class="nav-link" data-scroll-target="#visuaising-local-morans-i-and-p-value"><strong>Visuaising local Moran's I and p-value</strong></a></li>
+  <li><a href="#visualising-local-morans-i" id="toc-visualising-local-morans-i" class="nav-link" data-scroll-target="#visualising-local-morans-i"><strong>Visualising local Moran’s I</strong></a></li>
+  <li><a href="#visualising-p-value-of-local-morans-i" id="toc-visualising-p-value-of-local-morans-i" class="nav-link" data-scroll-target="#visualising-p-value-of-local-morans-i"><strong>Visualising p-value of local Moran’s I</strong></a></li>
+  <li><a href="#visuaising-local-morans-i-and-p-value" id="toc-visuaising-local-morans-i-and-p-value" class="nav-link" data-scroll-target="#visuaising-local-morans-i-and-p-value"><strong>Visuaising local Moran’s I and p-value</strong></a></li>
   <li><a href="#visualising-lisa-map" id="toc-visualising-lisa-map" class="nav-link" data-scroll-target="#visualising-lisa-map"><strong>Visualising LISA map</strong></a></li>
   </ul></li>
   <li><a href="#hot-spot-and-cold-spot-area-analysis-hcsa" id="toc-hot-spot-and-cold-spot-area-analysis-hcsa" class="nav-link" data-scroll-target="#hot-spot-and-cold-spot-area-analysis-hcsa"><strong>Hot Spot and Cold Spot Area Analysis (HCSA)</strong></a></li>
@@ -379,7 +387,7 @@ dbl (27): avg_wage, deposite, FAI, Gov_Rev, Gov_Exp, GDP, GDPPC, GIO, Loan, ...
 <section id="global-measures-of-spatial-association" class="level2">
 <h2 class="anchored" data-anchor-id="global-measures-of-spatial-association"><strong>Global Measures of Spatial Association</strong></h2>
 <section id="deriving-contiguity-weights-queens-method" class="level3">
-<h3 class="anchored" data-anchor-id="deriving-contiguity-weights-queens-method"><strong>Deriving contiguity weights: Queen's method</strong></h3>
+<h3 class="anchored" data-anchor-id="deriving-contiguity-weights-queens-method"><strong>Deriving contiguity weights: Queen’s method</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>wm_q <span class="ot">&lt;-</span> hunan_GDPPC <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nb =</span> <span class="fu">st_contiguity</span>(geometry),</span>
@@ -444,7 +452,7 @@ First 10 features:
 </div>
 </section>
 <section id="computing-global-moran-i" class="level3">
-<h3 class="anchored" data-anchor-id="computing-global-moran-i"><strong>Computing Global Moran' I</strong></h3>
+<h3 class="anchored" data-anchor-id="computing-global-moran-i"><strong>Computing Global Moran’ I</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>moranI <span class="ot">&lt;-</span> <span class="fu">global_moran</span>(wm_q<span class="sc">$</span>GDPPC,</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                       wm_q<span class="sc">$</span>nb,</span>
@@ -458,7 +466,7 @@ First 10 features:
 </div>
 </section>
 <section id="performing-global-moransi-test" class="level3">
-<h3 class="anchored" data-anchor-id="performing-global-moransi-test"><strong>Performing Global Moran'sI test</strong></h3>
+<h3 class="anchored" data-anchor-id="performing-global-moransi-test"><strong>Performing Global Moran’sI test</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">global_moran_test</span>(wm_q<span class="sc">$</span>GDPPC,</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                       wm_q<span class="sc">$</span>nb,</span>
@@ -479,7 +487,7 @@ Moran I statistic       Expectation          Variance
 </div>
 </section>
 <section id="performing-global-morani-permutation-test" class="level3">
-<h3 class="anchored" data-anchor-id="performing-global-morani-permutation-test"><strong>Performing Global Moran'I permutation test</strong></h3>
+<h3 class="anchored" data-anchor-id="performing-global-morani-permutation-test"><strong>Performing Global Moran’I permutation test</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -503,7 +511,7 @@ alternative hypothesis: two.sided</code></pre>
 </section>
 </section>
 <section id="computing-local-morans-i" class="level2">
-<h2 class="anchored" data-anchor-id="computing-local-morans-i"><strong>Computing local Moran's I</strong></h2>
+<h2 class="anchored" data-anchor-id="computing-local-morans-i"><strong>Computing local Moran’s I</strong></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>lisa <span class="ot">&lt;-</span> wm_q <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">local_moran =</span> <span class="fu">local_moran</span>(</span>
@@ -512,7 +520,7 @@ alternative hypothesis: two.sided</code></pre>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(local_moran)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="visualising-local-morans-i" class="level3">
-<h3 class="anchored" data-anchor-id="visualising-local-morans-i"><strong>Visualising local Moran's I</strong></h3>
+<h3 class="anchored" data-anchor-id="visualising-local-morans-i"><strong>Visualising local Moran’s I</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -533,7 +541,7 @@ alternative hypothesis: two.sided</code></pre>
 </div>
 </section>
 <section id="visualising-p-value-of-local-morans-i" class="level3">
-<h3 class="anchored" data-anchor-id="visualising-p-value-of-local-morans-i"><strong>Visualising p-value of local Moran's I</strong></h3>
+<h3 class="anchored" data-anchor-id="visualising-p-value-of-local-morans-i"><strong>Visualising p-value of local Moran’s I</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -550,7 +558,7 @@ alternative hypothesis: two.sided</code></pre>
 </div>
 </section>
 <section id="visuaising-local-morans-i-and-p-value" class="level3">
-<h3 class="anchored" data-anchor-id="visuaising-local-morans-i-and-p-value"><strong>Visuaising local Moran's I and p-value</strong></h3>
+<h3 class="anchored" data-anchor-id="visuaising-local-morans-i-and-p-value"><strong>Visuaising local Moran’s I and p-value</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">

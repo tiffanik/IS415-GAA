@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -58,6 +121,9 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -137,7 +203,15 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex07/In-class_Ex07.html">
- <span class="dropdown-text">In-class Exercise 7</span></a>
+ <span class="dropdown-text">In-class Exercise 7: GLSA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex07_02/In-class_Ex07_02.html">
+ <span class="dropdown-text">In-class Exercise 7: EHSA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex08/In-class_Ex08.html">
+ <span class="dropdown-text">In-class Exercise 8</span></a>
   </li>  
     </ul>
   </li>
@@ -182,16 +256,49 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
+  <li><a href="#setting-the-scene" id="toc-setting-the-scene" class="nav-link" data-scroll-target="#setting-the-scene">Setting the Scene</a></li>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement"><strong>Problem Statement</strong></a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a>
+  <ul class="collapse">
+  <li><a href="#packages-used" id="toc-packages-used" class="nav-link" data-scroll-target="#packages-used"><strong>Packages Used</strong></a></li>
+  <li><a href="#datasets-used" id="toc-datasets-used" class="nav-link" data-scroll-target="#datasets-used"><strong>Datasets Used</strong></a></li>
+  </ul></li>
+  <li><a href="#data-wrangling-geospatial-data" id="toc-data-wrangling-geospatial-data" class="nav-link" data-scroll-target="#data-wrangling-geospatial-data"><strong>Data Wrangling: Geospatial Data</strong></a>
+  <ul class="collapse">
+  <li><a href="#importing-geospatial-data" id="toc-importing-geospatial-data" class="nav-link" data-scroll-target="#importing-geospatial-data"><strong>Importing Geospatial Data</strong></a></li>
+  <li><a href="#data-pre-processing" id="toc-data-pre-processing" class="nav-link" data-scroll-target="#data-pre-processing"><strong>Data Pre-Processing</strong></a></li>
+  <li><a href="#missing-value" id="toc-missing-value" class="nav-link" data-scroll-target="#missing-value"><strong>Missing Value</strong></a></li>
+  <li><a href="#verifying-transforming-coordinate-system" id="toc-verifying-transforming-coordinate-system" class="nav-link" data-scroll-target="#verifying-transforming-coordinate-system"><strong>Verifying + Transforming Coordinate System</strong></a></li>
+  <li><a href="#removal-of-outer-islands" id="toc-removal-of-outer-islands" class="nav-link" data-scroll-target="#removal-of-outer-islands"><strong>Removal of Outer Islands</strong></a></li>
+  <li><a href="#retaining-first-9-fields-of-dki_jakatar" id="toc-retaining-first-9-fields-of-dki_jakatar" class="nav-link" data-scroll-target="#retaining-first-9-fields-of-dki_jakatar"><strong>Retaining first 9 fields of DKI_JAKATAR</strong></a></li>
+  <li><a href="#renaming-columns-with-translation" id="toc-renaming-columns-with-translation" class="nav-link" data-scroll-target="#renaming-columns-with-translation">Renaming Columns with Translation</a></li>
+  </ul></li>
+  <li><a href="#data-wrangling-aspatial-data" id="toc-data-wrangling-aspatial-data" class="nav-link" data-scroll-target="#data-wrangling-aspatial-data"><strong>Data Wrangling: Aspatial Data</strong></a>
+  <ul class="collapse">
+  <li><a href="#pre-importing-eda" id="toc-pre-importing-eda" class="nav-link" data-scroll-target="#pre-importing-eda"><strong>Pre-Importing EDA</strong></a></li>
+  <li><a href="#feeding-files-into-our-aspatial_preprocess-function" id="toc-feeding-files-into-our-aspatial_preprocess-function" class="nav-link" data-scroll-target="#feeding-files-into-our-aspatial_preprocess-function"><strong>Feeding Files into our <code>aspatial_preprocess</code> function</strong></a></li>
+  <li><a href="#renaming-columns-with-translation-1" id="toc-renaming-columns-with-translation-1" class="nav-link" data-scroll-target="#renaming-columns-with-translation-1">Renaming Columns with Translation</a></li>
+  <li><a href="#missing-value-1" id="toc-missing-value-1" class="nav-link" data-scroll-target="#missing-value-1"><strong>Missing Value</strong></a></li>
+  <li><a href="#removal-of-outer-islands-1" id="toc-removal-of-outer-islands-1" class="nav-link" data-scroll-target="#removal-of-outer-islands-1"><strong>Removal of Outer Islands</strong></a></li>
+  <li><a href="#identifying-mismatched-sub-district-records" id="toc-identifying-mismatched-sub-district-records" class="nav-link" data-scroll-target="#identifying-mismatched-sub-district-records"><strong>Identifying Mismatched Sub-District Records</strong></a></li>
+  <li><a href="#joining-eda" id="toc-joining-eda" class="nav-link" data-scroll-target="#joining-eda"><strong>Joining + EDA</strong></a></li>
+  </ul></li>
   <li><a href="#choropleth-mapping-and-analysis" id="toc-choropleth-mapping-and-analysis" class="nav-link" data-scroll-target="#choropleth-mapping-and-analysis">1 Choropleth Mapping and Analysis</a>
   <ul class="collapse">
-  <li><a href="#compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level" id="toc-compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level" class="nav-link" data-scroll-target="#compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level">1.1 Compute the monthly vaccination rate from July 2021 to June 2022 at sub-district (also known as kelurahan in Bahasa Indonesia) level,</a></li>
-  <li><a href="#prepare-the-monthly-vaccination-rate-maps-by-using-appropriate-tmap-functions" id="toc-prepare-the-monthly-vaccination-rate-maps-by-using-appropriate-tmap-functions" class="nav-link" data-scroll-target="#prepare-the-monthly-vaccination-rate-maps-by-using-appropriate-tmap-functions">1.2 Prepare the monthly vaccination rate maps by using appropriate tmap functions,</a></li>
-  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
+  <li><a href="#compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level" id="toc-compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level" class="nav-link" data-scroll-target="#compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level">1.1 Compute the monthly vaccination rate from July 2021 to June 2022 at sub-district (also known as kelurahan in Bahasa Indonesia) level</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a>
+  <ul class="collapse">
   <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"></a></li>
   </ul></li>
-  <li><a href="#local-gi-analysis" id="toc-local-gi-analysis" class="nav-link" data-scroll-target="#local-gi-analysis">2 Local Gi* Analysis</a></li>
+  <li><a href="#describe-the-spatial-patterns-revealed-by-the-choropleth-maps-not-more-than-200-words." id="toc-describe-the-spatial-patterns-revealed-by-the-choropleth-maps-not-more-than-200-words." class="nav-link" data-scroll-target="#describe-the-spatial-patterns-revealed-by-the-choropleth-maps-not-more-than-200-words.">1.3 Describe the spatial patterns revealed by the choropleth maps (not more than 200 words).</a></li>
+  </ul></li>
+  <li><a href="#local-gi-analysis" id="toc-local-gi-analysis" class="nav-link" data-scroll-target="#local-gi-analysis">2 Local Gi* Analysis</a>
+  <ul class="collapse">
+  <li><a href="#compute-local-gi-values-of-the-monthly-vaccination-rate" id="toc-compute-local-gi-values-of-the-monthly-vaccination-rate" class="nav-link" data-scroll-target="#compute-local-gi-values-of-the-monthly-vaccination-rate">2.1 Compute local Gi* values of the monthly vaccination rate,</a></li>
+  <li><a href="#display-the-gi-maps-of-the-monthly-vaccination-rate.-the-maps-should-only-display-the-significant-i.e.-p-value-0.05" id="toc-display-the-gi-maps-of-the-monthly-vaccination-rate.-the-maps-should-only-display-the-significant-i.e.-p-value-0.05" class="nav-link" data-scroll-target="#display-the-gi-maps-of-the-monthly-vaccination-rate.-the-maps-should-only-display-the-significant-i.e.-p-value-0.05">2.2 Display the Gi* maps of the monthly vaccination rate. The maps should only display the significant (i.e.&nbsp;p-value &lt; 0.05)</a></li>
+  <li><a href="#with-reference-to-the-analysis-results-draw-statistical-conclusions-not-more-than-250-words." id="toc-with-reference-to-the-analysis-results-draw-statistical-conclusions-not-more-than-250-words." class="nav-link" data-scroll-target="#with-reference-to-the-analysis-results-draw-statistical-conclusions-not-more-than-250-words.">2.3 With reference to the analysis results, draw statistical conclusions (not more than 250 words).</a></li>
+  </ul></li>
   <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3"></a></li>
-  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4"></a></li>
   </ul>
 </nav>
     </div>
@@ -217,37 +324,2469 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="section" class="level1">
 <h1></h1>
-<p>Setting the Scene</p>
+</section>
+<section id="setting-the-scene" class="level1">
+<h1>Setting the Scene</h1>
 <p><img src="images/vaccine-hero.png" class="img-fluid"></p>
 <p>Since late December 2019, an outbreak of a novel coronavirus disease (COVID-19; previously known as 2019-nCoV) was reported in Wuhan, China, which had subsequently affected 210 countries worldwide. In general, COVID-19 is an acute resolved disease but it can also be deadly, with a 2% case fatality rate.</p>
 <p>The COVID-19 vaccination in Indonesia is an ongoing mass immunisation in response to the COVID-19 pandemic in Indonesia. On 13 January 2021, the program commenced when President Joko Widodo was vaccinated at the presidential palace. In terms of total doses given, Indonesia ranks third in Asia and fifth in the world.</p>
 <p>According to wikipedia, as of 5 February 2023 at 18:00 WIB (UTC+7), 204,266,655 people had received the first dose of the vaccine and 175,131,893 people had been fully vaccinated; 69,597,474 of them had been inoculated with the booster or the third dose, while 1,585,164 had received the fourth dose. Jakarta has the highest percentage of population fully vaccinated with 103.46%, followed by Bali and Special Region of Yogyakarta with 85.45% and 83.02% respectively.</p>
 <p>Despite its compactness, the cumulative vaccination rate are not evenly distributed within DKI Jakarta. The question is where are the sub-districts with relatively higher number of vaccination rate and how they changed over time.</p>
 </section>
+<section id="problem-statement" class="level1">
+<h1><strong>Problem Statement</strong></h1>
+<p>Exploratory Spatial Data Analysis (ESDA) hold tremendous potential to address complex problems facing society. In this study, you are tasked to apply appropriate Local Indicators of Spatial Association (LISA) and Emerging Hot Spot Analysis (EHSA) to <strong>undercover the spatio-temporal trends of COVID-19 vaccination in DKI Jakarta.</strong></p>
+</section>
+<section id="the-data" class="level1">
+<h1>The Data</h1>
+<section id="packages-used" class="level3">
+<h3 class="anchored" data-anchor-id="packages-used"><strong>Packages Used</strong></h3>
+<ul>
+<li><p><strong>sf</strong> for importing, managing, and processing geospatial data, and</p></li>
+<li><p><strong>tidyverse</strong> for performing data science tasks such as importing, wrangling and visualising data.</p></li>
+<li><p><strong>readr</strong> for importing delimited text file,</p></li>
+<li><p><strong>tidyr</strong> for tidying data,</p></li>
+<li><p><strong>dplyr</strong> for wrangling data and</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, sfdep, tmap, plotly, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="datasets-used" class="level3">
+<h3 class="anchored" data-anchor-id="datasets-used"><strong>Datasets Used</strong></h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Name</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Aspstial</td>
+<td><a href="https://riwayat-file-vaksinasi-dki-jakarta-jakartagis.hub.arcgis.com/">Riwayat File Vaksinasi DKI Jakarta (Monthly)</a></td>
+<td>.xlsx</td>
+<td>The Vaccination Data on this dashboard shows the number of people vaccinated with DKI Jakarta</td>
+</tr>
+<tr class="even">
+<td>Geospatial</td>
+<td><a href="https://www.indonesia-geospasial.com/2020/04/download-shapefile-shp-batas-desa.html">Village Boundary Shapefile &amp; 2019 Population Data Throughout Indonesia</a></td>
+<td>Shapefile</td>
+<td>Sub-districts in DKI Jakarta</td>
+</tr>
+</tbody>
+</table>
+<p>PS: <em>To retrieve the monthly cumulative records for the Vaccination Data in Jakarta, we took the data compiled on the first day of each month.</em></p>
+</section>
+</section>
+<section id="data-wrangling-geospatial-data" class="level1">
+<h1><strong>Data Wrangling: Geospatial Data</strong></h1>
+<section id="importing-geospatial-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-geospatial-data"><strong>Importing Geospatial Data</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/geospatial"</span>, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">layer =</span> <span class="st">"BATAS_DESA_DESEMBER_2019_DUKCAPIL_DKI_JAKARTA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `BATAS_DESA_DESEMBER_2019_DUKCAPIL_DKI_JAKARTA' from data source 
+  `C:\tiffanik\IS415-GAA\Take-home_Ex\Take-home_Ex02\data\geospatial' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 269 features and 161 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 106.3831 ymin: -6.370815 xmax: 106.9728 ymax: -5.184322
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="data-pre-processing" class="level3">
+<h3 class="anchored" data-anchor-id="data-pre-processing"><strong>Data Pre-Processing</strong></h3>
+<p>Check for invalid geometries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(<span class="fu">st_is_valid</span>(DKI_JAKATAR) <span class="sc">==</span> <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="missing-value" class="level3">
+<h3 class="anchored" data-anchor-id="missing-value"><strong>Missing Value</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR[<span class="fu">rowSums</span>(<span class="fu">is.na</span>(DKI_JAKATAR))<span class="sc">!=</span><span class="dv">0</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 2 features and 161 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 106.8412 ymin: -6.154036 xmax: 106.8612 ymax: -6.144973
+Geodetic CRS:  WGS 84
+    OBJECT_ID KODE_DESA             DESA   KODE    PROVINSI KAB_KOTA KECAMATAN
+243     25645  31888888     DANAU SUNTER 318888 DKI JAKARTA     &lt;NA&gt;      &lt;NA&gt;
+244     25646  31888888 DANAU SUNTER DLL 318888 DKI JAKARTA     &lt;NA&gt;      &lt;NA&gt;
+    DESA_KELUR JUMLAH_PEN JUMLAH_KK LUAS_WILAY KEPADATAN PERPINDAHA JUMLAH_MEN
+243       &lt;NA&gt;          0         0          0         0          0          0
+244       &lt;NA&gt;          0         0          0         0          0          0
+    PERUBAHAN WAJIB_KTP SILAM KRISTEN KHATOLIK HINDU BUDHA KONGHUCU KEPERCAYAA
+243         0         0     0       0        0     0     0        0          0
+244         0         0     0       0        0     0     0        0          0
+    PRIA WANITA BELUM_KAWI KAWIN CERAI_HIDU CERAI_MATI U0 U5 U10 U15 U20 U25
+243    0      0          0     0          0          0  0  0   0   0   0   0
+244    0      0          0     0          0          0  0  0   0   0   0   0
+    U30 U35 U40 U45 U50 U55 U60 U65 U70 U75 TIDAK_BELU BELUM_TAMA TAMAT_SD SLTP
+243   0   0   0   0   0   0   0   0   0   0          0          0        0    0
+244   0   0   0   0   0   0   0   0   0   0          0          0        0    0
+    SLTA DIPLOMA_I DIPLOMA_II DIPLOMA_IV STRATA_II STRATA_III BELUM_TIDA
+243    0         0          0          0         0          0          0
+244    0         0          0          0         0          0          0
+    APARATUR_P TENAGA_PEN WIRASWASTA PERTANIAN NELAYAN AGAMA_DAN PELAJAR_MA
+243          0          0          0         0       0         0          0
+244          0          0          0         0       0         0          0
+    TENAGA_KES PENSIUNAN LAINNYA GENERATED KODE_DES_1 BELUM_ MENGUR_ PELAJAR_
+243          0         0       0      &lt;NA&gt;       &lt;NA&gt;      0       0        0
+244          0         0       0      &lt;NA&gt;       &lt;NA&gt;      0       0        0
+    PENSIUNA_1 PEGAWAI_ TENTARA KEPOLISIAN PERDAG_ PETANI PETERN_ NELAYAN_1
+243          0        0       0          0       0      0       0         0
+244          0        0       0          0       0      0       0         0
+    INDUSTR_ KONSTR_ TRANSP_ KARYAW_ KARYAW1 KARYAW1_1 KARYAW1_12 BURUH BURUH_
+243        0       0       0       0       0         0          0     0      0
+244        0       0       0       0       0         0          0     0      0
+    BURUH1 BURUH1_1 PEMBANT_ TUKANG TUKANG_1 TUKANG_12 TUKANG__13 TUKANG__14
+243      0        0        0      0        0         0          0          0
+244      0        0        0      0        0         0          0          0
+    TUKANG__15 TUKANG__16 TUKANG__17 PENATA PENATA_ PENATA1_1 MEKANIK SENIMAN_
+243          0          0          0      0       0         0       0        0
+244          0          0          0      0       0         0       0        0
+    TABIB PARAJI_ PERANCA_ PENTER_ IMAM_M PENDETA PASTOR WARTAWAN USTADZ JURU_M
+243     0       0        0       0      0       0      0        0      0      0
+244     0       0        0       0      0       0      0        0      0      0
+    PROMOT ANGGOTA_ ANGGOTA1 ANGGOTA1_1 PRESIDEN WAKIL_PRES ANGGOTA1_2
+243      0        0        0          0        0          0          0
+244      0        0        0          0        0          0          0
+    ANGGOTA1_3 DUTA_B GUBERNUR WAKIL_GUBE BUPATI WAKIL_BUPA WALIKOTA WAKIL_WALI
+243          0      0        0          0      0          0        0          0
+244          0      0        0          0      0          0        0          0
+    ANGGOTA1_4 ANGGOTA1_5 DOSEN GURU PILOT PENGACARA_ NOTARIS ARSITEK AKUNTA_
+243          0          0     0    0     0          0       0       0       0
+244          0          0     0    0     0          0       0       0       0
+    KONSUL_ DOKTER BIDAN PERAWAT APOTEK_ PSIKIATER PENYIA_ PENYIA1 PELAUT
+243       0      0     0       0       0         0       0       0      0
+244       0      0     0       0       0         0       0       0      0
+    PENELITI SOPIR PIALAN PARANORMAL PEDAGA_ PERANG_ KEPALA_ BIARAW_ WIRASWAST_
+243        0     0      0          0       0       0       0       0          0
+244        0     0      0          0       0       0       0       0          0
+    LAINNYA_12 LUAS_DESA KODE_DES_3 DESA_KEL_1 KODE_12
+243          0         0       &lt;NA&gt;       &lt;NA&gt;       0
+244          0         0       &lt;NA&gt;       &lt;NA&gt;       0
+                          geometry
+243 MULTIPOLYGON (((106.8612 -6...
+244 MULTIPOLYGON (((106.8504 -6...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># removes rows that have an NA value</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(DKI_JAKATAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="verifying-transforming-coordinate-system" class="level3">
+<h3 class="anchored" data-anchor-id="verifying-transforming-coordinate-system"><strong>Verifying + Transforming Coordinate System</strong></h3>
+<p>Check the CRS of DKI_JAKATAR:</p>
+<p>As we can see, the assigned coordinates system is <a href="https://epsg.io/4326">WGS 84</a>, the ‘World Geodetic System 1984’. In the context of this dataset, this isn’t appropriate: as this is an Indonesian-specific geospatial dataset, we should be using the national CRS of Indonesia, <a href="https://epsg.io/23845">DGN95</a>, the ‘Datum Geodesi Nasional 1995’, ESPG code 23845. Let’s rectify that:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(DKI_JAKATAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 
+  wkt:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["latitude",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["longitude",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(DKI_JAKATAR, <span class="dv">23845</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let us check if the CRS has been properly assigned:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(DKI_JAKATAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: EPSG:23845 
+  wkt:
+PROJCRS["DGN95 / Indonesia TM-3 zone 54.1",
+    BASEGEOGCRS["DGN95",
+        DATUM["Datum Geodesi Nasional 1995",
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1]]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433]],
+        ID["EPSG",4755]],
+    CONVERSION["Indonesia TM-3 zone 54.1",
+        METHOD["Transverse Mercator",
+            ID["EPSG",9807]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",139.5,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["Scale factor at natural origin",0.9999,
+            SCALEUNIT["unity",1],
+            ID["EPSG",8805]],
+        PARAMETER["False easting",200000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",1500000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]]],
+    CS[Cartesian,2],
+        AXIS["easting (X)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["northing (Y)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+    USAGE[
+        SCOPE["Cadastre."],
+        AREA["Indonesia - onshore east of 138°E."],
+        BBOX[-9.19,138,-1.49,141.01]],
+    ID["EPSG",23845]]</code></pre>
+</div>
+</div>
+</section>
+<section id="removal-of-outer-islands" class="level3">
+<h3 class="anchored" data-anchor-id="removal-of-outer-islands"><strong>Removal of Outer Islands</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(DKI_JAKATAR))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we can see, DKI_JAKATAR includes both the mainland and the outer islands. As per the assignment requirements, since the outer islands aren’t relevant to our analysis, we’ll have to remove them.</p>
+<p>Check for its unique values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(DKI_JAKATAR<span class="sc">$</span><span class="st">"KAB_KOTA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "JAKARTA BARAT"    "JAKARTA PUSAT"    "KEPULAUAN SERIBU" "JAKARTA UTARA"   
+[5] "JAKARTA TIMUR"    "JAKARTA SELATAN" </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(DKI_JAKATAR) <span class="sc">+</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"KAB_KOTA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Legend labels were too wide. The labels have been resized to 0.58, 0.58, 0.50, 0.59, 0.57, 0.47. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR <span class="ot">&lt;-</span> <span class="fu">filter</span>(DKI_JAKATAR, KAB_KOTA <span class="sc">!=</span> <span class="st">"KEPULAUAN SERIBU"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="retaining-first-9-fields-of-dki_jakatar" class="level3">
+<h3 class="anchored" data-anchor-id="retaining-first-9-fields-of-dki_jakatar"><strong>Retaining first 9 fields of DKI_JAKATAR</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR <span class="ot">&lt;-</span> DKI_JAKATAR[, <span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="renaming-columns-with-translation" class="level3">
+<h3 class="anchored" data-anchor-id="renaming-columns-with-translation">Renaming Columns with Translation</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR <span class="ot">&lt;-</span> DKI_JAKATAR <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Object_ID=</span>OBJECT_ID,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Village_Code=</span>KODE_DESA, </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Village=</span>DESA, </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Code=</span>KODE, </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Province=</span>PROVINSI, </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">City=</span>KAB_KOTA, </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">District=</span>KECAMATAN, </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sub_District=</span>DESA_KELUR,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Population=</span>JUMLAH_PEN</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Brief EDA</strong></p>
+<p>Before we move on into importing the aspatial data and into the meat of our geovisualiastion, it’s important to get a feel for the data that we’re working with, especially on the sub-district level. As such, let’s take a quick glimpse:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(DKI_JAKATAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 261
+Columns: 10
+$ Object_ID        &lt;dbl&gt; 25477, 25478, 25397, 25400, 25390, 25391, 25394, 2538…
+$ Village_Code     &lt;chr&gt; "3173031006", "3173031007", "3171031003", "3171031006…
+$ Village          &lt;chr&gt; "KEAGUNGAN", "GLODOK", "HARAPAN MULIA", "CEMPAKA BARU…
+$ Code             &lt;dbl&gt; 317303, 317303, 317103, 317103, 317102, 317102, 31710…
+$ Province         &lt;chr&gt; "DKI JAKARTA", "DKI JAKARTA", "DKI JAKARTA", "DKI JAK…
+$ City             &lt;chr&gt; "JAKARTA BARAT", "JAKARTA BARAT", "JAKARTA PUSAT", "J…
+$ District         &lt;chr&gt; "TAMAN SARI", "TAMAN SARI", "KEMAYORAN", "KEMAYORAN",…
+$ Sub_District     &lt;chr&gt; "KEAGUNGAN", "GLODOK", "HARAPAN MULIA", "CEMPAKA BARU…
+$ Total_Population &lt;dbl&gt; 21609, 9069, 29085, 41913, 15793, 33383, 35906, 21828…
+$ geometry         &lt;MULTIPOLYGON [m]&gt; MULTIPOLYGON (((-3626874 69..., MULTIPOL…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(DKI_JAKATAR<span class="sc">$</span><span class="st">"Sub_District"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 261</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(DKI_JAKATAR<span class="sc">$</span><span class="st">"District"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 42</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(DKI_JAKATAR) <span class="sc">+</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"City"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="data-wrangling-aspatial-data" class="level1">
+<h1><strong>Data Wrangling: Aspatial Data</strong></h1>
+<section id="pre-importing-eda" class="level3">
+<h3 class="anchored" data-anchor-id="pre-importing-eda"><strong>Pre-Importing EDA</strong></h3>
+<p>In our ‘data/aspatial’ folder, we have multiple .xlsx files ranging from 1 July 2021 to June 2022. However, before we start compiling all of our data, it’s important to understand what we’re working with and to check for any discrepancies, so let’s perform a brief EDA:</p>
+<p><strong>Our columns of interest (those that are relevant to our analysis) are as follows:</strong></p>
+<p>KODE KELURAHA = Village_code</p>
+<p>WILAYAH KOTA= City_area</p>
+<p>KECAMATAN = Sub_district</p>
+<p>KELURAHA = Ward</p>
+<p>SASARAN = Target</p>
+<p>BELUM VAKSIN = Not_Yet_Vaccinated</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>aspatial_preprocess <span class="ot">&lt;-</span> <span class="cf">function</span>(filepath){</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  result_file <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(filepath)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  startpoint <span class="ot">&lt;-</span> <span class="fu">gregexpr</span>(<span class="at">pattern=</span><span class="st">"Corona"</span>, filepath)[[<span class="dv">1</span>]] <span class="sc">+</span> <span class="dv">8</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  endpoint <span class="ot">&lt;-</span> <span class="fu">gregexpr</span>(<span class="at">pattern=</span><span class="st">"Pukul"</span>, filepath)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  result_file<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">substr</span>(filepath, startpoint, endpoint)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  result_file <span class="ot">&lt;-</span> result_file[, <span class="sc">!</span><span class="fu">duplicated</span>(<span class="fu">colnames</span>(result_file), <span class="at">fromLast =</span> <span class="cn">TRUE</span>)] </span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Retain the Relevant Columns</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  result_file <span class="ot">&lt;-</span> result_file <span class="sc">%&gt;%</span> </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="st">"KODE KELURAHAN"</span>, </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>           <span class="st">"WILAYAH KOTA"</span>, </span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>           <span class="st">"KECAMATAN"</span>, </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>           <span class="st">"KELURAHAN"</span>, </span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>           <span class="st">"SASARAN"</span>, </span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>           <span class="st">"BELUM VAKSIN"</span>,</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>           <span class="st">"DATE"</span>)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result_file)</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="feeding-files-into-our-aspatial_preprocess-function" class="level3">
+<h3 class="anchored" data-anchor-id="feeding-files-into-our-aspatial_preprocess-function"><strong>Feeding Files into our <code>aspatial_preprocess</code> function</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in the folder 'data/aspatial', find files with the extension '.xlsx' and add it to our fileslist </span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the full.names=TRUE prepends the directory path to the file names, giving a relative file path - otherwise, only the file names (not the paths) would be returned </span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reference: https://stat.ethz.ch/R-manual/R-devel/library/base/html/list.files.html</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>fileslist <span class="ot">&lt;-</span><span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/aspatial"</span>, <span class="at">pattern =</span> <span class="st">"*.xlsx"</span>, <span class="at">full.names=</span><span class="cn">TRUE</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># afterwards, for every element in fileslist, apply aspatial_process function</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>dflist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(fileslist), <span class="cf">function</span>(x) <span class="fu">aspatial_preprocess</span>(fileslist[x]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fileslist <span class="ot">&lt;-</span><span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/aspatial"</span>, <span class="at">pattern =</span> <span class="st">"*.xlsx"</span>, <span class="at">full.names=</span><span class="cn">TRUE</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>dflist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(fileslist), <span class="cf">function</span>(x) <span class="fu">aspatial_preprocess</span>(fileslist[x]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>monthly_vaccination <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">ldply</span>(dflist, data.frame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(monthly_vaccination)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 3,216
+Columns: 7
+$ KODE.KELURAHAN &lt;chr&gt; NA, "3172051003", "3173041007", "3175041005", "31750310…
+$ WILAYAH.KOTA   &lt;chr&gt; NA, "JAKARTA UTARA", "JAKARTA BARAT", "JAKARTA TIMUR", …
+$ KECAMATAN      &lt;chr&gt; NA, "PADEMANGAN", "TAMBORA", "KRAMAT JATI", "JATINEGARA…
+$ KELURAHAN      &lt;chr&gt; "TOTAL", "ANCOL", "ANGKE", "BALE KAMBANG", "BALI MESTER…
+$ SASARAN        &lt;dbl&gt; 8941211, 23947, 29381, 29074, 9752, 26285, 21566, 23886…
+$ BELUM.VAKSIN   &lt;dbl&gt; 1481006, 4518, 5181, 5774, 1620, 3941, 3889, 3214, 9150…
+$ DATE           &lt;dttm&gt; NA, 2022-01-04, 2022-01-04, 2022-01-04, 2022-01-04, 20…</code></pre>
+</div>
+</div>
+</section>
+<section id="renaming-columns-with-translation-1" class="level3">
+<h3 class="anchored" data-anchor-id="renaming-columns-with-translation-1">Renaming Columns with Translation</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(monthly_vaccination) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Village_Code"</span>, <span class="st">"City"</span>,<span class="st">"Sub_District"</span>,<span class="st">"District"</span>,<span class="st">"Target"</span>,<span class="st">"Not_Yet_Vaccinated"</span>,<span class="st">"Date"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>monthly_vaccination[<span class="fu">rowSums</span>(<span class="fu">is.na</span>(monthly_vaccination))<span class="sc">!=</span><span class="dv">0</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Village_Code               City        Sub_District               District
+1            &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+269          &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+314    3175091001      JAKARTA TIMUR             CIRACAS                CIRACAS
+315    3175041003      JAKARTA TIMUR         KRAMAT JATI                  DUKUH
+316    3175071001      JAKARTA TIMUR         DUREN SAWIT            DUREN SAWIT
+317    3174081004    JAKARTA SELATAN            PANCORAN             DUREN TIGA
+318    3173051005      JAKARTA BARAT         KEBON JERUK              DURI KEPA
+319    3173011002      JAKARTA BARAT          CENGKARENG           DURI KOSAMBI
+320    3171011006      JAKARTA PUSAT              GAMBIR              DURI PULO
+321    3173041011      JAKARTA BARAT             TAMBORA           DURI SELATAN
+322    3173041003      JAKARTA BARAT             TAMBORA             DURI UTARA
+323    3171081003      JAKARTA PUSAT          JOHAR BARU                  GALUR
+324    3171011001      JAKARTA PUSAT              GAMBIR                 GAMBIR
+325    3174061004    JAKARTA SELATAN            CILANDAK       GANDARIA SELATAN
+326    3174071009    JAKARTA SELATAN      KEBAYORAN BARU         GANDARIA UTARA
+327    3175051001      JAKARTA TIMUR          PASAR REBO                 GEDONG
+328    3171071001      JAKARTA PUSAT         TANAH ABANG                 GELORA
+329    3173031007      JAKARTA BARAT          TAMAN SARI                 GLODOK
+330    3171061004      JAKARTA PUSAT             MENTENG             GONDANGDIA
+331    3173021001      JAKARTA BARAT   GROGOL PETAMBURAN                 GROGOL
+332    3174051005    JAKARTA SELATAN      KEBAYORAN LAMA         GROGOL SELATAN
+333    3174051004    JAKARTA SELATAN      KEBAYORAN LAMA           GROGOL UTARA
+334    3174021007    JAKARTA SELATAN          SETIA BUDI                 GUNTUR
+335    3174071002    JAKARTA SELATAN      KEBAYORAN BARU                 GUNUNG
+336    3171031005      JAKARTA PUSAT           KEMAYORAN  GUNUNG SAHARI SELATAN
+337    3171021004      JAKARTA PUSAT         SAWAH BESAR    GUNUNG SAHARI UTARA
+338    3175081004      JAKARTA TIMUR             MAKASAR  HALIM PERDANA KUSUMAH
+339    3171031003      JAKARTA PUSAT           KEMAYORAN          HARAPAN MULIA
+340    3174091001    JAKARTA SELATAN           JAGAKARSA              JAGAKARSA
+341    3175021007      JAKARTA TIMUR         PULO GADUNG                   JATI
+342    3174041002    JAKARTA SELATAN        PASAR MINGGU            JATI PADANG
+343    3173071004      JAKARTA BARAT            PALMERAH              JATI PULO
+344    3175061001      JAKARTA TIMUR              CAKUNG             JATINEGARA
+345    3175021004      JAKARTA TIMUR         PULO GADUNG        JATINEGARA KAUM
+346    3173021004      JAKARTA BARAT   GROGOL PETAMBURAN               JELAMBAR
+347    3173021006      JAKARTA BARAT   GROGOL PETAMBURAN          JELAMBAR BARU
+348    3173041006      JAKARTA BARAT             TAMBORA          JEMBATAN BESI
+349    3173041008      JAKARTA BARAT             TAMBORA          JEMBATAN LIMA
+350    3173081005      JAKARTA BARAT           KEMBANGAN                  JOGLO
+351    3171081001      JAKARTA PUSAT          JOHAR BARU             JOHAR BARU
+352    3173041002      JAKARTA BARAT             TAMBORA             KALI ANYAR
+353    3172041004      JAKARTA UTARA           CILINCING               KALIBARU
+354    3174081002    JAKARTA SELATAN            PANCORAN               KALIBATA
+355    3173061001      JAKARTA BARAT          KALI DERES              KALIDERES
+356    3175051004      JAKARTA TIMUR          PASAR REBO               KALISARI
+357    3173061004      JAKARTA BARAT          KALI DERES                  KAMAL
+358    3172011002      JAKARTA UTARA         PENJARINGAN            KAMAL MUARA
+359    3171071007      JAKARTA PUSAT         TANAH ABANG           KAMPUNG BALI
+360    3175031001      JAKARTA TIMUR          JATINEGARA         KAMPUNG MELAYU
+361    3171081002      JAKARTA PUSAT          JOHAR BARU           KAMPUNG RAWA
+362    3175041002      JAKARTA TIMUR         KRAMAT JATI         KAMPUNG TENGAH
+363    3173011005      JAKARTA BARAT          CENGKARENG                  KAPUK
+364    3172011003      JAKARTA UTARA         PENJARINGAN            KAPUK MUARA
+365    3171021002      JAKARTA PUSAT         SAWAH BESAR           KARANG ANYAR
+366    3174021004    JAKARTA SELATAN          SETIA BUDI                  KARET
+367    3174021003    JAKARTA SELATAN          SETIA BUDI         KARET KUNINGAN
+368    3174021002    JAKARTA SELATAN          SETIA BUDI         KARET SEMANGGI
+369    3171071003      JAKARTA PUSAT         TANAH ABANG          KARET TENGSIN
+370    3171021003      JAKARTA PUSAT         SAWAH BESAR                KARTINI
+371    3175011003      JAKARTA TIMUR            MATRAMAN             KAYU MANIS
+372    3175021006      JAKARTA TIMUR         PULO GADUNG             KAYU PUTIH
+373    3173031006      JAKARTA BARAT          TAMAN SARI              KEAGUNGAN
+374    3174041007    JAKARTA SELATAN        PASAR MINGGU              KEBAGUSAN
+375    3174051006    JAKARTA SELATAN      KEBAYORAN LAMA KEBAYORAN LAMA SELATAN
+376    3174051001    JAKARTA SELATAN      KEBAYORAN LAMA   KEBAYORAN LAMA UTARA
+377    3174011004    JAKARTA SELATAN               TEBET             KEBON BARU
+378    3172021005      JAKARTA UTARA       TANJUNG PRIOK           KEBON BAWANG
+379    3173051001      JAKARTA BARAT         KEBON JERUK            KEBON JERUK
+380    3171071006      JAKARTA PUSAT         TANAH ABANG           KEBON KACANG
+381    3171011005      JAKARTA PUSAT              GAMBIR           KEBON KELAPA
+382    3171031002      JAKARTA PUSAT           KEMAYORAN           KEBON KOSONG
+383    3175011005      JAKARTA TIMUR            MATRAMAN          KEBON MANGGIS
+384    3171071005      JAKARTA PUSAT         TANAH ABANG           KEBON MELATI
+385    3175081003      JAKARTA TIMUR             MAKASAR             KEBON PALA
+386    3171061005      JAKARTA PUSAT             MENTENG            KEBON SIRIH
+387    3173011004      JAKARTA BARAT          CENGKARENG     KEDAUNG KALI ANGKE
+388    3173051007      JAKARTA BARAT         KEBON JERUK         KEDOYA SELATAN
+389    3173051006      JAKARTA BARAT         KEBON JERUK           KEDOYA UTARA
+390    3173051004      JAKARTA BARAT         KEBON JERUK             KELAPA DUA
+391    3175091003      JAKARTA TIMUR             CIRACAS       KELAPA DUA WETAN
+392    3172061003      JAKARTA UTARA       KELAPA GADING    KELAPA GADING BARAT
+393    3172061001      JAKARTA UTARA       KELAPA GADING    KELAPA GADING TIMUR
+394    3173071005      JAKARTA BARAT            PALMERAH            KEMANGGISAN
+395    3171031001      JAKARTA PUSAT           KEMAYORAN              KEMAYORAN
+396    3173081006      JAKARTA BARAT           KEMBANGAN      KEMBANGAN SELATAN
+397    3173081001      JAKARTA BARAT           KEMBANGAN        KEMBANGAN UTARA
+398    3171041002      JAKARTA PUSAT               SENEN                 KENARI
+399    3173041005      JAKARTA BARAT             TAMBORA              KERENDANG
+400    3175071003      JAKARTA TIMUR         DUREN SAWIT                KLENDER
+401    3172031001      JAKARTA UTARA                KOJA                   KOJA
+402    3173071006      JAKARTA BARAT            PALMERAH     KOTA BAMBU SELATAN
+403    3173071003      JAKARTA BARAT            PALMERAH       KOTA BAMBU UTARA
+404    3171041004      JAKARTA PUSAT               SENEN                 KRAMAT
+405    3175041001      JAKARTA TIMUR         KRAMAT JATI            KRAMAT JATI
+406    3174071003    JAKARTA SELATAN      KEBAYORAN BARU            KRAMAT PELA
+407    3173031002      JAKARTA BARAT          TAMAN SARI                 KRUKUT
+408    3174031005    JAKARTA SELATAN    MAMPANG PRAPATAN         KUNINGAN BARAT
+409    3174021008    JAKARTA SELATAN          SETIA BUDI         KUNINGAN TIMUR
+410    3171041005      JAKARTA PUSAT               SENEN                KWITANG
+411    3172031003      JAKARTA UTARA                KOJA                  LAGOA
+412    3174061002    JAKARTA SELATAN            CILANDAK            LEBAK BULUS
+413    3174091004    JAKARTA SELATAN           JAGAKARSA          LENTENG AGUNG
+414    3175101007      JAKARTA TIMUR            CIPAYUNG           LUBANG BUAYA
+415    3175081001      JAKARTA TIMUR             MAKASAR                MAKASAR
+416    3175071006      JAKARTA TIMUR         DUREN SAWIT            MALAKA JAYA
+417    3175071005      JAKARTA TIMUR         DUREN SAWIT            MALAKA SARI
+418    3174031001    JAKARTA SELATAN    MAMPANG PRAPATAN       MAMPANG PRAPATAN
+419    3173031005      JAKARTA BARAT          TAMAN SARI           MANGGA BESAR
+420    3171021005      JAKARTA PUSAT         SAWAH BESAR     MANGGA DUA SELATAN
+421    3174011007    JAKARTA SELATAN               TEBET              MANGGARAI
+422    3174011006    JAKARTA SELATAN               TEBET      MANGGARAI SELATAN
+423    3173031003      JAKARTA BARAT          TAMAN SARI                 MAPHAR
+424    3172041003      JAKARTA UTARA           CILINCING                MARUNDA
+425    3174071001    JAKARTA SELATAN      KEBAYORAN BARU                MELAWAI
+426    3171061001      JAKARTA PUSAT             MENTENG                MENTENG
+427    3174021005    JAKARTA SELATAN          SETIA BUDI           MENTENG ATAS
+428    3174011003    JAKARTA SELATAN               TEBET          MENTENG DALAM
+429    3173081003      JAKARTA BARAT           KEMBANGAN         MERUYA SELATAN
+430    3173081002      JAKARTA BARAT           KEMBANGAN           MERUYA UTARA
+431    3175101004      JAKARTA TIMUR            CIPAYUNG                 MUNJUL
+432    3172051002      JAKARTA UTARA          PADEMANGAN       PADEMANGAN BARAT
+433    3172051001      JAKARTA UTARA          PADEMANGAN       PADEMANGAN TIMUR
+434    3175011004      JAKARTA TIMUR            MATRAMAN             PAL MERIAM
+435    3173071001      JAKARTA BARAT            PALMERAH               PALMERAH
+436    3174081001    JAKARTA SELATAN            PANCORAN               PANCORAN
+437    3172021003      JAKARTA UTARA       TANJUNG PRIOK               PAPANGGO
+438    3171021001      JAKARTA PUSAT         SAWAH BESAR             PASAR BARU
+439    3174021006    JAKARTA SELATAN          SETIA BUDI          PASAR MANGGIS
+440    3174041001    JAKARTA SELATAN        PASAR MINGGU           PASAR MINGGU
+441    3171041003      JAKARTA PUSAT               SENEN                PASEBAN
+442    3173061005      JAKARTA BARAT          KALI DERES             PEGADUNGAN
+443    3171061002      JAKARTA PUSAT             MENTENG             PEGANGSAAN
+444    3172061002      JAKARTA UTARA       KELAPA GADING         PEGANGSAAN DUA
+445    3172011004      JAKARTA UTARA         PENJARINGAN              PEJAGALAN
+446    3174041006    JAKARTA SELATAN        PASAR MINGGU          PEJATEN BARAT
+447    3174041005    JAKARTA SELATAN        PASAR MINGGU          PEJATEN TIMUR
+448    3175051005      JAKARTA TIMUR          PASAR REBO                PEKAYON
+449    3173041009      JAKARTA BARAT             TAMBORA                PEKOJAN
+450    3174031003    JAKARTA SELATAN    MAMPANG PRAPATAN           PELA MAMPANG
+451    3174081005    JAKARTA SELATAN            PANCORAN             PENGADEGAN
+452    3175061003      JAKARTA TIMUR              CAKUNG           PENGGILINGAN
+453    3172011001      JAKARTA UTARA         PENJARINGAN            PENJARINGAN
+454    3174101001    JAKARTA SELATAN        PESANGGRAHAN           PESANGGRAHAN
+455    3171071004      JAKARTA PUSAT         TANAH ABANG             PETAMBURAN
+456    3174071008    JAKARTA SELATAN      KEBAYORAN BARU              PETOGOGAN
+457    3171011004      JAKARTA PUSAT              GAMBIR         PETOJO SELATAN
+458    3171011003      JAKARTA PUSAT              GAMBIR           PETOJO UTARA
+459    3174101004    JAKARTA SELATAN        PESANGGRAHAN     PETUKANGAN SELATAN
+460    3174101003    JAKARTA SELATAN        PESANGGRAHAN       PETUKANGAN UTARA
+461    3175081002      JAKARTA TIMUR             MAKASAR           PINANG RANTI
+462    3173031008      JAKARTA BARAT          TAMAN SARI              PINANGSIA
+463    3175011001      JAKARTA TIMUR            MATRAMAN          PISANGAN BARU
+464    3175021002      JAKARTA TIMUR         PULO GADUNG         PISANGAN TIMUR
+465    3172011005      JAKARTA UTARA         PENJARINGAN                  PLUIT
+466    3175071002      JAKARTA TIMUR         DUREN SAWIT           PONDOK BAMBU
+467    3175071004      JAKARTA TIMUR         DUREN SAWIT          PONDOK KELAPA
+468    3175071007      JAKARTA TIMUR         DUREN SAWIT            PONDOK KOPI
+469    3174061003    JAKARTA SELATAN            CILANDAK            PONDOK LABU
+470    3174051002    JAKARTA SELATAN      KEBAYORAN LAMA          PONDOK PINANG
+471    3175101003      JAKARTA TIMUR            CIPAYUNG         PONDOK RANGGON
+472    3101011003 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA          PULAU HARAPAN
+473    3101011002 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA           PULAU KELAPA
+474    3101011001 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA         PULAU PANGGANG
+475    3101021003 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN             PULAU PARI
+476    3101021002 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN           PULAU TIDUNG
+477    3101021001 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN      PULAU UNTUNG JAWA
+478    3174071007    JAKARTA SELATAN      KEBAYORAN BARU                   PULO
+479    3175021001      JAKARTA TIMUR         PULO GADUNG            PULO GADUNG
+480    3175061005      JAKARTA TIMUR              CAKUNG            PULO GEBANG
+481    3174041004    JAKARTA SELATAN        PASAR MINGGU                RAGUNAN
+482    3175091005      JAKARTA TIMUR             CIRACAS               RAMBUTAN
+483    3172031006      JAKARTA UTARA                KOJA     RAWA BADAK SELATAN
+484    3172031004      JAKARTA UTARA                KOJA       RAWA BADAK UTARA
+485    3174071005    JAKARTA SELATAN      KEBAYORAN BARU             RAWA BARAT
+486    3173011003      JAKARTA BARAT          CENGKARENG             RAWA BUAYA
+487    3175031004      JAKARTA TIMUR          JATINEGARA             RAWA BUNGA
+488    3174081003    JAKARTA SELATAN            PANCORAN              RAWA JATI
+489    3175061002      JAKARTA TIMUR              CAKUNG            RAWA TERATE
+490    3175021005      JAKARTA TIMUR         PULO GADUNG             RAWAMANGUN
+491    3171051003      JAKARTA PUSAT       CEMPAKA PUTIH               RAWASARI
+492    3173041010      JAKARTA BARAT             TAMBORA             ROA MALAKA
+493    3172041006      JAKARTA UTARA           CILINCING                ROROTAN
+494    3174071004    JAKARTA SELATAN      KEBAYORAN BARU                 SELONG
+495    3173061002      JAKARTA BARAT          KALI DERES                SEMANAN
+496    3172041007      JAKARTA UTARA           CILINCING           SEMPER BARAT
+497    3172041005      JAKARTA UTARA           CILINCING           SEMPER TIMUR
+498    3174071006    JAKARTA SELATAN      KEBAYORAN BARU                SENAYAN
+499    3171041001      JAKARTA PUSAT               SENEN                  SENEN
+500    3171031004      JAKARTA PUSAT           KEMAYORAN                SERDANG
+501    3174021001    JAKARTA SELATAN          SETIA BUDI             SETIA BUDI
+502    3175101005      JAKARTA TIMUR            CIPAYUNG                   SETU
+503    3173071002      JAKARTA BARAT            PALMERAH                  SLIPI
+504    3173081004      JAKARTA BARAT           KEMBANGAN              SRENGSENG
+505    3174091002    JAKARTA SELATAN           JAGAKARSA        SRENGSENG SAWAH
+506    3173051003      JAKARTA BARAT         KEBON JERUK       SUKABUMI SELATAN
+507    3173051002      JAKARTA BARAT         KEBON JERUK         SUKABUMI UTARA
+508    3172041002      JAKARTA UTARA           CILINCING               SUKAPURA
+509    3171031007      JAKARTA PUSAT           KEMAYORAN             SUMUR BATU
+510    3172021004      JAKARTA UTARA       TANJUNG PRIOK           SUNGAI BAMBU
+511    3172021006      JAKARTA UTARA       TANJUNG PRIOK           SUNTER AGUNG
+512    3172021002      JAKARTA UTARA       TANJUNG PRIOK            SUNTER JAYA
+513    3175091004      JAKARTA TIMUR             CIRACAS                SUSUKAN
+514    3173031001      JAKARTA BARAT          TAMAN SARI             TAMAN SARI
+515    3173041001      JAKARTA BARAT             TAMBORA                TAMBORA
+516    3173041004      JAKARTA BARAT             TAMBORA           TANAH SEREAL
+517    3171081004      JAKARTA PUSAT          JOHAR BARU           TANAH TINGGI
+518    3173031004      JAKARTA BARAT          TAMAN SARI                 TANGKI
+519    3174091005    JAKARTA SELATAN           JAGAKARSA          TANJUNG BARAT
+520    3173021005      JAKARTA BARAT   GROGOL PETAMBURAN  TANJUNG DUREN SELATAN
+521    3173021002      JAKARTA BARAT   GROGOL PETAMBURAN    TANJUNG DUREN UTARA
+522    3172021001      JAKARTA UTARA       TANJUNG PRIOK          TANJUNG PRIOK
+523    3174011002    JAKARTA SELATAN               TEBET            TEBET BARAT
+524    3174011001    JAKARTA SELATAN               TEBET            TEBET TIMUR
+525    3173061003      JAKARTA BARAT          KALI DERES             TEGAL ALUR
+526    3174031004    JAKARTA SELATAN    MAMPANG PRAPATAN           TEGAL PARANG
+527    3173021003      JAKARTA BARAT   GROGOL PETAMBURAN                 TOMANG
+528    3172031005      JAKARTA UTARA                KOJA           TUGU SELATAN
+529    3172031002      JAKARTA UTARA                KOJA             TUGU UTARA
+530    3175061006      JAKARTA TIMUR              CAKUNG          UJUNG MENTENG
+531    3174101005    JAKARTA SELATAN        PESANGGRAHAN                ULUJAMI
+532    3175011006      JAKARTA TIMUR            MATRAMAN      UTAN KAYU SELATAN
+533    3175011002      JAKARTA TIMUR            MATRAMAN        UTAN KAYU UTARA
+534    3171031008      JAKARTA PUSAT           KEMAYORAN           UTAN PANJANG
+535    3172021007      JAKARTA UTARA       TANJUNG PRIOK                WARAKAS
+536    3173021007      JAKARTA BARAT   GROGOL PETAMBURAN          WIJAYA KUSUMA
+537          &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+805          &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+1073         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+1341         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+1342   3172051003      JAKARTA UTARA          PADEMANGAN                  ANCOL
+1343   3173041007      JAKARTA BARAT             TAMBORA                  ANGKE
+1344   3175041005      JAKARTA TIMUR         KRAMAT JATI           BALE KAMBANG
+1345   3175031003      JAKARTA TIMUR          JATINEGARA            BALI MESTER
+1346   3175101006      JAKARTA TIMUR            CIPAYUNG             BAMBU APUS
+1347   3174031002    JAKARTA SELATAN    MAMPANG PRAPATAN                 BANGKA
+1348   3175051002      JAKARTA TIMUR          PASAR REBO                   BARU
+1349   3175041004      JAKARTA TIMUR         KRAMAT JATI             BATU AMPAR
+1350   3171071002      JAKARTA PUSAT         TANAH ABANG        BENDUNGAN HILIR
+1351   3175031002      JAKARTA TIMUR          JATINEGARA            BIDARA CINA
+1352   3174101002    JAKARTA SELATAN        PESANGGRAHAN                BINTARO
+1353   3174011005    JAKARTA SELATAN               TEBET             BUKIT DURI
+1354   3171041006      JAKARTA PUSAT               SENEN                 BUNGUR
+1355   3175061007      JAKARTA TIMUR              CAKUNG           CAKUNG BARAT
+1356   3175061004      JAKARTA TIMUR              CAKUNG           CAKUNG TIMUR
+1357   3175041007      JAKARTA TIMUR         KRAMAT JATI                 CAWANG
+1358   3175101008      JAKARTA TIMUR            CIPAYUNG                  CEGER
+1359   3171031006      JAKARTA PUSAT           KEMAYORAN           CEMPAKA BARU
+1360   3171051002      JAKARTA PUSAT       CEMPAKA PUTIH    CEMPAKA PUTIH BARAT
+1361   3171051001      JAKARTA PUSAT       CEMPAKA PUTIH    CEMPAKA PUTIH TIMUR
+1362   3173011001      JAKARTA BARAT          CENGKARENG       CENGKARENG BARAT
+1363   3173011006      JAKARTA BARAT          CENGKARENG       CENGKARENG TIMUR
+1364   3175091002      JAKARTA TIMUR             CIRACAS                CIBUBUR
+1365   3171011002      JAKARTA PUSAT              GAMBIR                 CIDENG
+1366   3174091003    JAKARTA SELATAN           JAGAKARSA               CIGANJUR
+1367   3175051003      JAKARTA TIMUR          PASAR REBO              CIJANTUNG
+1368   3171061003      JAKARTA PUSAT             MENTENG                 CIKINI
+1369   3174081006    JAKARTA SELATAN            PANCORAN                 CIKOKO
+1370   3174061001    JAKARTA SELATAN            CILANDAK         CILANDAK BARAT
+1371   3174041003    JAKARTA SELATAN        PASAR MINGGU         CILANDAK TIMUR
+1372   3175101002      JAKARTA TIMUR            CIPAYUNG              CILANGKAP
+1373   3175041006      JAKARTA TIMUR         KRAMAT JATI              CILILITAN
+1374   3172041001      JAKARTA UTARA           CILINCING              CILINCING
+1375   3175101001      JAKARTA TIMUR            CIPAYUNG               CIPAYUNG
+1376   3174091006    JAKARTA SELATAN           JAGAKARSA                CIPEDAK
+1377   3174061005    JAKARTA SELATAN            CILANDAK         CIPETE SELATAN
+1378   3174071010    JAKARTA SELATAN      KEBAYORAN BARU           CIPETE UTARA
+1379   3175021003      JAKARTA TIMUR         PULO GADUNG               CIPINANG
+1380   3175031007      JAKARTA TIMUR          JATINEGARA CIPINANG BESAR SELATAN
+1381   3175031008      JAKARTA TIMUR          JATINEGARA   CIPINANG BESAR UTARA
+1382   3175031005      JAKARTA TIMUR          JATINEGARA      CIPINANG CEMPEDAK
+1383   3175081005      JAKARTA TIMUR             MAKASAR        CIPINANG MELAYU
+1384   3175031006      JAKARTA TIMUR          JATINEGARA         CIPINANG MUARA
+1385   3174051003    JAKARTA SELATAN      KEBAYORAN LAMA                CIPULIR
+1386   3175091001      JAKARTA TIMUR             CIRACAS                CIRACAS
+1387   3175041003      JAKARTA TIMUR         KRAMAT JATI                  DUKUH
+1388   3175071001      JAKARTA TIMUR         DUREN SAWIT            DUREN SAWIT
+1389   3174081004    JAKARTA SELATAN            PANCORAN             DUREN TIGA
+1390   3173051005      JAKARTA BARAT         KEBON JERUK              DURI KEPA
+1391   3173011002      JAKARTA BARAT          CENGKARENG           DURI KOSAMBI
+1392   3171011006      JAKARTA PUSAT              GAMBIR              DURI PULO
+1393   3173041011      JAKARTA BARAT             TAMBORA           DURI SELATAN
+1394   3173041003      JAKARTA BARAT             TAMBORA             DURI UTARA
+1395   3171081003      JAKARTA PUSAT          JOHAR BARU                  GALUR
+1396   3171011001      JAKARTA PUSAT              GAMBIR                 GAMBIR
+1397   3174061004    JAKARTA SELATAN            CILANDAK       GANDARIA SELATAN
+1398   3174071009    JAKARTA SELATAN      KEBAYORAN BARU         GANDARIA UTARA
+1399   3175051001      JAKARTA TIMUR          PASAR REBO                 GEDONG
+1400   3171071001      JAKARTA PUSAT         TANAH ABANG                 GELORA
+1401   3173031007      JAKARTA BARAT          TAMAN SARI                 GLODOK
+1402   3171061004      JAKARTA PUSAT             MENTENG             GONDANGDIA
+1403   3173021001      JAKARTA BARAT   GROGOL PETAMBURAN                 GROGOL
+1404   3174051005    JAKARTA SELATAN      KEBAYORAN LAMA         GROGOL SELATAN
+1405   3174051004    JAKARTA SELATAN      KEBAYORAN LAMA           GROGOL UTARA
+1406   3174021007    JAKARTA SELATAN          SETIA BUDI                 GUNTUR
+1407   3174071002    JAKARTA SELATAN      KEBAYORAN BARU                 GUNUNG
+1408   3171031005      JAKARTA PUSAT           KEMAYORAN  GUNUNG SAHARI SELATAN
+1409   3171021004      JAKARTA PUSAT         SAWAH BESAR    GUNUNG SAHARI UTARA
+1410   3175081004      JAKARTA TIMUR             MAKASAR  HALIM PERDANA KUSUMAH
+1411   3171031003      JAKARTA PUSAT           KEMAYORAN          HARAPAN MULIA
+1412   3174091001    JAKARTA SELATAN           JAGAKARSA              JAGAKARSA
+1413   3175021007      JAKARTA TIMUR         PULO GADUNG                   JATI
+1414   3174041002    JAKARTA SELATAN        PASAR MINGGU            JATI PADANG
+1415   3173071004      JAKARTA BARAT            PALMERAH              JATI PULO
+1416   3175061001      JAKARTA TIMUR              CAKUNG             JATINEGARA
+1417   3175021004      JAKARTA TIMUR         PULO GADUNG        JATINEGARA KAUM
+1418   3173021004      JAKARTA BARAT   GROGOL PETAMBURAN               JELAMBAR
+1419   3173021006      JAKARTA BARAT   GROGOL PETAMBURAN          JELAMBAR BARU
+1420   3173041006      JAKARTA BARAT             TAMBORA          JEMBATAN BESI
+1421   3173041008      JAKARTA BARAT             TAMBORA          JEMBATAN LIMA
+1422   3173081005      JAKARTA BARAT           KEMBANGAN                  JOGLO
+1423   3171081001      JAKARTA PUSAT          JOHAR BARU             JOHAR BARU
+1424   3173041002      JAKARTA BARAT             TAMBORA             KALI ANYAR
+1425   3172041004      JAKARTA UTARA           CILINCING               KALIBARU
+1426   3174081002    JAKARTA SELATAN            PANCORAN               KALIBATA
+1427   3173061001      JAKARTA BARAT          KALI DERES              KALIDERES
+1428   3175051004      JAKARTA TIMUR          PASAR REBO               KALISARI
+1429   3173061004      JAKARTA BARAT          KALI DERES                  KAMAL
+1430   3172011002      JAKARTA UTARA         PENJARINGAN            KAMAL MUARA
+1431   3171071007      JAKARTA PUSAT         TANAH ABANG           KAMPUNG BALI
+1432   3175031001      JAKARTA TIMUR          JATINEGARA         KAMPUNG MELAYU
+1433   3171081002      JAKARTA PUSAT          JOHAR BARU           KAMPUNG RAWA
+1434   3175041002      JAKARTA TIMUR         KRAMAT JATI         KAMPUNG TENGAH
+1435   3173011005      JAKARTA BARAT          CENGKARENG                  KAPUK
+1436   3172011003      JAKARTA UTARA         PENJARINGAN            KAPUK MUARA
+1437   3171021002      JAKARTA PUSAT         SAWAH BESAR           KARANG ANYAR
+1438   3174021004    JAKARTA SELATAN          SETIA BUDI                  KARET
+1439   3174021003    JAKARTA SELATAN          SETIA BUDI         KARET KUNINGAN
+1440   3174021002    JAKARTA SELATAN          SETIA BUDI         KARET SEMANGGI
+1441   3171071003      JAKARTA PUSAT         TANAH ABANG          KARET TENGSIN
+1442   3171021003      JAKARTA PUSAT         SAWAH BESAR                KARTINI
+1443   3175011003      JAKARTA TIMUR            MATRAMAN             KAYU MANIS
+1444   3175021006      JAKARTA TIMUR         PULO GADUNG             KAYU PUTIH
+1445   3173031006      JAKARTA BARAT          TAMAN SARI              KEAGUNGAN
+1446   3174041007    JAKARTA SELATAN        PASAR MINGGU              KEBAGUSAN
+1447   3174051006    JAKARTA SELATAN      KEBAYORAN LAMA KEBAYORAN LAMA SELATAN
+1448   3174051001    JAKARTA SELATAN      KEBAYORAN LAMA   KEBAYORAN LAMA UTARA
+1449   3174011004    JAKARTA SELATAN               TEBET             KEBON BARU
+1450   3172021005      JAKARTA UTARA       TANJUNG PRIOK           KEBON BAWANG
+1451   3173051001      JAKARTA BARAT         KEBON JERUK            KEBON JERUK
+1452   3171071006      JAKARTA PUSAT         TANAH ABANG           KEBON KACANG
+1453   3171011005      JAKARTA PUSAT              GAMBIR           KEBON KELAPA
+1454   3171031002      JAKARTA PUSAT           KEMAYORAN           KEBON KOSONG
+1455   3175011005      JAKARTA TIMUR            MATRAMAN          KEBON MANGGIS
+1456   3171071005      JAKARTA PUSAT         TANAH ABANG           KEBON MELATI
+1457   3175081003      JAKARTA TIMUR             MAKASAR             KEBON PALA
+1458   3171061005      JAKARTA PUSAT             MENTENG            KEBON SIRIH
+1459   3173011004      JAKARTA BARAT          CENGKARENG     KEDAUNG KALI ANGKE
+1460   3173051007      JAKARTA BARAT         KEBON JERUK         KEDOYA SELATAN
+1461   3173051006      JAKARTA BARAT         KEBON JERUK           KEDOYA UTARA
+1462   3173051004      JAKARTA BARAT         KEBON JERUK             KELAPA DUA
+1463   3175091003      JAKARTA TIMUR             CIRACAS       KELAPA DUA WETAN
+1464   3172061003      JAKARTA UTARA       KELAPA GADING    KELAPA GADING BARAT
+1465   3172061001      JAKARTA UTARA       KELAPA GADING    KELAPA GADING TIMUR
+1466   3173071005      JAKARTA BARAT            PALMERAH            KEMANGGISAN
+1467   3171031001      JAKARTA PUSAT           KEMAYORAN              KEMAYORAN
+1468   3173081006      JAKARTA BARAT           KEMBANGAN      KEMBANGAN SELATAN
+1469   3173081001      JAKARTA BARAT           KEMBANGAN        KEMBANGAN UTARA
+1470   3171041002      JAKARTA PUSAT               SENEN                 KENARI
+1471   3173041005      JAKARTA BARAT             TAMBORA              KERENDANG
+1472   3175071003      JAKARTA TIMUR         DUREN SAWIT                KLENDER
+1473   3172031001      JAKARTA UTARA                KOJA                   KOJA
+1474   3173071006      JAKARTA BARAT            PALMERAH     KOTA BAMBU SELATAN
+1475   3173071003      JAKARTA BARAT            PALMERAH       KOTA BAMBU UTARA
+1476   3171041004      JAKARTA PUSAT               SENEN                 KRAMAT
+1477   3175041001      JAKARTA TIMUR         KRAMAT JATI            KRAMAT JATI
+1478   3174071003    JAKARTA SELATAN      KEBAYORAN BARU            KRAMAT PELA
+1479   3173031002      JAKARTA BARAT          TAMAN SARI                 KRUKUT
+1480   3174031005    JAKARTA SELATAN    MAMPANG PRAPATAN         KUNINGAN BARAT
+1481   3174021008    JAKARTA SELATAN          SETIA BUDI         KUNINGAN TIMUR
+1482   3171041005      JAKARTA PUSAT               SENEN                KWITANG
+1483   3172031003      JAKARTA UTARA                KOJA                  LAGOA
+1484   3174061002    JAKARTA SELATAN            CILANDAK            LEBAK BULUS
+1485   3174091004    JAKARTA SELATAN           JAGAKARSA          LENTENG AGUNG
+1486   3175101007      JAKARTA TIMUR            CIPAYUNG           LUBANG BUAYA
+1487   3175081001      JAKARTA TIMUR             MAKASAR                MAKASAR
+1488   3175071006      JAKARTA TIMUR         DUREN SAWIT            MALAKA JAYA
+1489   3175071005      JAKARTA TIMUR         DUREN SAWIT            MALAKA SARI
+1490   3174031001    JAKARTA SELATAN    MAMPANG PRAPATAN       MAMPANG PRAPATAN
+1491   3173031005      JAKARTA BARAT          TAMAN SARI           MANGGA BESAR
+1492   3171021005      JAKARTA PUSAT         SAWAH BESAR     MANGGA DUA SELATAN
+1493   3174011007    JAKARTA SELATAN               TEBET              MANGGARAI
+1494   3174011006    JAKARTA SELATAN               TEBET      MANGGARAI SELATAN
+1495   3173031003      JAKARTA BARAT          TAMAN SARI                 MAPHAR
+1496   3172041003      JAKARTA UTARA           CILINCING                MARUNDA
+1497   3174071001    JAKARTA SELATAN      KEBAYORAN BARU                MELAWAI
+1498   3171061001      JAKARTA PUSAT             MENTENG                MENTENG
+1499   3174021005    JAKARTA SELATAN          SETIA BUDI           MENTENG ATAS
+1500   3174011003    JAKARTA SELATAN               TEBET          MENTENG DALAM
+1501   3173081003      JAKARTA BARAT           KEMBANGAN         MERUYA SELATAN
+1502   3173081002      JAKARTA BARAT           KEMBANGAN           MERUYA UTARA
+1503   3175101004      JAKARTA TIMUR            CIPAYUNG                 MUNJUL
+1504   3172051002      JAKARTA UTARA          PADEMANGAN       PADEMANGAN BARAT
+1505   3172051001      JAKARTA UTARA          PADEMANGAN       PADEMANGAN TIMUR
+1506   3175011004      JAKARTA TIMUR            MATRAMAN             PAL MERIAM
+1507   3173071001      JAKARTA BARAT            PALMERAH               PALMERAH
+1508   3174081001    JAKARTA SELATAN            PANCORAN               PANCORAN
+1509   3172021003      JAKARTA UTARA       TANJUNG PRIOK               PAPANGGO
+1510   3171021001      JAKARTA PUSAT         SAWAH BESAR             PASAR BARU
+1511   3174021006    JAKARTA SELATAN          SETIA BUDI          PASAR MANGGIS
+1512   3174041001    JAKARTA SELATAN        PASAR MINGGU           PASAR MINGGU
+1513   3171041003      JAKARTA PUSAT               SENEN                PASEBAN
+1514   3173061005      JAKARTA BARAT          KALI DERES             PEGADUNGAN
+1515   3171061002      JAKARTA PUSAT             MENTENG             PEGANGSAAN
+1516   3172061002      JAKARTA UTARA       KELAPA GADING         PEGANGSAAN DUA
+1517   3172011004      JAKARTA UTARA         PENJARINGAN              PEJAGALAN
+1518   3174041006    JAKARTA SELATAN        PASAR MINGGU          PEJATEN BARAT
+1519   3174041005    JAKARTA SELATAN        PASAR MINGGU          PEJATEN TIMUR
+1520   3175051005      JAKARTA TIMUR          PASAR REBO                PEKAYON
+1521   3173041009      JAKARTA BARAT             TAMBORA                PEKOJAN
+1522   3174031003    JAKARTA SELATAN    MAMPANG PRAPATAN           PELA MAMPANG
+1523   3174081005    JAKARTA SELATAN            PANCORAN             PENGADEGAN
+1524   3175061003      JAKARTA TIMUR              CAKUNG           PENGGILINGAN
+1525   3172011001      JAKARTA UTARA         PENJARINGAN            PENJARINGAN
+1526   3174101001    JAKARTA SELATAN        PESANGGRAHAN           PESANGGRAHAN
+1527   3171071004      JAKARTA PUSAT         TANAH ABANG             PETAMBURAN
+1528   3174071008    JAKARTA SELATAN      KEBAYORAN BARU              PETOGOGAN
+1529   3171011004      JAKARTA PUSAT              GAMBIR         PETOJO SELATAN
+1530   3171011003      JAKARTA PUSAT              GAMBIR           PETOJO UTARA
+1531   3174101004    JAKARTA SELATAN        PESANGGRAHAN     PETUKANGAN SELATAN
+1532   3174101003    JAKARTA SELATAN        PESANGGRAHAN       PETUKANGAN UTARA
+1533   3175081002      JAKARTA TIMUR             MAKASAR           PINANG RANTI
+1534   3173031008      JAKARTA BARAT          TAMAN SARI              PINANGSIA
+1535   3175011001      JAKARTA TIMUR            MATRAMAN          PISANGAN BARU
+1536   3175021002      JAKARTA TIMUR         PULO GADUNG         PISANGAN TIMUR
+1537   3172011005      JAKARTA UTARA         PENJARINGAN                  PLUIT
+1538   3175071002      JAKARTA TIMUR         DUREN SAWIT           PONDOK BAMBU
+1539   3175071004      JAKARTA TIMUR         DUREN SAWIT          PONDOK KELAPA
+1540   3175071007      JAKARTA TIMUR         DUREN SAWIT            PONDOK KOPI
+1541   3174061003    JAKARTA SELATAN            CILANDAK            PONDOK LABU
+1542   3174051002    JAKARTA SELATAN      KEBAYORAN LAMA          PONDOK PINANG
+1543   3175101003      JAKARTA TIMUR            CIPAYUNG         PONDOK RANGGON
+1544   3101011003 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA          PULAU HARAPAN
+1545   3101011002 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA           PULAU KELAPA
+1546   3101011001 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA         PULAU PANGGANG
+1547   3101021003 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN             PULAU PARI
+1548   3101021002 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN           PULAU TIDUNG
+1549   3101021001 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN      PULAU UNTUNG JAWA
+1550   3174071007    JAKARTA SELATAN      KEBAYORAN BARU                   PULO
+1551   3175021001      JAKARTA TIMUR         PULO GADUNG            PULO GADUNG
+1609         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+1877         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+2145         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+2413         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+2458   3175091001      JAKARTA TIMUR             CIRACAS                CIRACAS
+2459   3175041003      JAKARTA TIMUR         KRAMAT JATI                  DUKUH
+2460   3175071001      JAKARTA TIMUR         DUREN SAWIT            DUREN SAWIT
+2461   3174081004    JAKARTA SELATAN            PANCORAN             DUREN TIGA
+2462   3173051005      JAKARTA BARAT         KEBON JERUK              DURI KEPA
+2463   3173011002      JAKARTA BARAT          CENGKARENG           DURI KOSAMBI
+2464   3171011006      JAKARTA PUSAT              GAMBIR              DURI PULO
+2465   3173041011      JAKARTA BARAT             TAMBORA           DURI SELATAN
+2466   3173041003      JAKARTA BARAT             TAMBORA             DURI UTARA
+2467   3171081003      JAKARTA PUSAT          JOHAR BARU                  GALUR
+2468   3171011001      JAKARTA PUSAT              GAMBIR                 GAMBIR
+2469   3174061004    JAKARTA SELATAN            CILANDAK       GANDARIA SELATAN
+2470   3174071009    JAKARTA SELATAN      KEBAYORAN BARU         GANDARIA UTARA
+2471   3175051001      JAKARTA TIMUR          PASAR REBO                 GEDONG
+2472   3171071001      JAKARTA PUSAT         TANAH ABANG                 GELORA
+2473   3173031007      JAKARTA BARAT          TAMAN SARI                 GLODOK
+2474   3171061004      JAKARTA PUSAT             MENTENG             GONDANGDIA
+2475   3173021001      JAKARTA BARAT   GROGOL PETAMBURAN                 GROGOL
+2476   3174051005    JAKARTA SELATAN      KEBAYORAN LAMA         GROGOL SELATAN
+2477   3174051004    JAKARTA SELATAN      KEBAYORAN LAMA           GROGOL UTARA
+2478   3174021007    JAKARTA SELATAN          SETIA BUDI                 GUNTUR
+2479   3174071002    JAKARTA SELATAN      KEBAYORAN BARU                 GUNUNG
+2480   3171031005      JAKARTA PUSAT           KEMAYORAN  GUNUNG SAHARI SELATAN
+2481   3171021004      JAKARTA PUSAT         SAWAH BESAR    GUNUNG SAHARI UTARA
+2482   3175081004      JAKARTA TIMUR             MAKASAR  HALIM PERDANA KUSUMAH
+2483   3171031003      JAKARTA PUSAT           KEMAYORAN          HARAPAN MULIA
+2484   3174091001    JAKARTA SELATAN           JAGAKARSA              JAGAKARSA
+2485   3175021007      JAKARTA TIMUR         PULO GADUNG                   JATI
+2486   3174041002    JAKARTA SELATAN        PASAR MINGGU            JATI PADANG
+2487   3173071004      JAKARTA BARAT            PALMERAH              JATI PULO
+2488   3175061001      JAKARTA TIMUR              CAKUNG             JATINEGARA
+2489   3175021004      JAKARTA TIMUR         PULO GADUNG        JATINEGARA KAUM
+2490   3173021004      JAKARTA BARAT   GROGOL PETAMBURAN               JELAMBAR
+2491   3173021006      JAKARTA BARAT   GROGOL PETAMBURAN          JELAMBAR BARU
+2492   3173041006      JAKARTA BARAT             TAMBORA          JEMBATAN BESI
+2493   3173041008      JAKARTA BARAT             TAMBORA          JEMBATAN LIMA
+2494   3173081005      JAKARTA BARAT           KEMBANGAN                  JOGLO
+2495   3171081001      JAKARTA PUSAT          JOHAR BARU             JOHAR BARU
+2496   3173041002      JAKARTA BARAT             TAMBORA             KALI ANYAR
+2497   3172041004      JAKARTA UTARA           CILINCING               KALIBARU
+2498   3174081002    JAKARTA SELATAN            PANCORAN               KALIBATA
+2499   3173061001      JAKARTA BARAT          KALI DERES              KALIDERES
+2500   3175051004      JAKARTA TIMUR          PASAR REBO               KALISARI
+2501   3173061004      JAKARTA BARAT          KALI DERES                  KAMAL
+2502   3172011002      JAKARTA UTARA         PENJARINGAN            KAMAL MUARA
+2503   3171071007      JAKARTA PUSAT         TANAH ABANG           KAMPUNG BALI
+2504   3175031001      JAKARTA TIMUR          JATINEGARA         KAMPUNG MELAYU
+2505   3171081002      JAKARTA PUSAT          JOHAR BARU           KAMPUNG RAWA
+2506   3175041002      JAKARTA TIMUR         KRAMAT JATI         KAMPUNG TENGAH
+2507   3173011005      JAKARTA BARAT          CENGKARENG                  KAPUK
+2508   3172011003      JAKARTA UTARA         PENJARINGAN            KAPUK MUARA
+2509   3171021002      JAKARTA PUSAT         SAWAH BESAR           KARANG ANYAR
+2510   3174021004    JAKARTA SELATAN          SETIA BUDI                  KARET
+2511   3174021003    JAKARTA SELATAN          SETIA BUDI         KARET KUNINGAN
+2512   3174021002    JAKARTA SELATAN          SETIA BUDI         KARET SEMANGGI
+2513   3171071003      JAKARTA PUSAT         TANAH ABANG          KARET TENGSIN
+2514   3171021003      JAKARTA PUSAT         SAWAH BESAR                KARTINI
+2515   3175011003      JAKARTA TIMUR            MATRAMAN             KAYU MANIS
+2516   3175021006      JAKARTA TIMUR         PULO GADUNG             KAYU PUTIH
+2517   3173031006      JAKARTA BARAT          TAMAN SARI              KEAGUNGAN
+2518   3174041007    JAKARTA SELATAN        PASAR MINGGU              KEBAGUSAN
+2519   3174051006    JAKARTA SELATAN      KEBAYORAN LAMA KEBAYORAN LAMA SELATAN
+2520   3174051001    JAKARTA SELATAN      KEBAYORAN LAMA   KEBAYORAN LAMA UTARA
+2521   3174011004    JAKARTA SELATAN               TEBET             KEBON BARU
+2522   3172021005      JAKARTA UTARA       TANJUNG PRIOK           KEBON BAWANG
+2523   3173051001      JAKARTA BARAT         KEBON JERUK            KEBON JERUK
+2524   3171071006      JAKARTA PUSAT         TANAH ABANG           KEBON KACANG
+2525   3171011005      JAKARTA PUSAT              GAMBIR           KEBON KELAPA
+2526   3171031002      JAKARTA PUSAT           KEMAYORAN           KEBON KOSONG
+2527   3175011005      JAKARTA TIMUR            MATRAMAN          KEBON MANGGIS
+2528   3171071005      JAKARTA PUSAT         TANAH ABANG           KEBON MELATI
+2529   3175081003      JAKARTA TIMUR             MAKASAR             KEBON PALA
+2530   3171061005      JAKARTA PUSAT             MENTENG            KEBON SIRIH
+2531   3173011004      JAKARTA BARAT          CENGKARENG     KEDAUNG KALI ANGKE
+2532   3173051007      JAKARTA BARAT         KEBON JERUK         KEDOYA SELATAN
+2533   3173051006      JAKARTA BARAT         KEBON JERUK           KEDOYA UTARA
+2534   3173051004      JAKARTA BARAT         KEBON JERUK             KELAPA DUA
+2535   3175091003      JAKARTA TIMUR             CIRACAS       KELAPA DUA WETAN
+2536   3172061003      JAKARTA UTARA       KELAPA GADING    KELAPA GADING BARAT
+2537   3172061001      JAKARTA UTARA       KELAPA GADING    KELAPA GADING TIMUR
+2538   3173071005      JAKARTA BARAT            PALMERAH            KEMANGGISAN
+2539   3171031001      JAKARTA PUSAT           KEMAYORAN              KEMAYORAN
+2540   3173081006      JAKARTA BARAT           KEMBANGAN      KEMBANGAN SELATAN
+2541   3173081001      JAKARTA BARAT           KEMBANGAN        KEMBANGAN UTARA
+2542   3171041002      JAKARTA PUSAT               SENEN                 KENARI
+2543   3173041005      JAKARTA BARAT             TAMBORA              KERENDANG
+2544   3175071003      JAKARTA TIMUR         DUREN SAWIT                KLENDER
+2545   3172031001      JAKARTA UTARA                KOJA                   KOJA
+2546   3173071006      JAKARTA BARAT            PALMERAH     KOTA BAMBU SELATAN
+2547   3173071003      JAKARTA BARAT            PALMERAH       KOTA BAMBU UTARA
+2548   3171041004      JAKARTA PUSAT               SENEN                 KRAMAT
+2549   3175041001      JAKARTA TIMUR         KRAMAT JATI            KRAMAT JATI
+2550   3174071003    JAKARTA SELATAN      KEBAYORAN BARU            KRAMAT PELA
+2551   3173031002      JAKARTA BARAT          TAMAN SARI                 KRUKUT
+2552   3174031005    JAKARTA SELATAN    MAMPANG PRAPATAN         KUNINGAN BARAT
+2553   3174021008    JAKARTA SELATAN          SETIA BUDI         KUNINGAN TIMUR
+2554   3171041005      JAKARTA PUSAT               SENEN                KWITANG
+2555   3172031003      JAKARTA UTARA                KOJA                  LAGOA
+2556   3174061002    JAKARTA SELATAN            CILANDAK            LEBAK BULUS
+2557   3174091004    JAKARTA SELATAN           JAGAKARSA          LENTENG AGUNG
+2558   3175101007      JAKARTA TIMUR            CIPAYUNG           LUBANG BUAYA
+2559   3175081001      JAKARTA TIMUR             MAKASAR                MAKASAR
+2560   3175071006      JAKARTA TIMUR         DUREN SAWIT            MALAKA JAYA
+2561   3175071005      JAKARTA TIMUR         DUREN SAWIT            MALAKA SARI
+2562   3174031001    JAKARTA SELATAN    MAMPANG PRAPATAN       MAMPANG PRAPATAN
+2563   3173031005      JAKARTA BARAT          TAMAN SARI           MANGGA BESAR
+2564   3171021005      JAKARTA PUSAT         SAWAH BESAR     MANGGA DUA SELATAN
+2565   3174011007    JAKARTA SELATAN               TEBET              MANGGARAI
+2566   3174011006    JAKARTA SELATAN               TEBET      MANGGARAI SELATAN
+2567   3173031003      JAKARTA BARAT          TAMAN SARI                 MAPHAR
+2568   3172041003      JAKARTA UTARA           CILINCING                MARUNDA
+2569   3174071001    JAKARTA SELATAN      KEBAYORAN BARU                MELAWAI
+2570   3171061001      JAKARTA PUSAT             MENTENG                MENTENG
+2571   3174021005    JAKARTA SELATAN          SETIA BUDI           MENTENG ATAS
+2572   3174011003    JAKARTA SELATAN               TEBET          MENTENG DALAM
+2573   3173081003      JAKARTA BARAT           KEMBANGAN         MERUYA SELATAN
+2574   3173081002      JAKARTA BARAT           KEMBANGAN           MERUYA UTARA
+2575   3175101004      JAKARTA TIMUR            CIPAYUNG                 MUNJUL
+2576   3172051002      JAKARTA UTARA          PADEMANGAN       PADEMANGAN BARAT
+2577   3172051001      JAKARTA UTARA          PADEMANGAN       PADEMANGAN TIMUR
+2578   3175011004      JAKARTA TIMUR            MATRAMAN             PAL MERIAM
+2579   3173071001      JAKARTA BARAT            PALMERAH               PALMERAH
+2580   3174081001    JAKARTA SELATAN            PANCORAN               PANCORAN
+2581   3172021003      JAKARTA UTARA       TANJUNG PRIOK               PAPANGGO
+2582   3171021001      JAKARTA PUSAT         SAWAH BESAR             PASAR BARU
+2583   3174021006    JAKARTA SELATAN          SETIA BUDI          PASAR MANGGIS
+2584   3174041001    JAKARTA SELATAN        PASAR MINGGU           PASAR MINGGU
+2585   3171041003      JAKARTA PUSAT               SENEN                PASEBAN
+2586   3173061005      JAKARTA BARAT          KALI DERES             PEGADUNGAN
+2587   3171061002      JAKARTA PUSAT             MENTENG             PEGANGSAAN
+2588   3172061002      JAKARTA UTARA       KELAPA GADING         PEGANGSAAN DUA
+2589   3172011004      JAKARTA UTARA         PENJARINGAN              PEJAGALAN
+2590   3174041006    JAKARTA SELATAN        PASAR MINGGU          PEJATEN BARAT
+2591   3174041005    JAKARTA SELATAN        PASAR MINGGU          PEJATEN TIMUR
+2592   3175051005      JAKARTA TIMUR          PASAR REBO                PEKAYON
+2593   3173041009      JAKARTA BARAT             TAMBORA                PEKOJAN
+2594   3174031003    JAKARTA SELATAN    MAMPANG PRAPATAN           PELA MAMPANG
+2595   3174081005    JAKARTA SELATAN            PANCORAN             PENGADEGAN
+2596   3175061003      JAKARTA TIMUR              CAKUNG           PENGGILINGAN
+2597   3172011001      JAKARTA UTARA         PENJARINGAN            PENJARINGAN
+2598   3174101001    JAKARTA SELATAN        PESANGGRAHAN           PESANGGRAHAN
+2599   3171071004      JAKARTA PUSAT         TANAH ABANG             PETAMBURAN
+2600   3174071008    JAKARTA SELATAN      KEBAYORAN BARU              PETOGOGAN
+2601   3171011004      JAKARTA PUSAT              GAMBIR         PETOJO SELATAN
+2602   3171011003      JAKARTA PUSAT              GAMBIR           PETOJO UTARA
+2603   3174101004    JAKARTA SELATAN        PESANGGRAHAN     PETUKANGAN SELATAN
+2604   3174101003    JAKARTA SELATAN        PESANGGRAHAN       PETUKANGAN UTARA
+2605   3175081002      JAKARTA TIMUR             MAKASAR           PINANG RANTI
+2606   3173031008      JAKARTA BARAT          TAMAN SARI              PINANGSIA
+2607   3175011001      JAKARTA TIMUR            MATRAMAN          PISANGAN BARU
+2608   3175021002      JAKARTA TIMUR         PULO GADUNG         PISANGAN TIMUR
+2609   3172011005      JAKARTA UTARA         PENJARINGAN                  PLUIT
+2610   3175071002      JAKARTA TIMUR         DUREN SAWIT           PONDOK BAMBU
+2611   3175071004      JAKARTA TIMUR         DUREN SAWIT          PONDOK KELAPA
+2612   3175071007      JAKARTA TIMUR         DUREN SAWIT            PONDOK KOPI
+2613   3174061003    JAKARTA SELATAN            CILANDAK            PONDOK LABU
+2614   3174051002    JAKARTA SELATAN      KEBAYORAN LAMA          PONDOK PINANG
+2615   3175101003      JAKARTA TIMUR            CIPAYUNG         PONDOK RANGGON
+2616   3101011003 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA          PULAU HARAPAN
+2617   3101011002 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA           PULAU KELAPA
+2618   3101011001 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA         PULAU PANGGANG
+2619   3101021003 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN             PULAU PARI
+2620   3101021002 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN           PULAU TIDUNG
+2621   3101021001 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN      PULAU UNTUNG JAWA
+2622   3174071007    JAKARTA SELATAN      KEBAYORAN BARU                   PULO
+2623   3175021001      JAKARTA TIMUR         PULO GADUNG            PULO GADUNG
+2624   3175061005      JAKARTA TIMUR              CAKUNG            PULO GEBANG
+2625   3174041004    JAKARTA SELATAN        PASAR MINGGU                RAGUNAN
+2626   3175091005      JAKARTA TIMUR             CIRACAS               RAMBUTAN
+2627   3172031006      JAKARTA UTARA                KOJA     RAWA BADAK SELATAN
+2628   3172031004      JAKARTA UTARA                KOJA       RAWA BADAK UTARA
+2629   3174071005    JAKARTA SELATAN      KEBAYORAN BARU             RAWA BARAT
+2630   3173011003      JAKARTA BARAT          CENGKARENG             RAWA BUAYA
+2631   3175031004      JAKARTA TIMUR          JATINEGARA             RAWA BUNGA
+2632   3174081003    JAKARTA SELATAN            PANCORAN              RAWA JATI
+2633   3175061002      JAKARTA TIMUR              CAKUNG            RAWA TERATE
+2634   3175021005      JAKARTA TIMUR         PULO GADUNG             RAWAMANGUN
+2635   3171051003      JAKARTA PUSAT       CEMPAKA PUTIH               RAWASARI
+2636   3173041010      JAKARTA BARAT             TAMBORA             ROA MALAKA
+2637   3172041006      JAKARTA UTARA           CILINCING                ROROTAN
+2638   3174071004    JAKARTA SELATAN      KEBAYORAN BARU                 SELONG
+2639   3173061002      JAKARTA BARAT          KALI DERES                SEMANAN
+2640   3172041007      JAKARTA UTARA           CILINCING           SEMPER BARAT
+2641   3172041005      JAKARTA UTARA           CILINCING           SEMPER TIMUR
+2642   3174071006    JAKARTA SELATAN      KEBAYORAN BARU                SENAYAN
+2643   3171041001      JAKARTA PUSAT               SENEN                  SENEN
+2644   3171031004      JAKARTA PUSAT           KEMAYORAN                SERDANG
+2645   3174021001    JAKARTA SELATAN          SETIA BUDI             SETIA BUDI
+2646   3175101005      JAKARTA TIMUR            CIPAYUNG                   SETU
+2647   3173071002      JAKARTA BARAT            PALMERAH                  SLIPI
+2648   3173081004      JAKARTA BARAT           KEMBANGAN              SRENGSENG
+2649   3174091002    JAKARTA SELATAN           JAGAKARSA        SRENGSENG SAWAH
+2650   3173051003      JAKARTA BARAT         KEBON JERUK       SUKABUMI SELATAN
+2651   3173051002      JAKARTA BARAT         KEBON JERUK         SUKABUMI UTARA
+2652   3172041002      JAKARTA UTARA           CILINCING               SUKAPURA
+2653   3171031007      JAKARTA PUSAT           KEMAYORAN             SUMUR BATU
+2654   3172021004      JAKARTA UTARA       TANJUNG PRIOK           SUNGAI BAMBU
+2655   3172021006      JAKARTA UTARA       TANJUNG PRIOK           SUNTER AGUNG
+2656   3172021002      JAKARTA UTARA       TANJUNG PRIOK            SUNTER JAYA
+2657   3175091004      JAKARTA TIMUR             CIRACAS                SUSUKAN
+2658   3173031001      JAKARTA BARAT          TAMAN SARI             TAMAN SARI
+2659   3173041001      JAKARTA BARAT             TAMBORA                TAMBORA
+2660   3173041004      JAKARTA BARAT             TAMBORA           TANAH SEREAL
+2661   3171081004      JAKARTA PUSAT          JOHAR BARU           TANAH TINGGI
+2662   3173031004      JAKARTA BARAT          TAMAN SARI                 TANGKI
+2663   3174091005    JAKARTA SELATAN           JAGAKARSA          TANJUNG BARAT
+2664   3173021005      JAKARTA BARAT   GROGOL PETAMBURAN  TANJUNG DUREN SELATAN
+2665   3173021002      JAKARTA BARAT   GROGOL PETAMBURAN    TANJUNG DUREN UTARA
+2666   3172021001      JAKARTA UTARA       TANJUNG PRIOK          TANJUNG PRIOK
+2667   3174011002    JAKARTA SELATAN               TEBET            TEBET BARAT
+2668   3174011001    JAKARTA SELATAN               TEBET            TEBET TIMUR
+2669   3173061003      JAKARTA BARAT          KALI DERES             TEGAL ALUR
+2670   3174031004    JAKARTA SELATAN    MAMPANG PRAPATAN           TEGAL PARANG
+2671   3173021003      JAKARTA BARAT   GROGOL PETAMBURAN                 TOMANG
+2672   3172031005      JAKARTA UTARA                KOJA           TUGU SELATAN
+2673   3172031002      JAKARTA UTARA                KOJA             TUGU UTARA
+2674   3175061006      JAKARTA TIMUR              CAKUNG          UJUNG MENTENG
+2675   3174101005    JAKARTA SELATAN        PESANGGRAHAN                ULUJAMI
+2676   3175011006      JAKARTA TIMUR            MATRAMAN      UTAN KAYU SELATAN
+2677   3175011002      JAKARTA TIMUR            MATRAMAN        UTAN KAYU UTARA
+2678   3171031008      JAKARTA PUSAT           KEMAYORAN           UTAN PANJANG
+2679   3172021007      JAKARTA UTARA       TANJUNG PRIOK                WARAKAS
+2680   3173021007      JAKARTA BARAT   GROGOL PETAMBURAN          WIJAYA KUSUMA
+2681         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+2949         &lt;NA&gt;               &lt;NA&gt;                &lt;NA&gt;                  TOTAL
+2994   3175091001      JAKARTA TIMUR             CIRACAS                CIRACAS
+2995   3175041003      JAKARTA TIMUR         KRAMAT JATI                  DUKUH
+2996   3175071001      JAKARTA TIMUR         DUREN SAWIT            DUREN SAWIT
+2997   3174081004    JAKARTA SELATAN            PANCORAN             DUREN TIGA
+2998   3173051005      JAKARTA BARAT         KEBON JERUK              DURI KEPA
+2999   3173011002      JAKARTA BARAT          CENGKARENG           DURI KOSAMBI
+3000   3171011006      JAKARTA PUSAT              GAMBIR              DURI PULO
+3001   3173041011      JAKARTA BARAT             TAMBORA           DURI SELATAN
+3002   3173041003      JAKARTA BARAT             TAMBORA             DURI UTARA
+3003   3171081003      JAKARTA PUSAT          JOHAR BARU                  GALUR
+3004   3171011001      JAKARTA PUSAT              GAMBIR                 GAMBIR
+3005   3174061004    JAKARTA SELATAN            CILANDAK       GANDARIA SELATAN
+3006   3174071009    JAKARTA SELATAN      KEBAYORAN BARU         GANDARIA UTARA
+3007   3175051001      JAKARTA TIMUR          PASAR REBO                 GEDONG
+3008   3171071001      JAKARTA PUSAT         TANAH ABANG                 GELORA
+3009   3173031007      JAKARTA BARAT          TAMAN SARI                 GLODOK
+3010   3171061004      JAKARTA PUSAT             MENTENG             GONDANGDIA
+3011   3173021001      JAKARTA BARAT   GROGOL PETAMBURAN                 GROGOL
+3012   3174051005    JAKARTA SELATAN      KEBAYORAN LAMA         GROGOL SELATAN
+3013   3174051004    JAKARTA SELATAN      KEBAYORAN LAMA           GROGOL UTARA
+3014   3174021007    JAKARTA SELATAN          SETIA BUDI                 GUNTUR
+3015   3174071002    JAKARTA SELATAN      KEBAYORAN BARU                 GUNUNG
+3016   3171031005      JAKARTA PUSAT           KEMAYORAN  GUNUNG SAHARI SELATAN
+3017   3171021004      JAKARTA PUSAT         SAWAH BESAR    GUNUNG SAHARI UTARA
+3018   3175081004      JAKARTA TIMUR             MAKASAR  HALIM PERDANA KUSUMAH
+3019   3171031003      JAKARTA PUSAT           KEMAYORAN          HARAPAN MULIA
+3020   3174091001    JAKARTA SELATAN           JAGAKARSA              JAGAKARSA
+3021   3175021007      JAKARTA TIMUR         PULO GADUNG                   JATI
+3022   3174041002    JAKARTA SELATAN        PASAR MINGGU            JATI PADANG
+3023   3173071004      JAKARTA BARAT            PALMERAH              JATI PULO
+3024   3175061001      JAKARTA TIMUR              CAKUNG             JATINEGARA
+3025   3175021004      JAKARTA TIMUR         PULO GADUNG        JATINEGARA KAUM
+3026   3173021004      JAKARTA BARAT   GROGOL PETAMBURAN               JELAMBAR
+3027   3173021006      JAKARTA BARAT   GROGOL PETAMBURAN          JELAMBAR BARU
+3028   3173041006      JAKARTA BARAT             TAMBORA          JEMBATAN BESI
+3029   3173041008      JAKARTA BARAT             TAMBORA          JEMBATAN LIMA
+3030   3173081005      JAKARTA BARAT           KEMBANGAN                  JOGLO
+3031   3171081001      JAKARTA PUSAT          JOHAR BARU             JOHAR BARU
+3032   3173041002      JAKARTA BARAT             TAMBORA             KALI ANYAR
+3033   3172041004      JAKARTA UTARA           CILINCING               KALIBARU
+3034   3174081002    JAKARTA SELATAN            PANCORAN               KALIBATA
+3035   3173061001      JAKARTA BARAT          KALI DERES              KALIDERES
+3036   3175051004      JAKARTA TIMUR          PASAR REBO               KALISARI
+3037   3173061004      JAKARTA BARAT          KALI DERES                  KAMAL
+3038   3172011002      JAKARTA UTARA         PENJARINGAN            KAMAL MUARA
+3039   3171071007      JAKARTA PUSAT         TANAH ABANG           KAMPUNG BALI
+3040   3175031001      JAKARTA TIMUR          JATINEGARA         KAMPUNG MELAYU
+3041   3171081002      JAKARTA PUSAT          JOHAR BARU           KAMPUNG RAWA
+3042   3175041002      JAKARTA TIMUR         KRAMAT JATI         KAMPUNG TENGAH
+3043   3173011005      JAKARTA BARAT          CENGKARENG                  KAPUK
+3044   3172011003      JAKARTA UTARA         PENJARINGAN            KAPUK MUARA
+3045   3171021002      JAKARTA PUSAT         SAWAH BESAR           KARANG ANYAR
+3046   3174021004    JAKARTA SELATAN          SETIA BUDI                  KARET
+3047   3174021003    JAKARTA SELATAN          SETIA BUDI         KARET KUNINGAN
+3048   3174021002    JAKARTA SELATAN          SETIA BUDI         KARET SEMANGGI
+3049   3171071003      JAKARTA PUSAT         TANAH ABANG          KARET TENGSIN
+3050   3171021003      JAKARTA PUSAT         SAWAH BESAR                KARTINI
+3051   3175011003      JAKARTA TIMUR            MATRAMAN             KAYU MANIS
+3052   3175021006      JAKARTA TIMUR         PULO GADUNG             KAYU PUTIH
+3053   3173031006      JAKARTA BARAT          TAMAN SARI              KEAGUNGAN
+3054   3174041007    JAKARTA SELATAN        PASAR MINGGU              KEBAGUSAN
+3055   3174051006    JAKARTA SELATAN      KEBAYORAN LAMA KEBAYORAN LAMA SELATAN
+3056   3174051001    JAKARTA SELATAN      KEBAYORAN LAMA   KEBAYORAN LAMA UTARA
+3057   3174011004    JAKARTA SELATAN               TEBET             KEBON BARU
+3058   3172021005      JAKARTA UTARA       TANJUNG PRIOK           KEBON BAWANG
+3059   3173051001      JAKARTA BARAT         KEBON JERUK            KEBON JERUK
+3060   3171071006      JAKARTA PUSAT         TANAH ABANG           KEBON KACANG
+3061   3171011005      JAKARTA PUSAT              GAMBIR           KEBON KELAPA
+3062   3171031002      JAKARTA PUSAT           KEMAYORAN           KEBON KOSONG
+3063   3175011005      JAKARTA TIMUR            MATRAMAN          KEBON MANGGIS
+3064   3171071005      JAKARTA PUSAT         TANAH ABANG           KEBON MELATI
+3065   3175081003      JAKARTA TIMUR             MAKASAR             KEBON PALA
+3066   3171061005      JAKARTA PUSAT             MENTENG            KEBON SIRIH
+3067   3173011004      JAKARTA BARAT          CENGKARENG     KEDAUNG KALI ANGKE
+3068   3173051007      JAKARTA BARAT         KEBON JERUK         KEDOYA SELATAN
+3069   3173051006      JAKARTA BARAT         KEBON JERUK           KEDOYA UTARA
+3070   3173051004      JAKARTA BARAT         KEBON JERUK             KELAPA DUA
+3071   3175091003      JAKARTA TIMUR             CIRACAS       KELAPA DUA WETAN
+3072   3172061003      JAKARTA UTARA       KELAPA GADING    KELAPA GADING BARAT
+3073   3172061001      JAKARTA UTARA       KELAPA GADING    KELAPA GADING TIMUR
+3074   3173071005      JAKARTA BARAT            PALMERAH            KEMANGGISAN
+3075   3171031001      JAKARTA PUSAT           KEMAYORAN              KEMAYORAN
+3076   3173081006      JAKARTA BARAT           KEMBANGAN      KEMBANGAN SELATAN
+3077   3173081001      JAKARTA BARAT           KEMBANGAN        KEMBANGAN UTARA
+3078   3171041002      JAKARTA PUSAT               SENEN                 KENARI
+3079   3173041005      JAKARTA BARAT             TAMBORA              KERENDANG
+3080   3175071003      JAKARTA TIMUR         DUREN SAWIT                KLENDER
+3081   3172031001      JAKARTA UTARA                KOJA                   KOJA
+3082   3173071006      JAKARTA BARAT            PALMERAH     KOTA BAMBU SELATAN
+3083   3173071003      JAKARTA BARAT            PALMERAH       KOTA BAMBU UTARA
+3084   3171041004      JAKARTA PUSAT               SENEN                 KRAMAT
+3085   3175041001      JAKARTA TIMUR         KRAMAT JATI            KRAMAT JATI
+3086   3174071003    JAKARTA SELATAN      KEBAYORAN BARU            KRAMAT PELA
+3087   3173031002      JAKARTA BARAT          TAMAN SARI                 KRUKUT
+3088   3174031005    JAKARTA SELATAN    MAMPANG PRAPATAN         KUNINGAN BARAT
+3089   3174021008    JAKARTA SELATAN          SETIA BUDI         KUNINGAN TIMUR
+3090   3171041005      JAKARTA PUSAT               SENEN                KWITANG
+3091   3172031003      JAKARTA UTARA                KOJA                  LAGOA
+3092   3174061002    JAKARTA SELATAN            CILANDAK            LEBAK BULUS
+3093   3174091004    JAKARTA SELATAN           JAGAKARSA          LENTENG AGUNG
+3094   3175101007      JAKARTA TIMUR            CIPAYUNG           LUBANG BUAYA
+3095   3175081001      JAKARTA TIMUR             MAKASAR                MAKASAR
+3096   3175071006      JAKARTA TIMUR         DUREN SAWIT            MALAKA JAYA
+3097   3175071005      JAKARTA TIMUR         DUREN SAWIT            MALAKA SARI
+3098   3174031001    JAKARTA SELATAN    MAMPANG PRAPATAN       MAMPANG PRAPATAN
+3099   3173031005      JAKARTA BARAT          TAMAN SARI           MANGGA BESAR
+3100   3171021005      JAKARTA PUSAT         SAWAH BESAR     MANGGA DUA SELATAN
+3101   3174011007    JAKARTA SELATAN               TEBET              MANGGARAI
+3102   3174011006    JAKARTA SELATAN               TEBET      MANGGARAI SELATAN
+3103   3173031003      JAKARTA BARAT          TAMAN SARI                 MAPHAR
+3104   3172041003      JAKARTA UTARA           CILINCING                MARUNDA
+3105   3174071001    JAKARTA SELATAN      KEBAYORAN BARU                MELAWAI
+3106   3171061001      JAKARTA PUSAT             MENTENG                MENTENG
+3107   3174021005    JAKARTA SELATAN          SETIA BUDI           MENTENG ATAS
+3108   3174011003    JAKARTA SELATAN               TEBET          MENTENG DALAM
+3109   3173081003      JAKARTA BARAT           KEMBANGAN         MERUYA SELATAN
+3110   3173081002      JAKARTA BARAT           KEMBANGAN           MERUYA UTARA
+3111   3175101004      JAKARTA TIMUR            CIPAYUNG                 MUNJUL
+3112   3172051002      JAKARTA UTARA          PADEMANGAN       PADEMANGAN BARAT
+3113   3172051001      JAKARTA UTARA          PADEMANGAN       PADEMANGAN TIMUR
+3114   3175011004      JAKARTA TIMUR            MATRAMAN             PAL MERIAM
+3115   3173071001      JAKARTA BARAT            PALMERAH               PALMERAH
+3116   3174081001    JAKARTA SELATAN            PANCORAN               PANCORAN
+3117   3172021003      JAKARTA UTARA       TANJUNG PRIOK               PAPANGGO
+3118   3171021001      JAKARTA PUSAT         SAWAH BESAR             PASAR BARU
+3119   3174021006    JAKARTA SELATAN          SETIA BUDI          PASAR MANGGIS
+3120   3174041001    JAKARTA SELATAN        PASAR MINGGU           PASAR MINGGU
+3121   3171041003      JAKARTA PUSAT               SENEN                PASEBAN
+3122   3173061005      JAKARTA BARAT          KALI DERES             PEGADUNGAN
+3123   3171061002      JAKARTA PUSAT             MENTENG             PEGANGSAAN
+3124   3172061002      JAKARTA UTARA       KELAPA GADING         PEGANGSAAN DUA
+3125   3172011004      JAKARTA UTARA         PENJARINGAN              PEJAGALAN
+3126   3174041006    JAKARTA SELATAN        PASAR MINGGU          PEJATEN BARAT
+3127   3174041005    JAKARTA SELATAN        PASAR MINGGU          PEJATEN TIMUR
+3128   3175051005      JAKARTA TIMUR          PASAR REBO                PEKAYON
+3129   3173041009      JAKARTA BARAT             TAMBORA                PEKOJAN
+3130   3174031003    JAKARTA SELATAN    MAMPANG PRAPATAN           PELA MAMPANG
+3131   3174081005    JAKARTA SELATAN            PANCORAN             PENGADEGAN
+3132   3175061003      JAKARTA TIMUR              CAKUNG           PENGGILINGAN
+3133   3172011001      JAKARTA UTARA         PENJARINGAN            PENJARINGAN
+3134   3174101001    JAKARTA SELATAN        PESANGGRAHAN           PESANGGRAHAN
+3135   3171071004      JAKARTA PUSAT         TANAH ABANG             PETAMBURAN
+3136   3174071008    JAKARTA SELATAN      KEBAYORAN BARU              PETOGOGAN
+3137   3171011004      JAKARTA PUSAT              GAMBIR         PETOJO SELATAN
+3138   3171011003      JAKARTA PUSAT              GAMBIR           PETOJO UTARA
+3139   3174101004    JAKARTA SELATAN        PESANGGRAHAN     PETUKANGAN SELATAN
+3140   3174101003    JAKARTA SELATAN        PESANGGRAHAN       PETUKANGAN UTARA
+3141   3175081002      JAKARTA TIMUR             MAKASAR           PINANG RANTI
+3142   3173031008      JAKARTA BARAT          TAMAN SARI              PINANGSIA
+3143   3175011001      JAKARTA TIMUR            MATRAMAN          PISANGAN BARU
+3144   3175021002      JAKARTA TIMUR         PULO GADUNG         PISANGAN TIMUR
+3145   3172011005      JAKARTA UTARA         PENJARINGAN                  PLUIT
+3146   3175071002      JAKARTA TIMUR         DUREN SAWIT           PONDOK BAMBU
+3147   3175071004      JAKARTA TIMUR         DUREN SAWIT          PONDOK KELAPA
+3148   3175071007      JAKARTA TIMUR         DUREN SAWIT            PONDOK KOPI
+3149   3174061003    JAKARTA SELATAN            CILANDAK            PONDOK LABU
+3150   3174051002    JAKARTA SELATAN      KEBAYORAN LAMA          PONDOK PINANG
+3151   3175101003      JAKARTA TIMUR            CIPAYUNG         PONDOK RANGGON
+3152   3101011003 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA          PULAU HARAPAN
+3153   3101011002 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA           PULAU KELAPA
+3154   3101011001 KAB.ADM.KEP.SERIBU   KEP. SERIBU UTARA         PULAU PANGGANG
+3155   3101021003 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN             PULAU PARI
+3156   3101021002 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN           PULAU TIDUNG
+3157   3101021001 KAB.ADM.KEP.SERIBU KEP. SERIBU SELATAN      PULAU UNTUNG JAWA
+3158   3174071007    JAKARTA SELATAN      KEBAYORAN BARU                   PULO
+3159   3175021001      JAKARTA TIMUR         PULO GADUNG            PULO GADUNG
+3160   3175061005      JAKARTA TIMUR              CAKUNG            PULO GEBANG
+3161   3174041004    JAKARTA SELATAN        PASAR MINGGU                RAGUNAN
+3162   3175091005      JAKARTA TIMUR             CIRACAS               RAMBUTAN
+3163   3172031006      JAKARTA UTARA                KOJA     RAWA BADAK SELATAN
+3164   3172031004      JAKARTA UTARA                KOJA       RAWA BADAK UTARA
+3165   3174071005    JAKARTA SELATAN      KEBAYORAN BARU             RAWA BARAT
+3166   3173011003      JAKARTA BARAT          CENGKARENG             RAWA BUAYA
+3167   3175031004      JAKARTA TIMUR          JATINEGARA             RAWA BUNGA
+3168   3174081003    JAKARTA SELATAN            PANCORAN              RAWA JATI
+3169   3175061002      JAKARTA TIMUR              CAKUNG            RAWA TERATE
+3170   3175021005      JAKARTA TIMUR         PULO GADUNG             RAWAMANGUN
+3171   3171051003      JAKARTA PUSAT       CEMPAKA PUTIH               RAWASARI
+3172   3173041010      JAKARTA BARAT             TAMBORA             ROA MALAKA
+3173   3172041006      JAKARTA UTARA           CILINCING                ROROTAN
+3174   3174071004    JAKARTA SELATAN      KEBAYORAN BARU                 SELONG
+3175   3173061002      JAKARTA BARAT          KALI DERES                SEMANAN
+3176   3172041007      JAKARTA UTARA           CILINCING           SEMPER BARAT
+3177   3172041005      JAKARTA UTARA           CILINCING           SEMPER TIMUR
+3178   3174071006    JAKARTA SELATAN      KEBAYORAN BARU                SENAYAN
+3179   3171041001      JAKARTA PUSAT               SENEN                  SENEN
+3180   3171031004      JAKARTA PUSAT           KEMAYORAN                SERDANG
+3181   3174021001    JAKARTA SELATAN          SETIA BUDI             SETIA BUDI
+3182   3175101005      JAKARTA TIMUR            CIPAYUNG                   SETU
+3183   3173071002      JAKARTA BARAT            PALMERAH                  SLIPI
+3184   3173081004      JAKARTA BARAT           KEMBANGAN              SRENGSENG
+3185   3174091002    JAKARTA SELATAN           JAGAKARSA        SRENGSENG SAWAH
+3186   3173051003      JAKARTA BARAT         KEBON JERUK       SUKABUMI SELATAN
+3187   3173051002      JAKARTA BARAT         KEBON JERUK         SUKABUMI UTARA
+3188   3172041002      JAKARTA UTARA           CILINCING               SUKAPURA
+3189   3171031007      JAKARTA PUSAT           KEMAYORAN             SUMUR BATU
+3190   3172021004      JAKARTA UTARA       TANJUNG PRIOK           SUNGAI BAMBU
+3191   3172021006      JAKARTA UTARA       TANJUNG PRIOK           SUNTER AGUNG
+3192   3172021002      JAKARTA UTARA       TANJUNG PRIOK            SUNTER JAYA
+3193   3175091004      JAKARTA TIMUR             CIRACAS                SUSUKAN
+3194   3173031001      JAKARTA BARAT          TAMAN SARI             TAMAN SARI
+3195   3173041001      JAKARTA BARAT             TAMBORA                TAMBORA
+3196   3173041004      JAKARTA BARAT             TAMBORA           TANAH SEREAL
+3197   3171081004      JAKARTA PUSAT          JOHAR BARU           TANAH TINGGI
+3198   3173031004      JAKARTA BARAT          TAMAN SARI                 TANGKI
+3199   3174091005    JAKARTA SELATAN           JAGAKARSA          TANJUNG BARAT
+3200   3173021005      JAKARTA BARAT   GROGOL PETAMBURAN  TANJUNG DUREN SELATAN
+3201   3173021002      JAKARTA BARAT   GROGOL PETAMBURAN    TANJUNG DUREN UTARA
+3202   3172021001      JAKARTA UTARA       TANJUNG PRIOK          TANJUNG PRIOK
+3203   3174011002    JAKARTA SELATAN               TEBET            TEBET BARAT
+3204   3174011001    JAKARTA SELATAN               TEBET            TEBET TIMUR
+3205   3173061003      JAKARTA BARAT          KALI DERES             TEGAL ALUR
+3206   3174031004    JAKARTA SELATAN    MAMPANG PRAPATAN           TEGAL PARANG
+3207   3173021003      JAKARTA BARAT   GROGOL PETAMBURAN                 TOMANG
+3208   3172031005      JAKARTA UTARA                KOJA           TUGU SELATAN
+3209   3172031002      JAKARTA UTARA                KOJA             TUGU UTARA
+3210   3175061006      JAKARTA TIMUR              CAKUNG          UJUNG MENTENG
+3211   3174101005    JAKARTA SELATAN        PESANGGRAHAN                ULUJAMI
+3212   3175011006      JAKARTA TIMUR            MATRAMAN      UTAN KAYU SELATAN
+3213   3175011002      JAKARTA TIMUR            MATRAMAN        UTAN KAYU UTARA
+3214   3171031008      JAKARTA PUSAT           KEMAYORAN           UTAN PANJANG
+3215   3172021007      JAKARTA UTARA       TANJUNG PRIOK                WARAKAS
+3216   3173021007      JAKARTA BARAT   GROGOL PETAMBURAN          WIJAYA KUSUMA
+      Target Not_Yet_Vaccinated Date
+1    8941211            1481006 &lt;NA&gt;
+269  8941211            4399496 &lt;NA&gt;
+314    64594              30229 &lt;NA&gt;
+315    24609              13099 &lt;NA&gt;
+316    61160              33332 &lt;NA&gt;
+317    28319              13050 &lt;NA&gt;
+318    60138              26379 &lt;NA&gt;
+319    77923              41170 &lt;NA&gt;
+320    19610               9901 &lt;NA&gt;
+321    14259               6165 &lt;NA&gt;
+322    19844               9180 &lt;NA&gt;
+323    18243               7699 &lt;NA&gt;
+324     2191                958 &lt;NA&gt;
+325    22119              10460 &lt;NA&gt;
+326    39922              19290 &lt;NA&gt;
+327    35755              17819 &lt;NA&gt;
+328     3127               1465 &lt;NA&gt;
+329     7837               2931 &lt;NA&gt;
+330     4100               1764 &lt;NA&gt;
+331    16876               8005 &lt;NA&gt;
+332    44251              22913 &lt;NA&gt;
+333    42494              21439 &lt;NA&gt;
+334     3985               1710 &lt;NA&gt;
+335     9436               4230 &lt;NA&gt;
+336    19199               9143 &lt;NA&gt;
+337    16650               6714 &lt;NA&gt;
+338    28363               9874 &lt;NA&gt;
+339    22557              11256 &lt;NA&gt;
+340    62389              27865 &lt;NA&gt;
+341    32757              16645 &lt;NA&gt;
+342    37502              18083 &lt;NA&gt;
+343    28738              12648 &lt;NA&gt;
+344    84160              45049 &lt;NA&gt;
+345    24632              12463 &lt;NA&gt;
+346    30266              13871 &lt;NA&gt;
+347    38246              17968 &lt;NA&gt;
+348    29314              17289 &lt;NA&gt;
+349    21021              11728 &lt;NA&gt;
+350    40839              20603 &lt;NA&gt;
+351    37488              16376 &lt;NA&gt;
+352    23856              12504 &lt;NA&gt;
+353    67684              37556 &lt;NA&gt;
+354    41994              22570 &lt;NA&gt;
+355    72447              35818 &lt;NA&gt;
+356    43212              20881 &lt;NA&gt;
+357    53783              29331 &lt;NA&gt;
+358    12930               4469 &lt;NA&gt;
+359    11358               6377 &lt;NA&gt;
+360    25717              14831 &lt;NA&gt;
+361    21237               7985 &lt;NA&gt;
+362    43993              26326 &lt;NA&gt;
+363   134466              73501 &lt;NA&gt;
+364    35781              14915 &lt;NA&gt;
+365    25761              12191 &lt;NA&gt;
+366     9623               4683 &lt;NA&gt;
+367    16055               7098 &lt;NA&gt;
+368     2770               1144 &lt;NA&gt;
+369    19271               9112 &lt;NA&gt;
+370    22292              10201 &lt;NA&gt;
+371    25284              13908 &lt;NA&gt;
+372    40696              18550 &lt;NA&gt;
+373    17387               8034 &lt;NA&gt;
+374    44552              22984 &lt;NA&gt;
+375    41212              19440 &lt;NA&gt;
+376    42422              22350 &lt;NA&gt;
+377    35165              17021 &lt;NA&gt;
+378    50952              24225 &lt;NA&gt;
+379    53887              28582 &lt;NA&gt;
+380    21531              12384 &lt;NA&gt;
+381    10163               4804 &lt;NA&gt;
+382    30019              14710 &lt;NA&gt;
+383    16490               7978 &lt;NA&gt;
+384    32206              19577 &lt;NA&gt;
+385    46614              24099 &lt;NA&gt;
+386    12299               6565 &lt;NA&gt;
+387    32612              13372 &lt;NA&gt;
+388    32165              14666 &lt;NA&gt;
+389    45740              19750 &lt;NA&gt;
+390    23565              11768 &lt;NA&gt;
+391    46875              21977 &lt;NA&gt;
+392    35717              14000 &lt;NA&gt;
+393    33592              12087 &lt;NA&gt;
+394    32139              15851 &lt;NA&gt;
+395    20708               9396 &lt;NA&gt;
+396    27130              12853 &lt;NA&gt;
+397    54451              25990 &lt;NA&gt;
+398     9579               4135 &lt;NA&gt;
+399    19973               9834 &lt;NA&gt;
+400    69978              40905 &lt;NA&gt;
+401    28175              13569 &lt;NA&gt;
+402    21158              10569 &lt;NA&gt;
+403    24995              12565 &lt;NA&gt;
+404    28835              15071 &lt;NA&gt;
+405    34144              18418 &lt;NA&gt;
+406    14413               6570 &lt;NA&gt;
+407    19244               9118 &lt;NA&gt;
+408    12785               5843 &lt;NA&gt;
+409     6008               2956 &lt;NA&gt;
+410    15486               7611 &lt;NA&gt;
+411    59065              30673 &lt;NA&gt;
+412    37626              18205 &lt;NA&gt;
+413    53946              27747 &lt;NA&gt;
+414    63547              31420 &lt;NA&gt;
+415    34390              16747 &lt;NA&gt;
+416    30927              14455 &lt;NA&gt;
+417    27530              12665 &lt;NA&gt;
+418    18159               8807 &lt;NA&gt;
+419     7707               3032 &lt;NA&gt;
+420    27442              13161 &lt;NA&gt;
+421    28373              13989 &lt;NA&gt;
+422    23075              10755 &lt;NA&gt;
+423    16461               7428 &lt;NA&gt;
+424    28943              13665 &lt;NA&gt;
+425     2627               1036 &lt;NA&gt;
+426    25624              14132 &lt;NA&gt;
+427    27816              12856 &lt;NA&gt;
+428    36028              18083 &lt;NA&gt;
+429    32130              16667 &lt;NA&gt;
+430    43752              21579 &lt;NA&gt;
+431    23871              11761 &lt;NA&gt;
+432    74240              36400 &lt;NA&gt;
+433    37736              15209 &lt;NA&gt;
+434    19769              10412 &lt;NA&gt;
+435    63011              31812 &lt;NA&gt;
+436    19421               9222 &lt;NA&gt;
+437    39097              17749 &lt;NA&gt;
+438    12035               4870 &lt;NA&gt;
+439    26752              13117 &lt;NA&gt;
+440    24821              11946 &lt;NA&gt;
+441    23533              11355 &lt;NA&gt;
+442    75587              35949 &lt;NA&gt;
+443    23455              12864 &lt;NA&gt;
+444    49976              18369 &lt;NA&gt;
+445    74578              34724 &lt;NA&gt;
+446    37346              18161 &lt;NA&gt;
+447    57656              31667 &lt;NA&gt;
+448    43250              20001 &lt;NA&gt;
+449    23587              10612 &lt;NA&gt;
+450    43522              19912 &lt;NA&gt;
+451    21478               8937 &lt;NA&gt;
+452    99255              56227 &lt;NA&gt;
+453    88308              48117 &lt;NA&gt;
+454    27545              12124 &lt;NA&gt;
+455    33271              20197 &lt;NA&gt;
+456    11499               5465 &lt;NA&gt;
+457    14692               7119 &lt;NA&gt;
+458    17458               9072 &lt;NA&gt;
+459    37187              16876 &lt;NA&gt;
+460    53716              27134 &lt;NA&gt;
+461    27198              13078 &lt;NA&gt;
+462    10729               4396 &lt;NA&gt;
+463    31776              17538 &lt;NA&gt;
+464    41011              20040 &lt;NA&gt;
+465    47783              20886 &lt;NA&gt;
+466    61550              32570 &lt;NA&gt;
+467    72015              34991 &lt;NA&gt;
+468    35367              20229 &lt;NA&gt;
+469    46464              20591 &lt;NA&gt;
+470    56169              28141 &lt;NA&gt;
+471    25574              13791 &lt;NA&gt;
+472     2060                468 &lt;NA&gt;
+473     5528               1220 &lt;NA&gt;
+474     5450               1063 &lt;NA&gt;
+475     2765                413 &lt;NA&gt;
+476     4553                891 &lt;NA&gt;
+477     1941                445 &lt;NA&gt;
+478     5835               2381 &lt;NA&gt;
+479    34422              18145 &lt;NA&gt;
+480    97301              49906 &lt;NA&gt;
+481    39616              17815 &lt;NA&gt;
+482    36771              20545 &lt;NA&gt;
+483    42179              22302 &lt;NA&gt;
+484    34408              17318 &lt;NA&gt;
+485     5625               2517 &lt;NA&gt;
+486    63799              33137 &lt;NA&gt;
+487    21434              11756 &lt;NA&gt;
+488    20509               9213 &lt;NA&gt;
+489    24637              11129 &lt;NA&gt;
+490    37612              18460 &lt;NA&gt;
+491    21967              10528 &lt;NA&gt;
+492     3484               1355 &lt;NA&gt;
+493    41668              18851 &lt;NA&gt;
+494     2842               1169 &lt;NA&gt;
+495    71354              36920 &lt;NA&gt;
+496    68587              29281 &lt;NA&gt;
+497    36267              17330 &lt;NA&gt;
+498     2771               1471 &lt;NA&gt;
+499     6804               3080 &lt;NA&gt;
+500    29668              14375 &lt;NA&gt;
+501     3023               1445 &lt;NA&gt;
+502    20572              11594 &lt;NA&gt;
+503    16591               7601 &lt;NA&gt;
+504    45523              23839 &lt;NA&gt;
+505    58196              25011 &lt;NA&gt;
+506    37033              20743 &lt;NA&gt;
+507    38290              22453 &lt;NA&gt;
+508    53949              25995 &lt;NA&gt;
+509    22717              10956 &lt;NA&gt;
+510    29876              13992 &lt;NA&gt;
+511    71805              28858 &lt;NA&gt;
+512    63031              27274 &lt;NA&gt;
+513    38257              18887 &lt;NA&gt;
+514    14348               6291 &lt;NA&gt;
+515    10204               5283 &lt;NA&gt;
+516    26387              10811 &lt;NA&gt;
+517    37693              16097 &lt;NA&gt;
+518    13324               5881 &lt;NA&gt;
+519    39770              19005 &lt;NA&gt;
+520    25337              10967 &lt;NA&gt;
+521    17010               6926 &lt;NA&gt;
+522    34588              15030 &lt;NA&gt;
+523    21194               9097 &lt;NA&gt;
+524    18199               7525 &lt;NA&gt;
+525    83647              42727 &lt;NA&gt;
+526    32401              16913 &lt;NA&gt;
+527    29605              13487 &lt;NA&gt;
+528    39122              20058 &lt;NA&gt;
+529    67670              35250 &lt;NA&gt;
+530    29934              13486 &lt;NA&gt;
+531    40544              21044 &lt;NA&gt;
+532    33511              16402 &lt;NA&gt;
+533    28169              14292 &lt;NA&gt;
+534    29208              14785 &lt;NA&gt;
+535    44401              20662 &lt;NA&gt;
+536    38934              19184 &lt;NA&gt;
+537  8941211            1718787 &lt;NA&gt;
+805  8941211            1536737 &lt;NA&gt;
+1073 8941211            1620250 &lt;NA&gt;
+1341 7739060            5041111 &lt;NA&gt;
+1342   20393              13272 &lt;NA&gt;
+1343   25785              16477 &lt;NA&gt;
+1344   25158              18849 &lt;NA&gt;
+1345    8683               5743 &lt;NA&gt;
+1346   22768              15407 &lt;NA&gt;
+1347   18930              12503 &lt;NA&gt;
+1348   20267              11268 &lt;NA&gt;
+1349   41389              30358 &lt;NA&gt;
+1350   19008              11502 &lt;NA&gt;
+1351   32331              23395 &lt;NA&gt;
+1352   45843              31042 &lt;NA&gt;
+1353   29934              20254 &lt;NA&gt;
+1354   15932               9968 &lt;NA&gt;
+1355   49369              32912 &lt;NA&gt;
+1356   50344              33061 &lt;NA&gt;
+1357   28708              19737 &lt;NA&gt;
+1358   16381              10775 &lt;NA&gt;
+1359   27330              18417 &lt;NA&gt;
+1360   30479              20831 &lt;NA&gt;
+1361   21553              13314 &lt;NA&gt;
+1362   57678              34297 &lt;NA&gt;
+1363   70122              46208 &lt;NA&gt;
+1364   56927              36733 &lt;NA&gt;
+1365   14203               8247 &lt;NA&gt;
+1366   33127              21739 &lt;NA&gt;
+1367   36027              23138 &lt;NA&gt;
+1368    7402               4773 &lt;NA&gt;
+1369    9280               5392 &lt;NA&gt;
+1370   45348              26802 &lt;NA&gt;
+1371   21207              12625 &lt;NA&gt;
+1372   23675              15808 &lt;NA&gt;
+1373   35164              24458 &lt;NA&gt;
+1374   37003              26181 &lt;NA&gt;
+1375   22697              14124 &lt;NA&gt;
+1376   32800              21112 &lt;NA&gt;
+1377   23463              14949 &lt;NA&gt;
+1378   29771              18080 &lt;NA&gt;
+1379   34608              22570 &lt;NA&gt;
+1380   30655              22388 &lt;NA&gt;
+1381   38827              29839 &lt;NA&gt;
+1382   29154              19938 &lt;NA&gt;
+1383   37098              23732 &lt;NA&gt;
+1384   46861              33173 &lt;NA&gt;
+1385   34708              23388 &lt;NA&gt;
+1386   55965              36020 &lt;NA&gt;
+1387   21239              14371 &lt;NA&gt;
+1388   53078              34975 &lt;NA&gt;
+1389   24673              15943 &lt;NA&gt;
+1390   52942              31244 &lt;NA&gt;
+1391   66093              42766 &lt;NA&gt;
+1392   17787              12207 &lt;NA&gt;
+1393   12528               7737 &lt;NA&gt;
+1394   17380              11489 &lt;NA&gt;
+1395   15811               9306 &lt;NA&gt;
+1396    2232               1251 &lt;NA&gt;
+1397   19394              12094 &lt;NA&gt;
+1398   35026              22325 &lt;NA&gt;
+1399   31013              20541 &lt;NA&gt;
+1400    2753               1707 &lt;NA&gt;
+1401    7192               3561 &lt;NA&gt;
+1402    3760               1866 &lt;NA&gt;
+1403   15067               9527 &lt;NA&gt;
+1404   38688              26395 &lt;NA&gt;
+1405   37234              25516 &lt;NA&gt;
+1406    3590               1909 &lt;NA&gt;
+1407    8309               4813 &lt;NA&gt;
+1408   17256              10947 &lt;NA&gt;
+1409   13937               7140 &lt;NA&gt;
+1410   24426              10932 &lt;NA&gt;
+1411   19987              13623 &lt;NA&gt;
+1412   53714              33301 &lt;NA&gt;
+1413   28870              18450 &lt;NA&gt;
+1414   32857              20902 &lt;NA&gt;
+1415   24508              14204 &lt;NA&gt;
+1416   72652              54375 &lt;NA&gt;
+1417   21313              14540 &lt;NA&gt;
+1418   26984              15998 &lt;NA&gt;
+1419   33734              20850 &lt;NA&gt;
+1420   25735              19531 &lt;NA&gt;
+1421   18241              12979 &lt;NA&gt;
+1422   35285              22899 &lt;NA&gt;
+1423   28311              15419 &lt;NA&gt;
+1424   20624              15136 &lt;NA&gt;
+1425   57771              43708 &lt;NA&gt;
+1426   36451              25169 &lt;NA&gt;
+1427   60209              40068 &lt;NA&gt;
+1428   37255              23825 &lt;NA&gt;
+1429   46035              34576 &lt;NA&gt;
+1430   11039               5598 &lt;NA&gt;
+1431   10113               7129 &lt;NA&gt;
+1432   22293              16813 &lt;NA&gt;
+1433   15550               7386 &lt;NA&gt;
+1434   38048              27248 &lt;NA&gt;
+1435  104630              72832 &lt;NA&gt;
+1436   31275              18505 &lt;NA&gt;
+1437   23056              15040 &lt;NA&gt;
+1438    8542               5082 &lt;NA&gt;
+1439   14166               8403 &lt;NA&gt;
+1440    2469               1240 &lt;NA&gt;
+1441   16695              11165 &lt;NA&gt;
+1442   19916              12272 &lt;NA&gt;
+1443   22174              15238 &lt;NA&gt;
+1444   35916              21683 &lt;NA&gt;
+1445   15262              10275 &lt;NA&gt;
+1446   38396              25856 &lt;NA&gt;
+1447   35920              21934 &lt;NA&gt;
+1448   37004              24969 &lt;NA&gt;
+1449   30533              19502 &lt;NA&gt;
+1450   44427              28497 &lt;NA&gt;
+1451   46870              32410 &lt;NA&gt;
+1452   19075              14044 &lt;NA&gt;
+1453    9383               6170 &lt;NA&gt;
+1454   26178              17370 &lt;NA&gt;
+1455   14644               9098 &lt;NA&gt;
+1456   27297              21096 &lt;NA&gt;
+1457   40723              27462 &lt;NA&gt;
+1458   10880               7822 &lt;NA&gt;
+1459   28123              16356 &lt;NA&gt;
+1460   28300              17656 &lt;NA&gt;
+1461   38771              22539 &lt;NA&gt;
+1462   20509              13160 &lt;NA&gt;
+1463   40776              25996 &lt;NA&gt;
+1464   31544              16241 &lt;NA&gt;
+1465   30470              14229 &lt;NA&gt;
+1466   28159              17621 &lt;NA&gt;
+1467   18556              11523 &lt;NA&gt;
+1468   24028              14892 &lt;NA&gt;
+1469   45663              29042 &lt;NA&gt;
+1470    8328               4745 &lt;NA&gt;
+1471   17494              12237 &lt;NA&gt;
+1472   60420              43508 &lt;NA&gt;
+1473   24600              17157 &lt;NA&gt;
+1474   18287              12248 &lt;NA&gt;
+1475   21312              14710 &lt;NA&gt;
+1476   25258              17801 &lt;NA&gt;
+1477   29922              19776 &lt;NA&gt;
+1478   12737               7323 &lt;NA&gt;
+1479   17023              10960 &lt;NA&gt;
+1480   11229               7025 &lt;NA&gt;
+1481    5331               3237 &lt;NA&gt;
+1482   13487               8405 &lt;NA&gt;
+1483   51431              36652 &lt;NA&gt;
+1484   32738              20929 &lt;NA&gt;
+1485   46600              33012 &lt;NA&gt;
+1486   55114              36244 &lt;NA&gt;
+1487   30013              18642 &lt;NA&gt;
+1488   26798              16551 &lt;NA&gt;
+1489   23691              14066 &lt;NA&gt;
+1490   15885              10845 &lt;NA&gt;
+1491    6690               3646 &lt;NA&gt;
+1492   24940              16190 &lt;NA&gt;
+1493   24972              16586 &lt;NA&gt;
+1494   20274              12176 &lt;NA&gt;
+1495   14671               8957 &lt;NA&gt;
+1496   24385              14948 &lt;NA&gt;
+1497    2386               1137 &lt;NA&gt;
+1498   22450              15966 &lt;NA&gt;
+1499   24369              14926 &lt;NA&gt;
+1500   31623              20615 &lt;NA&gt;
+1501   27261              17503 &lt;NA&gt;
+1502   38525              24938 &lt;NA&gt;
+1503   20582              13693 &lt;NA&gt;
+1504   64756              44563 &lt;NA&gt;
+1505   32689              17617 &lt;NA&gt;
+1506   17550              11392 &lt;NA&gt;
+1507   54706              35781 &lt;NA&gt;
+1508   16983              11113 &lt;NA&gt;
+1509   33902              21877 &lt;NA&gt;
+1510   11656               6067 &lt;NA&gt;
+1511   23415              14855 &lt;NA&gt;
+1512   21700              13616 &lt;NA&gt;
+1513   20652              13307 &lt;NA&gt;
+1514   65248              42078 &lt;NA&gt;
+1515   18427              12086 &lt;NA&gt;
+1516   44451              22516 &lt;NA&gt;
+1517   66008              41329 &lt;NA&gt;
+1518   30591              18705 &lt;NA&gt;
+1519   50150              34075 &lt;NA&gt;
+1520   37440              24027 &lt;NA&gt;
+1521   20921              13272 &lt;NA&gt;
+1522   37784              24862 &lt;NA&gt;
+1523   18685              10236 &lt;NA&gt;
+1524   84511              62643 &lt;NA&gt;
+1525   75505              52346 &lt;NA&gt;
+1526   23733              13520 &lt;NA&gt;
+1527   28974              22248 &lt;NA&gt;
+1528   10203               6158 &lt;NA&gt;
+1529   13506               8254 &lt;NA&gt;
+1530   16084              10498 &lt;NA&gt;
+1531   32229              20431 &lt;NA&gt;
+1532   46427              30551 &lt;NA&gt;
+1533   23465              14732 &lt;NA&gt;
+1534    9405               5515 &lt;NA&gt;
+1535   27793              19721 &lt;NA&gt;
+1536   35717              23066 &lt;NA&gt;
+1537   42979              22735 &lt;NA&gt;
+1538   53658              34711 &lt;NA&gt;
+1539   62704              40828 &lt;NA&gt;
+1540   30741              21467 &lt;NA&gt;
+1541   39778              24892 &lt;NA&gt;
+1542   49276              31862 &lt;NA&gt;
+1543   21791              15007 &lt;NA&gt;
+1544    1785                523 &lt;NA&gt;
+1545    4729               1369 &lt;NA&gt;
+1546    4667               1258 &lt;NA&gt;
+1547    2370                452 &lt;NA&gt;
+1548    3922               1202 &lt;NA&gt;
+1549    1665                443 &lt;NA&gt;
+1550    5184               2841 &lt;NA&gt;
+1551   30292              20363 &lt;NA&gt;
+1609 8941211            1444901 &lt;NA&gt;
+1877 8941211            1516200 &lt;NA&gt;
+2145 8941211            1455001 &lt;NA&gt;
+2413 8941211            1875655 &lt;NA&gt;
+2458   64594              12247 &lt;NA&gt;
+2459   24609               4810 &lt;NA&gt;
+2460   61160              13365 &lt;NA&gt;
+2461   28319               5865 &lt;NA&gt;
+2462   60138              12102 &lt;NA&gt;
+2463   77923              17291 &lt;NA&gt;
+2464   19610               4304 &lt;NA&gt;
+2465   14259               2621 &lt;NA&gt;
+2466   19844               3727 &lt;NA&gt;
+2467   18243               3703 &lt;NA&gt;
+2468    2191                462 &lt;NA&gt;
+2469   22119               4392 &lt;NA&gt;
+2470   39922               8239 &lt;NA&gt;
+2471   35755               7418 &lt;NA&gt;
+2472    3127                629 &lt;NA&gt;
+2473    7837               1229 &lt;NA&gt;
+2474    4100                943 &lt;NA&gt;
+2475   16876               3491 &lt;NA&gt;
+2476   44251               9196 &lt;NA&gt;
+2477   42494               8934 &lt;NA&gt;
+2478    3985                768 &lt;NA&gt;
+2479    9436               1805 &lt;NA&gt;
+2480   19199               4008 &lt;NA&gt;
+2481   16650               3032 &lt;NA&gt;
+2482   28363               3794 &lt;NA&gt;
+2483   22557               4735 &lt;NA&gt;
+2484   62389              10749 &lt;NA&gt;
+2485   32757               6343 &lt;NA&gt;
+2486   37502               7768 &lt;NA&gt;
+2487   28738               5961 &lt;NA&gt;
+2488   84160              18673 &lt;NA&gt;
+2489   24632               4584 &lt;NA&gt;
+2490   30266               5710 &lt;NA&gt;
+2491   38246               7401 &lt;NA&gt;
+2492   29314               7328 &lt;NA&gt;
+2493   21021               5129 &lt;NA&gt;
+2494   40839               8626 &lt;NA&gt;
+2495   37488               7144 &lt;NA&gt;
+2496   23856               4898 &lt;NA&gt;
+2497   67684              19080 &lt;NA&gt;
+2498   41994               9906 &lt;NA&gt;
+2499   72447              15524 &lt;NA&gt;
+2500   43212               8017 &lt;NA&gt;
+2501   53783              13038 &lt;NA&gt;
+2502   12930               2327 &lt;NA&gt;
+2503   11358               2532 &lt;NA&gt;
+2504   25717               6015 &lt;NA&gt;
+2505   21237               3612 &lt;NA&gt;
+2506   43993              11416 &lt;NA&gt;
+2507  134466              33688 &lt;NA&gt;
+2508   35781               7090 &lt;NA&gt;
+2509   25761               5139 &lt;NA&gt;
+2510    9623               1897 &lt;NA&gt;
+2511   16055               3227 &lt;NA&gt;
+2512    2770                567 &lt;NA&gt;
+2513   19271               3826 &lt;NA&gt;
+2514   22292               4427 &lt;NA&gt;
+2515   25284               5541 &lt;NA&gt;
+2516   40696               7912 &lt;NA&gt;
+2517   17387               3339 &lt;NA&gt;
+2518   44552               9103 &lt;NA&gt;
+2519   41212               7946 &lt;NA&gt;
+2520   42422               9159 &lt;NA&gt;
+2521   35165               6885 &lt;NA&gt;
+2522   50952              10661 &lt;NA&gt;
+2523   53887              12016 &lt;NA&gt;
+2524   21531               5298 &lt;NA&gt;
+2525   10163               2092 &lt;NA&gt;
+2526   30019               6216 &lt;NA&gt;
+2527   16490               3346 &lt;NA&gt;
+2528   32206               8833 &lt;NA&gt;
+2529   46614               9632 &lt;NA&gt;
+2530   12299               2734 &lt;NA&gt;
+2531   32612               6552 &lt;NA&gt;
+2532   32165               6026 &lt;NA&gt;
+2533   45740               8898 &lt;NA&gt;
+2534   23565               4951 &lt;NA&gt;
+2535   46875               8311 &lt;NA&gt;
+2536   35717               6372 &lt;NA&gt;
+2537   33592               5266 &lt;NA&gt;
+2538   32139               6302 &lt;NA&gt;
+2539   20708               4448 &lt;NA&gt;
+2540   27130               5852 &lt;NA&gt;
+2541   54451              12346 &lt;NA&gt;
+2542    9579               1934 &lt;NA&gt;
+2543   19973               4249 &lt;NA&gt;
+2544   69978              16896 &lt;NA&gt;
+2545   28175               6615 &lt;NA&gt;
+2546   21158               4454 &lt;NA&gt;
+2547   24995               5365 &lt;NA&gt;
+2548   28835               7148 &lt;NA&gt;
+2549   34144               7747 &lt;NA&gt;
+2550   14413               2874 &lt;NA&gt;
+2551   19244               3736 &lt;NA&gt;
+2552   12785               2452 &lt;NA&gt;
+2553    6008               1237 &lt;NA&gt;
+2554   15486               3610 &lt;NA&gt;
+2555   59065              14420 &lt;NA&gt;
+2556   37626               7409 &lt;NA&gt;
+2557   53946              10093 &lt;NA&gt;
+2558   63547              12320 &lt;NA&gt;
+2559   34390               6554 &lt;NA&gt;
+2560   30927               5570 &lt;NA&gt;
+2561   27530               4774 &lt;NA&gt;
+2562   18159               3836 &lt;NA&gt;
+2563    7707               1341 &lt;NA&gt;
+2564   27442               5875 &lt;NA&gt;
+2565   28373               5231 &lt;NA&gt;
+2566   23075               4241 &lt;NA&gt;
+2567   16461               3162 &lt;NA&gt;
+2568   28943               6770 &lt;NA&gt;
+2569    2627                525 &lt;NA&gt;
+2570   25624               5892 &lt;NA&gt;
+2571   27816               5248 &lt;NA&gt;
+2572   36028               7237 &lt;NA&gt;
+2573   32130               6845 &lt;NA&gt;
+2574   43752               9261 &lt;NA&gt;
+2575   23871               4466 &lt;NA&gt;
+2576   74240              18186 &lt;NA&gt;
+2577   37736               6872 &lt;NA&gt;
+2578   19769               4281 &lt;NA&gt;
+2579   63011              13803 &lt;NA&gt;
+2580   19421               4147 &lt;NA&gt;
+2581   39097               7918 &lt;NA&gt;
+2582   12035               2360 &lt;NA&gt;
+2583   26752               5507 &lt;NA&gt;
+2584   24821               4826 &lt;NA&gt;
+2585   23533               5120 &lt;NA&gt;
+2586   75587              15979 &lt;NA&gt;
+2587   23455               5177 &lt;NA&gt;
+2588   49976               8462 &lt;NA&gt;
+2589   74578              16006 &lt;NA&gt;
+2590   37346               7717 &lt;NA&gt;
+2591   57656              13508 &lt;NA&gt;
+2592   43250               8108 &lt;NA&gt;
+2593   23587               4637 &lt;NA&gt;
+2594   43522               8956 &lt;NA&gt;
+2595   21478               4081 &lt;NA&gt;
+2596   99255              23988 &lt;NA&gt;
+2597   88308              23243 &lt;NA&gt;
+2598   27545               4904 &lt;NA&gt;
+2599   33271               9029 &lt;NA&gt;
+2600   11499               2341 &lt;NA&gt;
+2601   14692               3398 &lt;NA&gt;
+2602   17458               3871 &lt;NA&gt;
+2603   37187               7903 &lt;NA&gt;
+2604   53716              12027 &lt;NA&gt;
+2605   27198               6099 &lt;NA&gt;
+2606   10729               1936 &lt;NA&gt;
+2607   31776               6787 &lt;NA&gt;
+2608   41011               8002 &lt;NA&gt;
+2609   47783               9368 &lt;NA&gt;
+2610   61550              13447 &lt;NA&gt;
+2611   72015              14667 &lt;NA&gt;
+2612   35367               6820 &lt;NA&gt;
+2613   46464               8254 &lt;NA&gt;
+2614   56169              11114 &lt;NA&gt;
+2615   25574               4937 &lt;NA&gt;
+2616    2060                227 &lt;NA&gt;
+2617    5528                621 &lt;NA&gt;
+2618    5450                454 &lt;NA&gt;
+2619    2765                200 &lt;NA&gt;
+2620    4553                374 &lt;NA&gt;
+2621    1941                163 &lt;NA&gt;
+2622    5835               1040 &lt;NA&gt;
+2623   34422               7761 &lt;NA&gt;
+2624   97301              19352 &lt;NA&gt;
+2625   39616               7639 &lt;NA&gt;
+2626   36771               8894 &lt;NA&gt;
+2627   42179              10320 &lt;NA&gt;
+2628   34408               7951 &lt;NA&gt;
+2629    5625               1025 &lt;NA&gt;
+2630   63799              13313 &lt;NA&gt;
+2631   21434               5344 &lt;NA&gt;
+2632   20509               4011 &lt;NA&gt;
+2633   24637               4625 &lt;NA&gt;
+2634   37612               7689 &lt;NA&gt;
+2635   21967               4626 &lt;NA&gt;
+2636    3484                627 &lt;NA&gt;
+2637   41668               8621 &lt;NA&gt;
+2638    2842                551 &lt;NA&gt;
+2639   71354              16219 &lt;NA&gt;
+2640   68587              13887 &lt;NA&gt;
+2641   36267               8060 &lt;NA&gt;
+2642    2771                667 &lt;NA&gt;
+2643    6804               1516 &lt;NA&gt;
+2644   29668               6107 &lt;NA&gt;
+2645    3023                632 &lt;NA&gt;
+2646   20572               4229 &lt;NA&gt;
+2647   16591               3100 &lt;NA&gt;
+2648   45523              10557 &lt;NA&gt;
+2649   58196               9340 &lt;NA&gt;
+2650   37033               8631 &lt;NA&gt;
+2651   38290               9259 &lt;NA&gt;
+2652   53949              12569 &lt;NA&gt;
+2653   22717               4758 &lt;NA&gt;
+2654   29876               6218 &lt;NA&gt;
+2655   71805              12849 &lt;NA&gt;
+2656   63031              11493 &lt;NA&gt;
+2657   38257               7453 &lt;NA&gt;
+2658   14348               2712 &lt;NA&gt;
+2659   10204               2335 &lt;NA&gt;
+2660   26387               4625 &lt;NA&gt;
+2661   37693               7352 &lt;NA&gt;
+2662   13324               2282 &lt;NA&gt;
+2663   39770               6998 &lt;NA&gt;
+2664   25337               4980 &lt;NA&gt;
+2665   17010               2963 &lt;NA&gt;
+2666   34588               7337 &lt;NA&gt;
+2667   21194               3602 &lt;NA&gt;
+2668   18199               3018 &lt;NA&gt;
+2669   83647              18313 &lt;NA&gt;
+2670   32401               7456 &lt;NA&gt;
+2671   29605               5639 &lt;NA&gt;
+2672   39122               9013 &lt;NA&gt;
+2673   67670              16507 &lt;NA&gt;
+2674   29934               5385 &lt;NA&gt;
+2675   40544               9515 &lt;NA&gt;
+2676   33511               6271 &lt;NA&gt;
+2677   28169               6089 &lt;NA&gt;
+2678   29208               6139 &lt;NA&gt;
+2679   44401               8388 &lt;NA&gt;
+2680   38934               8406 &lt;NA&gt;
+2681 8941211            2221074 &lt;NA&gt;
+2949 8941211            3259430 &lt;NA&gt;
+2994   64594              21491 &lt;NA&gt;
+2995   24609               8626 &lt;NA&gt;
+2996   61160              24368 &lt;NA&gt;
+2997   28319              10544 &lt;NA&gt;
+2998   60138              20762 &lt;NA&gt;
+2999   77923              30413 &lt;NA&gt;
+3000   19610               6992 &lt;NA&gt;
+3001   14259               4640 &lt;NA&gt;
+3002   19844               6764 &lt;NA&gt;
+3003   18243               5702 &lt;NA&gt;
+3004    2191                739 &lt;NA&gt;
+3005   22119               8258 &lt;NA&gt;
+3006   39922              15032 &lt;NA&gt;
+3007   35755              12645 &lt;NA&gt;
+3008    3127               1197 &lt;NA&gt;
+3009    7837               2380 &lt;NA&gt;
+3010    4100               1499 &lt;NA&gt;
+3011   16876               6091 &lt;NA&gt;
+3012   44251              17025 &lt;NA&gt;
+3013   42494              16132 &lt;NA&gt;
+3014    3985               1397 &lt;NA&gt;
+3015    9436               3353 &lt;NA&gt;
+3016   19199               7023 &lt;NA&gt;
+3017   16650               5254 &lt;NA&gt;
+3018   28363               7908 &lt;NA&gt;
+3019   22557               8169 &lt;NA&gt;
+3020   62389              21880 &lt;NA&gt;
+3021   32757              11949 &lt;NA&gt;
+3022   37502              13857 &lt;NA&gt;
+3023   28738               9857 &lt;NA&gt;
+3024   84160              31687 &lt;NA&gt;
+3025   24632               8370 &lt;NA&gt;
+3026   30266              10783 &lt;NA&gt;
+3027   38246              13691 &lt;NA&gt;
+3028   29314              12010 &lt;NA&gt;
+3029   21021               8150 &lt;NA&gt;
+3030   40839              14893 &lt;NA&gt;
+3031   37488              12122 &lt;NA&gt;
+3032   23856               8132 &lt;NA&gt;
+3033   67684              27518 &lt;NA&gt;
+3034   41994              17441 &lt;NA&gt;
+3035   72447              26730 &lt;NA&gt;
+3036   43212              14885 &lt;NA&gt;
+3037   53783              20322 &lt;NA&gt;
+3038   12930               3473 &lt;NA&gt;
+3039   11358               4480 &lt;NA&gt;
+3040   25717              10548 &lt;NA&gt;
+3041   21237               5781 &lt;NA&gt;
+3042   43993              18092 &lt;NA&gt;
+3043  134466              52284 &lt;NA&gt;
+3044   35781              11296 &lt;NA&gt;
+3045   25761               8687 &lt;NA&gt;
+3046    9623               3639 &lt;NA&gt;
+3047   16055               5387 &lt;NA&gt;
+3048    2770                957 &lt;NA&gt;
+3049   19271               7053 &lt;NA&gt;
+3050   22292               7807 &lt;NA&gt;
+3051   25284              10013 &lt;NA&gt;
+3052   40696              14104 &lt;NA&gt;
+3053   17387               6008 &lt;NA&gt;
+3054   44552              17139 &lt;NA&gt;
+3055   41212              14827 &lt;NA&gt;
+3056   42422              16625 &lt;NA&gt;
+3057   35165              13007 &lt;NA&gt;
+3058   50952              18445 &lt;NA&gt;
+3059   53887              20713 &lt;NA&gt;
+3060   21531               9144 &lt;NA&gt;
+3061   10163               3612 &lt;NA&gt;
+3062   30019              10925 &lt;NA&gt;
+3063   16490               5960 &lt;NA&gt;
+3064   32206              14391 &lt;NA&gt;
+3065   46614              16941 &lt;NA&gt;
+3066   12299               4619 &lt;NA&gt;
+3067   32612              10686 &lt;NA&gt;
+3068   32165              11239 &lt;NA&gt;
+3069   45740              15018 &lt;NA&gt;
+3070   23565               8868 &lt;NA&gt;
+3071   46875              15402 &lt;NA&gt;
+3072   35717              11374 &lt;NA&gt;
+3073   33592               9833 &lt;NA&gt;
+3074   32139              11641 &lt;NA&gt;
+3075   20708               7316 &lt;NA&gt;
+3076   27130               9799 &lt;NA&gt;
+3077   54451              19786 &lt;NA&gt;
+3078    9579               3346 &lt;NA&gt;
+3079   19973               7034 &lt;NA&gt;
+3080   69978              28456 &lt;NA&gt;
+3081   28175              10703 &lt;NA&gt;
+3082   21158               7792 &lt;NA&gt;
+3083   24995               9365 &lt;NA&gt;
+3084   28835              10979 &lt;NA&gt;
+3085   34144              12641 &lt;NA&gt;
+3086   14413               5033 &lt;NA&gt;
+3087   19244               6750 &lt;NA&gt;
+3088   12785               4494 &lt;NA&gt;
+3089    6008               2158 &lt;NA&gt;
+3090   15486               5626 &lt;NA&gt;
+3091   59065              22904 &lt;NA&gt;
+3092   37626              14340 &lt;NA&gt;
+3093   53946              20594 &lt;NA&gt;
+3094   63547              21450 &lt;NA&gt;
+3095   34390              12053 &lt;NA&gt;
+3096   30927              11420 &lt;NA&gt;
+3097   27530               9780 &lt;NA&gt;
+3098   18159               6697 &lt;NA&gt;
+3099    7707               2378 &lt;NA&gt;
+3100   27442               9602 &lt;NA&gt;
+3101   28373               9655 &lt;NA&gt;
+3102   23075               8083 &lt;NA&gt;
+3103   16461               5874 &lt;NA&gt;
+3104   28943              10080 &lt;NA&gt;
+3105    2627                898 &lt;NA&gt;
+3106   25624               9840 &lt;NA&gt;
+3107   27816               9575 &lt;NA&gt;
+3108   36028              13242 &lt;NA&gt;
+3109   32130              11784 &lt;NA&gt;
+3110   43752              16223 &lt;NA&gt;
+3111   23871               8116 &lt;NA&gt;
+3112   74240              28014 &lt;NA&gt;
+3113   37736              11872 &lt;NA&gt;
+3114   19769               7732 &lt;NA&gt;
+3115   63011              23461 &lt;NA&gt;
+3116   19421               7249 &lt;NA&gt;
+3117   39097              13150 &lt;NA&gt;
+3118   12035               3790 &lt;NA&gt;
+3119   26752               9841 &lt;NA&gt;
+3120   24821               9113 &lt;NA&gt;
+3121   23533               8741 &lt;NA&gt;
+3122   75587              25831 &lt;NA&gt;
+3123   23455               8889 &lt;NA&gt;
+3124   49976              14476 &lt;NA&gt;
+3125   74578              26708 &lt;NA&gt;
+3126   37346              14091 &lt;NA&gt;
+3127   57656              22668 &lt;NA&gt;
+3128   43250              14754 &lt;NA&gt;
+3129   23587               7860 &lt;NA&gt;
+3130   43522              15830 &lt;NA&gt;
+3131   21478               7218 &lt;NA&gt;
+3132   99255              40441 &lt;NA&gt;
+3133   88308              34850 &lt;NA&gt;
+3134   27545               9496 &lt;NA&gt;
+3135   33271              14974 &lt;NA&gt;
+3136   11499               4290 &lt;NA&gt;
+3137   14692               5461 &lt;NA&gt;
+3138   17458               6368 &lt;NA&gt;
+3139   37187              13759 &lt;NA&gt;
+3140   53716              21072 &lt;NA&gt;
+3141   27198               9963 &lt;NA&gt;
+3142   10729               3433 &lt;NA&gt;
+3143   31776              12321 &lt;NA&gt;
+3144   41011              14393 &lt;NA&gt;
+3145   47783              15870 &lt;NA&gt;
+3146   61550              24218 &lt;NA&gt;
+3147   72015              26575 &lt;NA&gt;
+3148   35367              14824 &lt;NA&gt;
+3149   46464              16175 &lt;NA&gt;
+3150   56169              20962 &lt;NA&gt;
+3151   25574               8944 &lt;NA&gt;
+3152    2060                338 &lt;NA&gt;
+3153    5528                902 &lt;NA&gt;
+3154    5450                854 &lt;NA&gt;
+3155    2765                320 &lt;NA&gt;
+3156    4553                629 &lt;NA&gt;
+3157    1941                322 &lt;NA&gt;
+3158    5835               1969 &lt;NA&gt;
+3159   34422              12771 &lt;NA&gt;
+3160   97301              36855 &lt;NA&gt;
+3161   39616              13986 &lt;NA&gt;
+3162   36771              14902 &lt;NA&gt;
+3163   42179              16592 &lt;NA&gt;
+3164   34408              13227 &lt;NA&gt;
+3165    5625               1894 &lt;NA&gt;
+3166   63799              23367 &lt;NA&gt;
+3167   21434               8544 &lt;NA&gt;
+3168   20509               7447 &lt;NA&gt;
+3169   24637               8153 &lt;NA&gt;
+3170   37612              13928 &lt;NA&gt;
+3171   21967               8182 &lt;NA&gt;
+3172    3484               1046 &lt;NA&gt;
+3173   41668              14170 &lt;NA&gt;
+3174    2842                980 &lt;NA&gt;
+3175   71354              27131 &lt;NA&gt;
+3176   68587              23031 &lt;NA&gt;
+3177   36267              12728 &lt;NA&gt;
+3178    2771               1125 &lt;NA&gt;
+3179    6804               2338 &lt;NA&gt;
+3180   29668              10800 &lt;NA&gt;
+3181    3023               1123 &lt;NA&gt;
+3182   20572               7754 &lt;NA&gt;
+3183   16591               5714 &lt;NA&gt;
+3184   45523              17333 &lt;NA&gt;
+3185   58196              18948 &lt;NA&gt;
+3186   37033              14502 &lt;NA&gt;
+3187   38290              15162 &lt;NA&gt;
+3188   53949              20009 &lt;NA&gt;
+3189   22717               8359 &lt;NA&gt;
+3190   29876              10646 &lt;NA&gt;
+3191   71805              22414 &lt;NA&gt;
+3192   63031              20406 &lt;NA&gt;
+3193   38257              12846 &lt;NA&gt;
+3194   14348               5057 &lt;NA&gt;
+3195   10204               3726 &lt;NA&gt;
+3196   26387               7991 &lt;NA&gt;
+3197   37693              11627 &lt;NA&gt;
+3198   13324               4607 &lt;NA&gt;
+3199   39770              14209 &lt;NA&gt;
+3200   25337               8911 &lt;NA&gt;
+3201   17010               5666 &lt;NA&gt;
+3202   34588              11674 &lt;NA&gt;
+3203   21194               7117 &lt;NA&gt;
+3204   18199               6112 &lt;NA&gt;
+3205   83647              30213 &lt;NA&gt;
+3206   32401              12742 &lt;NA&gt;
+3207   29605              10312 &lt;NA&gt;
+3208   39122              14915 &lt;NA&gt;
+3209   67670              26473 &lt;NA&gt;
+3210   29934              10053 &lt;NA&gt;
+3211   40544              16253 &lt;NA&gt;
+3212   33511              11879 &lt;NA&gt;
+3213   28169              10858 &lt;NA&gt;
+3214   29208              11014 &lt;NA&gt;
+3215   44401              15260 &lt;NA&gt;
+3216   38934              14411 &lt;NA&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="missing-value-1" class="level3">
+<h3 class="anchored" data-anchor-id="missing-value-1"><strong>Missing Value</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>monthly_vaccination <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(monthly_vaccination)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="removal-of-outer-islands-1" class="level3">
+<h3 class="anchored" data-anchor-id="removal-of-outer-islands-1"><strong>Removal of Outer Islands</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>monthly_vaccination <span class="ot">&lt;-</span> <span class="fu">filter</span>(monthly_vaccination, City <span class="sc">!=</span> <span class="st">"KAB.ADM.KEP.SERIBU"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(DKI_JAKATAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Object_ID"        "Village_Code"     "Village"          "Code"            
+ [5] "Province"         "City"             "District"         "Sub_District"    
+ [9] "Total_Population" "geometry"        </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(monthly_vaccination)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Village_Code"       "City"               "Sub_District"      
+[4] "District"           "Target"             "Not_Yet_Vaccinated"
+[7] "Date"              </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>combined_jakarta_monthly_vaccination <span class="ot">&lt;-</span> <span class="fu">left_join</span>(DKI_JAKATAR, monthly_vaccination,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">by=</span><span class="fu">c</span>(</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Village_Code"</span><span class="ot">=</span><span class="st">"Village_Code"</span>, </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"City"</span><span class="ot">=</span><span class="st">"City"</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Sub_District"</span><span class="ot">=</span><span class="st">"Sub_District"</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"District"</span> <span class="ot">=</span> <span class="st">"District"</span> </span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>                               ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>prelim_target <span class="ot">=</span> <span class="fu">tm_shape</span>(combined_jakarta_monthly_vaccination)<span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"Target"</span>) <span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title=</span><span class="st">"Preliminary Target Count"</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>prelim_yet_to_be_vaccinated <span class="ot">=</span> <span class="fu">tm_shape</span>(combined_jakarta_monthly_vaccination)<span class="sc">+</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"Not_Yet_Vaccinated"</span>) <span class="sc">+</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title=</span><span class="st">"Preliminary Yet yo be Vaccinated Count"</span>)</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(prelim_target, prelim_yet_to_be_vaccinated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="identifying-mismatched-sub-district-records" class="level3">
+<h3 class="anchored" data-anchor-id="identifying-mismatched-sub-district-records"><strong>Identifying Mismatched Sub-District Records</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>combined_jakarta_monthly_vaccination_subdistrict <span class="ot">&lt;-</span> <span class="fu">c</span>(combined_jakarta_monthly_vaccination<span class="sc">$</span>Sub_District)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR_subdistrict <span class="ot">&lt;-</span> <span class="fu">c</span>(DKI_JAKATAR<span class="sc">$</span>Sub_District)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(combined_jakarta_monthly_vaccination_subdistrict[<span class="sc">!</span>(combined_jakarta_monthly_vaccination_subdistrict <span class="sc">%in%</span> DKI_JAKATAR_subdistrict)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(DKI_JAKATAR_subdistrict[<span class="sc">!</span>(DKI_JAKATAR_subdistrict <span class="sc">%in%</span> combined_jakarta_monthly_vaccination_subdistrict)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialise a dataframe of our cases vs bd subdistrict spelling</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>spelling <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Aspatial_Cases=</span><span class="fu">c</span>(<span class="st">"BALE KAMBANG"</span>, <span class="st">"HALIM PERDANA KUSUMAH"</span>, <span class="st">"JATI PULO"</span>, <span class="st">"KALI BARU"</span>, <span class="st">"KAMPUNG TENGAH"</span>, <span class="st">"KRAMAT JATI"</span>, <span class="st">"KERENDANG"</span>, <span class="st">"PAL MERIAM"</span>, <span class="st">"PINANG RANTI"</span>, <span class="st">"RAWA JATI"</span>),</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Geospatial_BD=</span><span class="fu">c</span>(<span class="st">"BALEKAMBAG"</span>, <span class="st">"HALIM PERDANA KUSUMA"</span>, <span class="st">"JATIPULO"</span>, <span class="st">"KALIBARU"</span>, <span class="st">"TENGAH"</span>, <span class="st">"KRAMATJATI"</span>, <span class="st">"KRENDANG"</span>, <span class="st">"PALMERIAM"</span>, <span class="st">"PINANGRANTI"</span>, <span class="st">"RAWAJATI"</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="co"># with dataframe a input, outputs a kable</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(spelling, <span class="at">caption=</span><span class="st">"Mismatched Records"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_material</span>(<span class="st">"hover"</span>, <span class="at">latex_options=</span><span class="st">"scale_down"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class=" lightable-material lightable-hover" style="font-family: &quot;Source Sans Pro&quot;, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Mismatched Records</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Aspatial_Cases </th>
+   <th style="text-align:left;"> Geospatial_BD </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> BALE KAMBANG </td>
+   <td style="text-align:left;"> BALEKAMBAG </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> HALIM PERDANA KUSUMAH </td>
+   <td style="text-align:left;"> HALIM PERDANA KUSUMA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JATI PULO </td>
+   <td style="text-align:left;"> JATIPULO </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> KALI BARU </td>
+   <td style="text-align:left;"> KALIBARU </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> KAMPUNG TENGAH </td>
+   <td style="text-align:left;"> TENGAH </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> KRAMAT JATI </td>
+   <td style="text-align:left;"> KRAMATJATI </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> KERENDANG </td>
+   <td style="text-align:left;"> KRENDANG </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PAL MERIAM </td>
+   <td style="text-align:left;"> PALMERIAM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PINANG RANTI </td>
+   <td style="text-align:left;"> PINANGRANTI </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> RAWA JATI </td>
+   <td style="text-align:left;"> RAWAJATI </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'BALEKAMBANG'</span>] <span class="ot">&lt;-</span> <span class="st">'BALE KAMBANG'</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'HALIM PERDANA KUSUMA'</span>] <span class="ot">&lt;-</span> <span class="st">'HALIM PERDANA KUSUMAH'</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'JATIPULO'</span>] <span class="ot">&lt;-</span> <span class="st">'JATI PULO'</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'KALIBARU'</span>] <span class="ot">&lt;-</span> <span class="st">'KALI BARU'</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'TENGAH'</span>] <span class="ot">&lt;-</span> <span class="st">'KAMPUNG TENGAH'</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'KRAMATJATI'</span>] <span class="ot">&lt;-</span> <span class="st">'KRAMAT JATI'</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'KRENDANG'</span>] <span class="ot">&lt;-</span> <span class="st">'KERENDANG'</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'PALMERIAM'</span>] <span class="ot">&lt;-</span> <span class="st">'PAL MERIAM'</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'PINANGRANTI'</span>] <span class="ot">&lt;-</span> <span class="st">'PINANG RANTI'</span></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>DKI_JAKATAR<span class="sc">$</span>Sub_District[DKI_JAKATAR<span class="sc">$</span>Sub_District <span class="sc">==</span> <span class="st">'RAWAJATI'</span>] <span class="ot">&lt;-</span> <span class="st">'RAWA JATI'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="joining-eda" class="level3">
+<h3 class="anchored" data-anchor-id="joining-eda"><strong>Joining + EDA</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>combined_jakarta_monthly_vaccination_2 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(DKI_JAKATAR, monthly_vaccination,</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">by=</span><span class="fu">c</span>(<span class="st">"Sub_District"</span><span class="ot">=</span><span class="st">"Sub_District"</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                              )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>updated_target <span class="ot">=</span> <span class="fu">tm_shape</span>(combined_jakarta_monthly_vaccination_2)<span class="sc">+</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"Target"</span>) <span class="sc">+</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title=</span><span class="st">"Preliminary Target Count"</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>updated_yet_to_be_vaccinated <span class="ot">=</span> <span class="fu">tm_shape</span>(combined_jakarta_monthly_vaccination_2)<span class="sc">+</span></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"Not_Yet_Vaccinated"</span>) <span class="sc">+</span></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title=</span><span class="st">"Preliminary Yet yo be Vaccinated Count"</span>)</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(updated_target, updated_yet_to_be_vaccinated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
 <section id="choropleth-mapping-and-analysis" class="level1">
 <h1>1 Choropleth Mapping and Analysis</h1>
-<section id="compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level" class="level3">
-<h3 class="anchored" data-anchor-id="compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level">1.1 Compute the monthly vaccination rate from July 2021 to June 2022 at sub-district (also known as kelurahan in Bahasa Indonesia) level,</h3>
+<section id="compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level" class="level2">
+<h2 class="anchored" data-anchor-id="compute-the-monthly-vaccination-rate-from-july-2021-to-june-2022-at-sub-district-also-known-as-kelurahan-in-bahasa-indonesia-level">1.1 Compute the monthly vaccination rate from July 2021 to June 2022 at sub-district (also known as kelurahan in Bahasa Indonesia) level</h2>
+<p>In this section we find number of vaccinated by taking Target - Not_Yet_Vaccinated = Vaccinated</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>combined_jakarta_monthly_vaccination_2<span class="sc">$</span>month_vacination <span class="ot">&lt;-</span>combined_jakarta_monthly_vaccination_2<span class="sc">$</span>Target <span class="sc">-</span> combined_jakarta_monthly_vaccination_2<span class="sc">$</span>Not_Yet_Vaccinated</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this section we find the monthly rate of vaccinated by (Vaccinated / Target ) * 100 = monthly vaccination rate</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>combined_jakarta_monthly_vaccination_2<span class="sc">$</span>month_vacination_rate <span class="ot">&lt;-</span>(combined_jakarta_monthly_vaccination_2<span class="sc">$</span>month_vacination <span class="sc">/</span> combined_jakarta_monthly_vaccination_2<span class="sc">$</span>Target) <span class="sc">*</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="prepare-the-monthly-vaccination-rate-maps-by-using-appropriate-tmap-functions" class="level3">
-<h3 class="anchored" data-anchor-id="prepare-the-monthly-vaccination-rate-maps-by-using-appropriate-tmap-functions">1.2 Prepare the monthly vaccination rate maps by using appropriate tmap functions,</h3>
-</section>
-<section id="section-1" class="level3">
-<h3 class="anchored" data-anchor-id="section-1"></h3>
-<p>1.3 Prepare the monthly vaccination rate maps by using appropriate tmap functions,</p>
-</section>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1"></h2>
+<p>1.2 Prepare the monthly vaccination rate maps by using appropriate tmap functions,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>vacination_rate <span class="ot">=</span> <span class="fu">tm_shape</span>(combined_jakarta_monthly_vaccination_2)<span class="sc">+</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"month_vacination_rate"</span>,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">style =</span> <span class="st">"quantile"</span>, </span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>,) <span class="sc">+</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title=</span><span class="st">"July 2021 to Jun 2022 Monthly vaccination rate "</span>)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(vacination_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <section id="section-2" class="level3">
 <h3 class="anchored" data-anchor-id="section-2"></h3>
 </section>
 </section>
+<section id="describe-the-spatial-patterns-revealed-by-the-choropleth-maps-not-more-than-200-words." class="level2">
+<h2 class="anchored" data-anchor-id="describe-the-spatial-patterns-revealed-by-the-choropleth-maps-not-more-than-200-words.">1.3 Describe the spatial patterns revealed by the choropleth maps (not more than 200 words).</h2>
+</section>
+</section>
 <section id="local-gi-analysis" class="level1">
 <h1>2 Local Gi* Analysis</h1>
+<section id="compute-local-gi-values-of-the-monthly-vaccination-rate" class="level2">
+<h2 class="anchored" data-anchor-id="compute-local-gi-values-of-the-monthly-vaccination-rate">2.1 Compute local Gi* values of the monthly vaccination rate,</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wm_idw &lt;- combined_jakarta_monthly_vaccination_2 %&gt;%</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  mutate(nb = st_contiguity(geometry),</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         wts = st_inverse_distance(nb, geometry,</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a> <span class="co">#                                  scale = 1,</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                                 alpha = 1),</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>   <span class="co">#      .before = 1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wm_q</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#global_moran_perm(wm_q$jul_2021_vac_rate,</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#                      wm_q$nb,</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>   <span class="do">##                    wm_q$wt,</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>       <span class="co">#           nsim = 99)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#HCSA &lt;- wm_idw %&gt;% </span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  mutate(local_Gi = local_gstar_perm(</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>   <span class="co"># jul_2021_vac_rate, nb, wt, nsim = 99),</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co">#    #     .before = 1) %&gt;%</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a> <span class="do">## unnest(local_Gi)</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="co">#HCSA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="section-3" class="level1">
-<h1></h1>
+<section id="display-the-gi-maps-of-the-monthly-vaccination-rate.-the-maps-should-only-display-the-significant-i.e.-p-value-0.05" class="level2">
+<h2 class="anchored" data-anchor-id="display-the-gi-maps-of-the-monthly-vaccination-rate.-the-maps-should-only-display-the-significant-i.e.-p-value-0.05">2.2 Display the Gi* maps of the monthly vaccination rate. The maps should only display the significant (i.e.&nbsp;p-value &lt; 0.05)</h2>
+</section>
+<section id="with-reference-to-the-analysis-results-draw-statistical-conclusions-not-more-than-250-words." class="level2">
+<h2 class="anchored" data-anchor-id="with-reference-to-the-analysis-results-draw-statistical-conclusions-not-more-than-250-words.">2.3 With reference to the analysis results, draw statistical conclusions (not more than 250 words).</h2>
 <p>3 Emerging Hot Spot Analysis(EHSA)</p>
 </section>
-<section id="section-4" class="level1">
+</section>
+<section id="section-3" class="level1">
 <h1></h1>
 
 

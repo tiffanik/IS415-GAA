@@ -42,7 +42,7 @@ pacman::p_load(sf, sfdep, tmap, plotly, tidyverse)
 ### **Datasets Used**
 
 | Type       | Name                                                                                                                                                          | Format    | Description                                                                                   |
-|---------------|----------------------------|---------------|---------------|
+|-----------|---------------------------------|-----------|-----------------|
 | Aspstial   | [Riwayat File Vaksinasi DKI Jakarta (Monthly)](https://riwayat-file-vaksinasi-dki-jakarta-jakartagis.hub.arcgis.com/)                                         | .xlsx     | The Vaccination Data on this dashboard shows the number of people vaccinated with DKI Jakarta |
 | Geospatial | [Village Boundary Shapefile & 2019 Population Data Throughout Indonesia](https://www.indonesia-geospasial.com/2020/04/download-shapefile-shp-batas-desa.html) | Shapefile | Sub-districts in DKI Jakarta                                                                  |
 
@@ -211,6 +211,7 @@ aspatial_preprocess <- function(filepath){
 ### **Feeding Files into our `aspatial_preprocess` function**
 
 ```{r}
+library(readxl)
 # in the folder 'data/aspatial', find files with the extension '.xlsx' and add it to our fileslist 
 # the full.names=TRUE prepends the directory path to the file names, giving a relative file path - otherwise, only the file names (not the paths) would be returned 
 # reference: https://stat.ethz.ch/R-manual/R-devel/library/base/html/list.files.html
@@ -231,7 +232,9 @@ dflist <- lapply(seq_along(fileslist), function(x) aspatial_preprocess(fileslist
 ```
 
 ```{r}
-monthly_vaccination <- ldply(dflist, data.frame)
+library(dplyr)
+library(tidyr)
+monthly_vaccination <- plyr::ldply(dflist, data.frame)
 ```
 
 ```{r}
@@ -241,7 +244,7 @@ glimpse(monthly_vaccination)
 ### Renaming Columns with Translation
 
 ```{r}
-colnames(monthly_vaccination) <- c("Village_Code", "City","Sub_District","District","Target","Not_Yet_Vaccinated") 
+colnames(monthly_vaccination) <- c("Village_Code", "City","Sub_District","District","Target","Not_Yet_Vaccinated","Date") 
 
 
 
@@ -262,7 +265,8 @@ monthly_vaccination <- na.omit(monthly_vaccination)
 ### **Removal of Outer Islands**
 
 ```{r}
-monthly_vaccination <- filter(monthly_vaccination, City == "KAB.ADM.KEP.SERIBU")
+
+monthly_vaccination <- filter(monthly_vaccination, City != "KAB.ADM.KEP.SERIBU")
 ```
 
 ```{r}
@@ -410,36 +414,36 @@ tmap_arrange(vacination_rate)
 ```{r}
 
 
-wm_idw <- a_combined_jakarta_kelurahan_jul_2021 %>%
-  mutate( wts = st_inverse_distance(nb, geometry,
-                                                          scale = 1,
-                                   alpha = 1),
-         .before = 1)
-          nb = st_contiguity(geometry)
+
         
-             
+#wm_idw <- combined_jakarta_monthly_vaccination_2 %>%
+#  mutate(nb = st_contiguity(geometry),
+#         wts = st_inverse_distance(nb, geometry,
+ #                                  scale = 1,
+  #                                 alpha = 1),
+   #      .before = 1)
 ```
 
 ```{r}
-wm_q
+#wm_q
 ```
 
 ```{r}
 
 
-global_moran_perm(wm_q$jul_2021_vac_rate,
-                       wm_q$nb,
-                       wm_q$wt,
-                  nsim = 99)
+#global_moran_perm(wm_q$jul_2021_vac_rate,
+ #                      wm_q$nb,
+   ##                    wm_q$wt,
+       #           nsim = 99)
 ```
 
 ```{r}
-HCSA <- wm_idw %>% 
-  mutate(local_Gi = local_gstar_perm(
-    jul_2021_vac_rate, nb, wt, nsim = 99),
-         .before = 1) %>%
-  unnest(local_Gi)
-HCSA
+#HCSA <- wm_idw %>% 
+#  mutate(local_Gi = local_gstar_perm(
+   # jul_2021_vac_rate, nb, wt, nsim = 99),
+#    #     .before = 1) %>%
+ ## unnest(local_Gi)
+#HCSA
 ```
 
 ## 2.2 Display the Gi\* maps of the monthly vaccination rate. The maps should only display the significant (i.e. p-value \< 0.05)

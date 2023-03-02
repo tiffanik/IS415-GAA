@@ -3,7 +3,8 @@ title: "Take-home Exercise 2: Spatio-temporal Analysis of COVID-19 Vaccination T
 ---
 
 # 
-Setting the Scene
+
+# Setting the Scene
 
 ![](images/vaccine-hero.png)
 
@@ -15,28 +16,436 @@ According to wikipedia, as of 5 February 2023 at 18:00 WIB (UTC+7), 204,266,655 
 
 Despite its compactness, the cumulative vaccination rate are not evenly distributed within DKI Jakarta. The question is where are the sub-districts with relatively higher number of vaccination rate and how they changed over time.
 
+# **Problem Statement**
+
+Exploratory Spatial Data Analysis (ESDA) hold tremendous potential to address complex problems facing society. In this study, you are tasked to apply appropriate Local Indicators of Spatial Association (LISA) and Emerging Hot Spot Analysis (EHSA) to **undercover the spatio-temporal trends of COVID-19 vaccination in DKI Jakarta.**
+
+# The Data
+
+### **Packages Used**
+
+-   **sf** for importing, managing, and processing geospatial data, and
+
+-   **tidyverse** for performing data science tasks such as importing, wrangling and visualising data.
+
+-   **readr** for importing delimited text file,
+
+-   **tidyr** for tidying data,
+
+-   **dplyr** for wrangling data and
+
+```{r}
+pacman::p_load(sf, sfdep, tmap, plotly, tidyverse)
+
+```
+
+### **Datasets Used**
+
+| Type       | Name                                                                                                                                                          | Format    | Description                                                                                   |
+|---------------|----------------------------|---------------|---------------|
+| Aspstial   | [Riwayat File Vaksinasi DKI Jakarta (Monthly)](https://riwayat-file-vaksinasi-dki-jakarta-jakartagis.hub.arcgis.com/)                                         | .xlsx     | The Vaccination Data on this dashboard shows the number of people vaccinated with DKI Jakarta |
+| Geospatial | [Village Boundary Shapefile & 2019 Population Data Throughout Indonesia](https://www.indonesia-geospasial.com/2020/04/download-shapefile-shp-batas-desa.html) | Shapefile | Sub-districts in DKI Jakarta                                                                  |
+
+PS: *To retrieve the monthly cumulative records for the Vaccination Data in Jakarta, we took the data compiled on the first day of each month.*
+
+# **Data Wrangling: Geospatial Data**
+
+### **Importing Geospatial Data**
+
+```{r}
+DKI_JAKATAR <- st_read(dsn = "data/geospatial", 
+                 layer = "BATAS_DESA_DESEMBER_2019_DUKCAPIL_DKI_JAKARTA")
+
+```
+
+### **Data Pre-Processing**
+
+Check for invalid geometries:
+
+```{r}
+length(which(st_is_valid(DKI_JAKATAR) == FALSE))
+```
+
+### **Missing Value**
+
+```{r}
+DKI_JAKATAR[rowSums(is.na(DKI_JAKATAR))!=0,]
+```
+
+```{r}
+# removes rows that have an NA value
+DKI_JAKATAR <- na.omit(DKI_JAKATAR)
+```
+
+### **Verifying + Transforming Coordinate System**
+
+Check the CRS of DKI_JAKATAR:
+
+As we can see, the assigned coordinates system is [WGS 84](https://epsg.io/4326), the 'World Geodetic System 1984'. In the context of this dataset, this isn't appropriate: as this is an Indonesian-specific geospatial dataset, we should be using the national CRS of Indonesia, [DGN95](https://epsg.io/23845), the 'Datum Geodesi Nasional 1995', ESPG code 23845. Let's rectify that:
+
+```{r}
+st_crs(DKI_JAKATAR)
+DKI_JAKATAR <- st_transform(DKI_JAKATAR, 23845)
+```
+
+Let us check if the CRS has been properly assigned:
+
+```{r}
+st_crs(DKI_JAKATAR)
+```
+
+### **Removal of Outer Islands**
+
+```{r}
+plot(st_geometry(DKI_JAKATAR))
+```
+
+As we can see, DKI_JAKATAR includes both the mainland and the outer islands. As per the assignment requirements, since the outer islands aren't relevant to our analysis, we'll have to remove them.
+
+Check for its unique values:
+
+```{r}
+unique(DKI_JAKATAR$"KAB_KOTA")
+```
+
+```{r}
+tm_shape(DKI_JAKATAR) + 
+  tm_polygons("KAB_KOTA")
+```
+
+```{r}
+DKI_JAKATAR <- filter(DKI_JAKATAR, KAB_KOTA != "KEPULAUAN SERIBU")
+```
+
+### **Retaining first 9 fields of DKI_JAKATAR**
+
+```{r}
+DKI_JAKATAR <- DKI_JAKATAR[, 0:9]
+```
+
+### Renaming Columns with Translation
+
+```{r}
+DKI_JAKATAR <- DKI_JAKATAR %>% 
+  dplyr::rename(
+    Object_ID=OBJECT_ID,
+    Village_Code=KODE_DESA, 
+    Village=DESA, 
+    Code=KODE, 
+    Province=PROVINSI, 
+    City=KAB_KOTA, 
+    District=KECAMATAN, 
+    Sub_District=DESA_KELUR,
+    Total_Population=JUMLAH_PEN
+    ) 
+```
+
+**Brief EDA**
+
+Before we move on into importing the aspatial data and into the meat of our geovisualiastion, it's important to get a feel for the data that we're working with, especially on the sub-district level. As such, let's take a quick glimpse:
+
+```{r}
+glimpse(DKI_JAKATAR)
+```
+
+```{r}
+length(unique(DKI_JAKATAR$"Sub_District"))
+```
+
+```{r}
+length(unique(DKI_JAKATAR$"District"))
+```
+
+```{r}
+tm_shape(DKI_JAKATAR) + 
+  tm_polygons("City")
+```
+
+# **Data Wrangling: Aspatial Data**
+
+### **Pre-Importing EDA**
+
+In our 'data/aspatial' folder, we have multiple .xlsx files ranging from 1 July 2021 to June 2022. However, before we start compiling all of our data, it's important to understand what we're working with and to check for any discrepancies, so let's perform a brief EDA:
+
+**Our columns of interest (those that are relevant to our analysis) are as follows:**
+
+KODE KELURAHA = Village_code
+
+WILAYAH KOTA= City_area
+
+KECAMATAN = Sub_district
+
+KELURAHA = Ward
+
+SASARAN = Target
+
+BELUM VAKSIN = Not_Yet_Vaccinated
+
+```{r}
+
+
+aspatial_preprocess <- function(filepath){
+ 
+  result_file <- read_xlsx(filepath)
+  
+  startpoint <- gregexpr(pattern="Corona", filepath)[[1]] + 8
+  endpoint <- gregexpr(pattern="Pukul", filepath)[[1]] - 2
+  result_file$Date <- substr(filepath, startpoint, endpoint)
+
+  result_file <- result_file[, !duplicated(colnames(result_file), fromLast = TRUE)] 
+
+  
+  # Retain the Relevant Columns
+  result_file <- result_file %>% 
+    select("KODE KELURAHAN", 
+           "WILAYAH KOTA", 
+           "KECAMATAN", 
+           "KELURAHAN", 
+           "SASARAN", 
+           "BELUM VAKSIN",
+           "DATE")
+  return(result_file)
+}
+```
+
+### **Feeding Files into our `aspatial_preprocess` function**
+
+```{r}
+# in the folder 'data/aspatial', find files with the extension '.xlsx' and add it to our fileslist 
+# the full.names=TRUE prepends the directory path to the file names, giving a relative file path - otherwise, only the file names (not the paths) would be returned 
+# reference: https://stat.ethz.ch/R-manual/R-devel/library/base/html/list.files.html
+fileslist <-list.files(path = "data/aspatial", pattern = "*.xlsx", full.names=TRUE)
+
+# afterwards, for every element in fileslist, apply aspatial_process function
+dflist <- lapply(seq_along(fileslist), function(x) aspatial_preprocess(fileslist[x]))
+
+
+```
+
+```{r}
+
+fileslist <-list.files(path = "data/aspatial", pattern = "*.xlsx", full.names=TRUE)
+
+dflist <- lapply(seq_along(fileslist), function(x) aspatial_preprocess(fileslist[x]))
+
+```
+
+```{r}
+monthly_vaccination <- ldply(dflist, data.frame)
+```
+
+```{r}
+glimpse(monthly_vaccination)
+```
+
+### Renaming Columns with Translation
+
+```{r}
+colnames(monthly_vaccination) <- c("Village_Code", "City","Sub_District","District","Target","Not_Yet_Vaccinated") 
+
+
+
+```
+
+```{r}
+
+monthly_vaccination[rowSums(is.na(monthly_vaccination))!=0,]
+```
+
+### **Missing Value**
+
+```{r}
+
+monthly_vaccination <- na.omit(monthly_vaccination)
+```
+
+### **Removal of Outer Islands**
+
+```{r}
+monthly_vaccination <- filter(monthly_vaccination, City == "KAB.ADM.KEP.SERIBU")
+```
+
+```{r}
+colnames(DKI_JAKATAR)
+```
+
+```{r}
+colnames(monthly_vaccination)
+```
+
+```{r}
+combined_jakarta_monthly_vaccination <- left_join(DKI_JAKATAR, monthly_vaccination,
+                              by=c(
+                                "Village_Code"="Village_Code", 
+                                 "City"="City",
+                                "Sub_District"="Sub_District",
+                                "District" = "District" 
+                               ))
+                              
+```
+
+```{r}
+prelim_target = tm_shape(combined_jakarta_monthly_vaccination)+
+  tm_fill("Target") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title="Preliminary Target Count")
+
+prelim_yet_to_be_vaccinated = tm_shape(combined_jakarta_monthly_vaccination)+
+  tm_fill("Not_Yet_Vaccinated") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title="Preliminary Yet yo be Vaccinated Count")
+
+tmap_arrange(prelim_target, prelim_yet_to_be_vaccinated)
+```
+
+### **Identifying Mismatched Sub-District Records**
+
+```{r}
+combined_jakarta_monthly_vaccination_subdistrict <- c(combined_jakarta_monthly_vaccination$Sub_District)
+
+DKI_JAKATAR_subdistrict <- c(DKI_JAKATAR$Sub_District)
+
+unique(combined_jakarta_monthly_vaccination_subdistrict[!(combined_jakarta_monthly_vaccination_subdistrict %in% DKI_JAKATAR_subdistrict)])
+```
+
+```{r}
+unique(DKI_JAKATAR_subdistrict[!(DKI_JAKATAR_subdistrict %in% combined_jakarta_monthly_vaccination_subdistrict)])
+```
+
+```{r}
+# initialise a dataframe of our cases vs bd subdistrict spelling
+spelling <- data.frame(
+  Aspatial_Cases=c("BALE KAMBANG", "HALIM PERDANA KUSUMAH", "JATI PULO", "KALI BARU", "KAMPUNG TENGAH", "KRAMAT JATI", "KERENDANG", "PAL MERIAM", "PINANG RANTI", "RAWA JATI"),
+  Geospatial_BD=c("BALEKAMBAG", "HALIM PERDANA KUSUMA", "JATIPULO", "KALIBARU", "TENGAH", "KRAMATJATI", "KRENDANG", "PALMERIAM", "PINANGRANTI", "RAWAJATI")
+  )
+
+# with dataframe a input, outputs a kable
+library(knitr)
+library(kableExtra)
+kable(spelling, caption="Mismatched Records") %>%
+  kable_material("hover", latex_options="scale_down")
+```
+
+```{r}
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'BALEKAMBANG'] <- 'BALE KAMBANG'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'HALIM PERDANA KUSUMA'] <- 'HALIM PERDANA KUSUMAH'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'JATIPULO'] <- 'JATI PULO'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'KALIBARU'] <- 'KALI BARU'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'TENGAH'] <- 'KAMPUNG TENGAH'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'KRAMATJATI'] <- 'KRAMAT JATI'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'KRENDANG'] <- 'KERENDANG'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'PALMERIAM'] <- 'PAL MERIAM'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'PINANGRANTI'] <- 'PINANG RANTI'
+DKI_JAKATAR$Sub_District[DKI_JAKATAR$Sub_District == 'RAWAJATI'] <- 'RAWA JATI'
+```
+
+### **Joining + EDA**
+
+```{r}
+combined_jakarta_monthly_vaccination_2 <- left_join(DKI_JAKATAR, monthly_vaccination,
+                              by=c("Sub_District"="Sub_District")
+                              )
+```
+
+```{r}
+updated_target = tm_shape(combined_jakarta_monthly_vaccination_2)+
+  tm_fill("Target") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title="Preliminary Target Count")
+
+updated_yet_to_be_vaccinated = tm_shape(combined_jakarta_monthly_vaccination_2)+
+  tm_fill("Not_Yet_Vaccinated") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title="Preliminary Yet yo be Vaccinated Count")
+
+tmap_arrange(updated_target, updated_yet_to_be_vaccinated)
+```
+
 # 1 Choropleth Mapping and Analysis
 
-### 1.1 Compute the monthly vaccination rate from July 2021 to June 2022 at sub-district (also known as kelurahan in Bahasa Indonesia) level,
+## 1.1 Compute the monthly vaccination rate from July 2021 to June 2022 at sub-district (also known as kelurahan in Bahasa Indonesia) level
 
-### 1.2 Prepare the monthly vaccination rate maps by using appropriate tmap functions,
+In this section we find number of vaccinated by taking Target - Not_Yet_Vaccinated = Vaccinated
+
+```{r}
+library(dplyr)
+combined_jakarta_monthly_vaccination_2$month_vacination <-combined_jakarta_monthly_vaccination_2$Target - combined_jakarta_monthly_vaccination_2$Not_Yet_Vaccinated
+
+
+
+
+```
+
+In this section we find the monthly rate of vaccinated by (Vaccinated / Target ) \* 100 = monthly vaccination rate
+
+```{r}
+combined_jakarta_monthly_vaccination_2$month_vacination_rate <-(combined_jakarta_monthly_vaccination_2$month_vacination / combined_jakarta_monthly_vaccination_2$Target) * 100
+
+
+```
+
+## 
+
+1.2 Prepare the monthly vaccination rate maps by using appropriate tmap functions,
+
+```{r}
+vacination_rate = tm_shape(combined_jakarta_monthly_vaccination_2)+
+  tm_fill("month_vacination_rate",
+           style = "quantile", 
+          palette = "Blues",) +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title="July 2021 to Jun 2022 Monthly vaccination rate ")
+
+tmap_arrange(vacination_rate)
+```
 
 ### 
 
+## 1.3 Describe the spatial patterns revealed by the choropleth maps (not more than 200 words).
+
+# 2 Local Gi\* Analysis
+
+## 2.1 Compute local Gi\* values of the monthly vaccination rate,
+
+```{r}
 
 
-1.3 Prepare the monthly vaccination rate maps by using appropriate tmap functions,
+wm_idw <- a_combined_jakarta_kelurahan_jul_2021 %>%
+  mutate( wts = st_inverse_distance(nb, geometry,
+                                                          scale = 1,
+                                   alpha = 1),
+         .before = 1)
+          nb = st_contiguity(geometry)
+        
+             
+```
 
-### 
+```{r}
+wm_q
+```
 
-# 2  Local Gi\* Analysis
+```{r}
 
-# 
+
+global_moran_perm(wm_q$jul_2021_vac_rate,
+                       wm_q$nb,
+                       wm_q$wt,
+                  nsim = 99)
+```
+
+```{r}
+HCSA <- wm_idw %>% 
+  mutate(local_Gi = local_gstar_perm(
+    jul_2021_vac_rate, nb, wt, nsim = 99),
+         .before = 1) %>%
+  unnest(local_Gi)
+HCSA
+```
+
+## 2.2 Display the Gi\* maps of the monthly vaccination rate. The maps should only display the significant (i.e. p-value \< 0.05)
+
+## 2.3 With reference to the analysis results, draw statistical conclusions (not more than 250 words).
+
 3 Emerging Hot Spot Analysis(EHSA)
 
 # 
-
-
-
-
-

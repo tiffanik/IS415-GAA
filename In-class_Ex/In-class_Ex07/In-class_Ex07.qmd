@@ -53,7 +53,7 @@ tm_shape(hunan_GDPPC) +
 
 ## **Global Measures of Spatial Association**
 
-### **Deriving contiguity weights: Queen\'s method**
+### **Deriving contiguity weights: Queen's method**
 
 ```{r}
 wm_q <- hunan_GDPPC %>%
@@ -67,7 +67,7 @@ wm_q <- hunan_GDPPC %>%
 wm_q
 ```
 
-### **Computing Global Moran\' I**
+### **Computing Global Moran' I**
 
 ```{r}
 moranI <- global_moran(wm_q$GDPPC,
@@ -76,7 +76,7 @@ moranI <- global_moran(wm_q$GDPPC,
 glimpse(moranI)
 ```
 
-### **Performing Global Moran\'sI test**
+### **Performing Global Moran'sI test**
 
 ```{r}
 global_moran_test(wm_q$GDPPC,
@@ -84,7 +84,7 @@ global_moran_test(wm_q$GDPPC,
                        wm_q$wt)
 ```
 
-### **Performing Global Moran\'I permutation test**
+### **Performing Global Moran'I permutation test**
 
 ```{r}
 set.seed(1234)
@@ -97,7 +97,7 @@ global_moran_perm(wm_q$GDPPC,
                   nsim = 99)
 ```
 
-## **Computing local Moran\'s I**
+## **Computing local Moran's I**
 
 ```{r}
 
@@ -109,7 +109,7 @@ lisa <- wm_q %>%
 
 ```
 
-### **Visualising local Moran\'s I**
+### **Visualising local Moran's I**
 
 ```{r}
 tmap_mode("plot")
@@ -121,7 +121,7 @@ tm_shape(lisa) +
             main.title.size = 0.8)
 ```
 
-### **Visualising p-value of local Moran\'s I**
+### **Visualising p-value of local Moran's I**
 
 ```{r}
 tmap_mode("plot")
@@ -132,7 +132,7 @@ tm_shape(lisa) +
             main.title.size = 0.8)
 ```
 
-### **Visuaising local Moran\'s I and p-value**
+### **Visuaising local Moran's I and p-value**
 
 ```{r}
 tmap_mode("plot")

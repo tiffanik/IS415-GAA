@@ -42,7 +42,7 @@ pacman::p_load(sf, sfdep, tmap, plotly, tidyverse)
 ### **Datasets Used**
 
 | Type       | Name                                                                                                                                                          | Format    | Description                                                                                   |
-|-----------|---------------------------------|-----------|-----------------|
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-----------------------------------------------------------------------------------------------|
 | Aspstial   | [Riwayat File Vaksinasi DKI Jakarta (Monthly)](https://riwayat-file-vaksinasi-dki-jakarta-jakartagis.hub.arcgis.com/)                                         | .xlsx     | The Vaccination Data on this dashboard shows the number of people vaccinated with DKI Jakarta |
 | Geospatial | [Village Boundary Shapefile & 2019 Population Data Throughout Indonesia](https://www.indonesia-geospasial.com/2020/04/download-shapefile-shp-batas-desa.html) | Shapefile | Sub-districts in DKI Jakarta                                                                  |
 

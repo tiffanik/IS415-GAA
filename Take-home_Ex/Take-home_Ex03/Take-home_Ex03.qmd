@@ -1,3 +1,71 @@
 ---
-title: "Take-home_Ex03"
+title: "Take-home Exercise 3: Predicting HDB Public Housing Resale Pricies using Geographically Weighted Methods"
 ---
+
+# 1 Setting the Scene
+
+Housing is an essential component of household wealth worldwide. Buying a housing has always been a major investment for most people. The price of housing is affected by many factors. Some of them are global in nature such as the general economy of a country or inflation rate. Others can be more specific to the properties themselves. These factors can be further divided to structural and locational factors. Structural factors are variables related to the property themselves such as the size, fitting, and tenure of the property. Locational factors are variables related to the neighbourhood of the properties such as proximity to childcare centre, public transport service and shopping centre.
+
+Conventional, housing resale prices predictive models were built by using [**Ordinary Least Square (OLS)**](https://en.wikipedia.org/wiki/Ordinary_least_squares) method. However, this method failed to take into consideration that spatial autocorrelation and spatial heterogeneity exist in geographic data sets such as housing transactions. With the existence of spatial autocorrelation, the OLS estimation of predictive housing resale pricing models could lead to biased, inconsistent, or inefficient results (Anselin 1998). In view of this limitation, **Geographical Weighted Models** were introduced for calibrating predictive model for housing resale prices.
+
+more than 2 - norminal
+
+real world phenominal - no negative variable - dont use linear regression use poson
+
+linear regression
+
+-   cannot use for how many pant want to sell
+
+-   -5 covid patience
+
+-   feed straight line - give best fit
+
+-   minimise residue , best fit minimise error ![](images/image-508819485.png)
+
+-   beta - parameter estimate / slope of independent var , explain how well I explain , slope can be +/- , not show strength but slope will , +/- only show direction
+
+multi-linear regression
+
+-one response variable - number / continuous form
+
+-property price can have decimal
+
+-dependent var -continuous
+
+goodness of fit : bttr if use avg
+
+f-test stat compare
+
+reject or fear to reject
+
+95% confidence interval
+
+p \< 0.05 reject
+
+this model is btr avg
+
+multiple indeV/ explainatory var - use adjusted R
+
+when add in new var r2 increase
+
+\-
+
+for map
+
+```{##| fig-width: 30}
+```
+
+```{r}
+
+pacman::p_load(olsrr, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)
+
+
+#dont load this corrplot in pacman install seperately to avoid unneeded confict 
+
+```
+
+```{r}
+mpsz = st_read(
+  dsn = "data/geospatial", 
+  layer = "MP14_SUBZONE_WEB_PL")
+```

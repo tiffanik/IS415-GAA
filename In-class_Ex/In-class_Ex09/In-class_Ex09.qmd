@@ -201,6 +201,8 @@ ggplot(data=condo_resale.sf,
 ### 9.8.2 Multiple Linear Regression Method
 
 ```{r}
+library("corrplot")
+
 corrplot(cor(condo_resale[, 5:23]), diag = FALSE, order = "AOE",
          tl.pos = "td", tl.cex = 0.5, method = "number", type = "upper")
 ```

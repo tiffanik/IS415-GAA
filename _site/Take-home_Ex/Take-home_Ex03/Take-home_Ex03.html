@@ -356,19 +356,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#dont load this corrplot in pacman install seperately to avoid unneeded confict </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mpsz <span class="ot">=</span> <span class="fu">st_read</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dsn =</span> <span class="st">"data/geospatial"</span>, </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">layer =</span> <span class="st">"MP14_SUBZONE_WEB_PL"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>resale <span class="ot">=</span> <span class="fu">st_read</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dsn =</span> <span class="st">"data/aspatial/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `MP14_SUBZONE_WEB_PL' from data source 
-  `C:\tiffanik\IS415-GAA\Take-home_Ex\Take-home_Ex03\data\geospatial' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 323 features and 15 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33
-Projected CRS: SVY21</code></pre>
+<pre><code>Reading layer `resale-flat-prices-based-on-registration-date-from-jan-2017-onwards' from data source `C:\tiffanik\IS415-GAA\Take-home_Ex\Take-home_Ex03\data\aspatial\resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv' 
+  using driver `CSV'</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: no simple feature geometries present: returning a data.frame or tbl_df</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define vector of values to filter</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>filter_flat_type <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"3 ROOM"</span>, <span class="st">"4 ROOM"</span>, <span class="st">"5 ROOM"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>resale_subset <span class="ot">&lt;-</span> <span class="fu">filter</span>(resale,flat_type  <span class="sc">%in%</span> filter_flat_type)<span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">filter</span>(month <span class="sc">&gt;=</span> <span class="st">"2021-01"</span> <span class="sc">&amp;</span> month <span class="sc">&lt;=</span> <span class="st">"2022-12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

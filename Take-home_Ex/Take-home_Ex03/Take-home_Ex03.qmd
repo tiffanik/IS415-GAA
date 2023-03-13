@@ -52,8 +52,7 @@ when add in new var r2 increase
 
 for map
 
-```{##| fig-width: 30}
-```
+`{##| fig-width: 30}`
 
 ```{r}
 
@@ -65,7 +64,14 @@ pacman::p_load(olsrr, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)
 ```
 
 ```{r}
-mpsz = st_read(
-  dsn = "data/geospatial", 
-  layer = "MP14_SUBZONE_WEB_PL")
+require(dplyr)
+
+resale = st_read(
+  dsn = "data/aspatial/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+
+# Define vector of values to filter
+filter_flat_type <- c("3 ROOM", "4 ROOM", "5 ROOM")
+
+resale_subset <- filter(resale,flat_type  %in% filter_flat_type)%>% 
+                 filter(month >= "2021-01" & month <= "2022-12")
 ```

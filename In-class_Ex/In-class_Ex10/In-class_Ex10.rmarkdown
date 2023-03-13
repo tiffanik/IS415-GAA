@@ -10,7 +10,7 @@ pacman::p_load(sf, spdep, GWmodel, SpatialML, tidyverse,
 
 ## Data Import and Prepatation
 
-###  Importing geospatial data into R environment
+### Importing geospatial data into R environment
 
 
 ```{r}

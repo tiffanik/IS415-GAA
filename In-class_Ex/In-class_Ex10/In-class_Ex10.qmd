@@ -89,7 +89,18 @@ print(rf)
 ```
 
 ```{r}
-
+gwRF_adaptive <- grf(formula = resale_price ~ floor_area_sqm +
+                storey_order + remaining_lease_mths +
+                PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                PROX_MRT + PROX_PARK + PROX_MALL +
+                PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                WITHIN_1KM_PRISCH, 
+                dframe = train_data,
+                bw = 55,
+                kernel="adaptive",
+                coords=coords_train
+                )
 ```
 
 gwRF_adavtive$Glocal.Model$variable.importance

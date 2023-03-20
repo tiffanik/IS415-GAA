@@ -75,3 +75,149 @@ filter_flat_type <- c("3 ROOM", "4 ROOM", "5 ROOM")
 resale_subset <- filter(resale,flat_type  %in% filter_flat_type)%>% 
                  filter(month >= "2021-01" & month <= "2022-12")
 ```
+
+```{r}
+rs_transform <- resale_subset %>%
+  mutate(resale_subset, address = paste(block,street_name)) %>%
+  mutate(resale_subset, remaining_lease_yr = as.integer(str_sub(remaining_lease, 0, 2))) %>%
+  mutate(resale_subset, remaining_lease_mth = as.integer(str_sub(remaining_lease, 9, 11)))
+```
+
+```{r}
+rs_transform$remaining_lease_mth[is.na(rs_transform$remaining_lease_mth)] <- 0
+rs_transform$remaining_lease_yr <- rs_transform$remaining_lease_yr * 12
+rs_transform <- rs_transform %>% 
+  mutate(rs_transform, remaining_lease_mths = rowSums(rs_transform[, c("remaining_lease_yr", "remaining_lease_mth")])) %>%
+  select(month, town, address, block, street_name, flat_type, storey_range, floor_area_sqm, flat_model, 
+         lease_commence_date, remaining_lease_mths, resale_price)
+```
+
+```{r}
+add_list <- sort(unique(rs_transform$address))
+```
+
+```{r}
+get_coords <- function(add_list){
+  
+  # Create a data frame to store all retrieved coordinates
+  postal_coords <- data.frame()
+    
+  for (i in add_list){
+    #print(i)
+
+    r <- GET('https://developers.onemap.sg/commonapi/search?',
+           query=list(searchVal=i,
+                     returnGeom='Y',
+                     getAddrDetails='Y'))
+    data <- fromJSON(rawToChar(r$content))
+    found <- data$found
+    res <- data$results
+    
+    # Create a new data frame for each address
+    new_row <- data.frame()
+    
+    # If single result, append 
+    if (found == 1){
+      postal <- res$POSTAL 
+      lat <- res$LATITUDE
+      lng <- res$LONGITUDE
+      new_row <- data.frame(address= i, postal = postal, latitude = lat, longitude = lng)
+    }
+    
+    # If multiple results, drop NIL and append top 1
+    else if (found > 1){
+      # Remove those with NIL as postal
+      res_sub <- res[res$POSTAL != "NIL", ]
+      
+      # Set as NA first if no Postal
+      if (nrow(res_sub) == 0) {
+          new_row <- data.frame(address= i, postal = NA, latitude = NA, longitude = NA)
+      }
+      
+      else{
+        top1 <- head(res_sub, n = 1)
+        postal <- top1$POSTAL 
+        lat <- top1$LATITUDE
+        lng <- top1$LONGITUDE
+        new_row <- data.frame(address= i, postal = postal, latitude = lat, longitude = lng)
+      }
+    }
+
+    else {
+      new_row <- data.frame(address= i, postal = NA, latitude = NA, longitude = NA)
+    }
+    
+    # Add the row
+    postal_coords <- rbind(postal_coords, new_row)
+  }
+  return(postal_coords)
+}
+```
+
+```{r}
+coords <- get_coords(add_list)
+```
+
+```{r}
+coords[(is.na(coords$postal) | is.na(coords$latitude) | is.na(coords$longitude) | coords$postal=="NIL"), ]
+
+```
+
+```{r}
+rs_coords <- left_join(rs_transform, coords, by = c('address' = 'address'))
+```
+
+```{r}
+rs_coords$address <- sub("ST. GEORGE'S", "SAINT GEORGE'S", rs_coords$address)
+rs_invalid <- rs_coords[grepl("SAINT GEORGE'S", rs_coords$address), ]
+```
+
+```{r}
+add_list <- sort(unique(rs_invalid$address))
+
+```
+
+```{r}
+rs_invalid_coords <- get_coords(add_list)
+
+```
+
+```{r}
+rs_invalid_coords[(is.na(rs_invalid_coords$postal) | is.na(rs_invalid_coords$latitude) | is.na(rs_invalid_coords$longitude)), ]
+
+```
+
+```{r}
+rs_coords_final <- rs_coords %>%
+  left_join(rs_invalid_coords, by = c("address")) %>%
+  mutate(latitude = ifelse(is.na(postal.x), postal.y, postal.x)) %>%
+  mutate(latitude = ifelse(is.na(latitude.x), latitude.y, latitude.x)) %>%
+  mutate(longitude = ifelse(is.na(longitude.x), longitude.y, longitude.x)) %>%
+  select(-c(postal.x, latitude.x, longitude.x, postal.y, latitude.y, longitude.y))
+```
+
+```{r}
+rs_coords_rds <- write_rds(rs_coords_final, "data/aspatial/rds/rs_coords.rds")
+```
+
+```{r}
+rs_coords_sf <- st_as_sf(rs_coords,
+                    coords = c("longitude", 
+                               "latitude"),
+                    crs=4326) %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+length(which(st_is_valid(rs_coords_sf) == FALSE))
+
+```
+
+```{r}
+tmap_mode("view")
+tm_shape(rs_coords_sf)+
+  tm_dots(col="blue", size = 0.02)
+tmap_mode("plot")
+
+
+```

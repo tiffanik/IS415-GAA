@@ -155,69 +155,69 @@ get_coords <- function(add_list){
 ```
 
 ```{r}
-coords <- get_coords(add_list)
+#coords <- get_coords(add_list)
 ```
 
 ```{r}
-coords[(is.na(coords$postal) | is.na(coords$latitude) | is.na(coords$longitude) | coords$postal=="NIL"), ]
-
-```
-
-```{r}
-rs_coords <- left_join(rs_transform, coords, by = c('address' = 'address'))
-```
-
-```{r}
-rs_coords$address <- sub("ST. GEORGE'S", "SAINT GEORGE'S", rs_coords$address)
-rs_invalid <- rs_coords[grepl("SAINT GEORGE'S", rs_coords$address), ]
-```
-
-```{r}
-add_list <- sort(unique(rs_invalid$address))
+#coords[(is.na(coords$postal) | is.na(coords$latitude) | is.na(coords$longitude) | coords$postal=="NIL"), ]
 
 ```
 
 ```{r}
-rs_invalid_coords <- get_coords(add_list)
+#rs_coords <- left_join(rs_transform, coords, by = c('address' = 'address'))
+```
+
+```{r}
+#rs_coords$address <- sub("ST. GEORGE'S", "SAINT GEORGE'S", rs_coords$address)
+#rs_invalid <- rs_coords[grepl("SAINT GEORGE'S", rs_coords$address), ]
+```
+
+```{r}
+#add_list <- sort(unique(rs_invalid$address))
 
 ```
 
 ```{r}
-rs_invalid_coords[(is.na(rs_invalid_coords$postal) | is.na(rs_invalid_coords$latitude) | is.na(rs_invalid_coords$longitude)), ]
+#rs_invalid_coords <- get_coords(add_list)
 
 ```
 
 ```{r}
-rs_coords_final <- rs_coords %>%
-  left_join(rs_invalid_coords, by = c("address")) %>%
-  mutate(latitude = ifelse(is.na(postal.x), postal.y, postal.x)) %>%
-  mutate(latitude = ifelse(is.na(latitude.x), latitude.y, latitude.x)) %>%
-  mutate(longitude = ifelse(is.na(longitude.x), longitude.y, longitude.x)) %>%
-  select(-c(postal.x, latitude.x, longitude.x, postal.y, latitude.y, longitude.y))
-```
-
-```{r}
-rs_coords_rds <- write_rds(rs_coords_final, "data/aspatial/rds/rs_coords.rds")
-```
-
-```{r}
-rs_coords_sf <- st_as_sf(rs_coords,
-                    coords = c("longitude", 
-                               "latitude"),
-                    crs=4326) %>%
-  st_transform(crs = 3414)
-```
-
-```{r}
-length(which(st_is_valid(rs_coords_sf) == FALSE))
+#rs_invalid_coords[(is.na(rs_invalid_coords$postal) | is.na(rs_invalid_coords$latitude) | is.na(rs_invalid_coords$longitude)), ]
 
 ```
 
 ```{r}
-tmap_mode("view")
-tm_shape(rs_coords_sf)+
-  tm_dots(col="blue", size = 0.02)
-tmap_mode("plot")
+#rs_coords_final <- rs_coords %>%
+#  left_join(rs_invalid_coords, by = c("address")) %>%
+#  mutate(latitude = ifelse(is.na(postal.x), postal.y, postal.x)) %>%
+ # #mutate(latitude = ifelse(is.na(latitude.x), latitude.y, latitude.x)) %>%
+#  mutate(longitude = ifelse(is.na(longitude.x), longitude.y, longitude.x)) %>%
+ # select(-c(postal.x, latitude.x, longitude.x, postal.y, latitude.y, longitude.y))
+```
+
+```{r}
+#rs_coords_rds <- write_rds(rs_coords_final, "data/aspatial/rds/rs_coords.rds")
+```
+
+```{r}
+#rs_coords_sf <- st_as_sf(rs_coords,
+         #           coords = c("longitude", 
+   # 3                           "latitude"),
+     #               crs=4326) %>%
+ # st_transform(crs = 3414)
+```
+
+```{r}
+#length(which(st_is_valid(rs_coords_sf) == FALSE))
+
+```
+
+```{r}
+#tmap_mode("view")
+#tm_shape(rs_coords_sf)+
+#  tm_dots(col="blue", size = 0.02)
+#tmap_mode("plot")
 
 
 ```

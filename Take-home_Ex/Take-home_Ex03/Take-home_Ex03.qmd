@@ -405,7 +405,7 @@ plot(st_geometry(sg_CostalOutline_sf))
 plot(st_geometry(mpsz_sf))
 ```
 
-### Transport 
+### Transport
 
 ```{r}
 tmap_mode("view")
@@ -621,7 +621,7 @@ resale_sf <-
   proximity(., cycling_sf, "PROX_CYCLING")
 ```
 
-### ** 4.4 Facility Count within Radius Calculation**
+### \*\* 4.4 Facility Count within Radius Calculation\*\*
 
 ```{r}
 num_radius <- function(df1, df2, varname, radius) {
@@ -646,7 +646,7 @@ resale_sf <-
   num_radius(., cycling_sf   , "NUM_CYCLING", 350)
 ```
 
-### ** 4.5 Saving the Dataset**
+### \*\* 4.5 Saving the Dataset\*\*
 
 ```{r}
 resale_sf <- resale_sf %>%
@@ -659,47 +659,120 @@ resale_sf <- resale_sf %>%
 st_write(resale_sf, "data/geospatial/resale-final.shp")
 ```
 
-# ** 5.0 Predictive Model** 
+# \*\* 5.0 Predictive Model\*\*
 
-Task : 
+Task :
 
 In this take-home exercise, you are tasked to predict HDB resale prices at the sub-market level (i.e. HDB 3-room, HDB 4-room and HDB 5-room) for the month of January and February 2023 in Singapore. The **predictive models** must be built by using by using conventional OLS method and GWR methods. You are also required to compare the performance of the conventional OLS method versus the geographical weighted methods.
 
 ```{r}
-resale_sf <- st_read(dsn="data/geospatial", layer="resale-final")
+resale_sf_final <- st_read(dsn="data/geospatial", layer="resale-final")
 ```
 
 ```{r}
-glimpse(resale_sf)
+glimpse(resale_sf_final)
 ```
 
 ```{r}
-resale_sf$LEASE_Y <- as.numeric(resale_sf$LEASE_Y)
-summary(resale_sf$PRICE)
+summary(resale_sf_final)
+```
+
+## 5.1.1 Exploratory Data Analysis (EDA)
+
+```{r}
+ggplot(data=resale_sf_final, aes(x=`PRICE`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
 ```
 
 ```{r}
-library(rsample)
-
-set.seed(1234)
-resale_split <- initial_split(resale_sf, # initial_split is from tidymodels
-                              prop = 6.5/10) # 65% will be train, 35% will be test
-train_data <- training(resale_split)
-test_data <- testing(resale_split)
+condo_resale.sf <- resale_sf_final %>%
+  mutate(`LOG_SELLING_PRICE` = log(PRICE))
 ```
 
 ```{r}
-write_rds(train_data, "data/model/train_data.rds")
-write_rds(test_data, "data/model/test_data.rds")
+ggplot(data=resale_sf_final, aes(x=`PRICE`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+```
+
+### 5.1.2 Multiple Histogram Plots distribution of variables
+
+```{r}
+AREA_SQM <- ggplot(data=resale_sf_final, aes(x= `AREA_SQ`)) + 
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_CBD <- ggplot(data=resale_sf_final, aes(x= `PROX_CB`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_ELDERLYCARE <- ggplot(data=resale_sf_final, aes(x= `PROX_EL`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_TO_GYM <- ggplot(data=resale_sf_final, 
+                               aes(x= `PROX_TO_`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_HEALTHY_EATERIES <- ggplot(data=resale_sf_final, aes(x= `PROX_HE`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_SUPERMARKET<- ggplot(data=resale_sf_final, aes(x= `PROX_SU`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_MRT <- ggplot(data=resale_sf_final, aes(x= `PROX_MR`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_TOP_PRIMARY_SCH <- ggplot(data=resale_sf_final, aes(x= `PROX_TOP`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+PROX_CYCLING <- ggplot(data=resale_sf_final, 
+                               aes(x= `PROX_CY`)) +
+  geom_histogram(bins=20, color="black", fill="light blue")
+
+ggarrange(AREA_SQM, PROX_CBD, PROX_ELDERLYCARE, 
+          PROX_TO_GYM , PROX_HEALTHY_EATERIES, PROX_SUPERMARKET, PROX_MRT,
+          PROX_TOP_PRIMARY_SCH, PROX_CYCLING,
+          ncol = 3, nrow = 4)
+```
+
+### 5.1.3 Drawing Statistical Point Map
+
+```{r}
+tmap_mode("view")
 ```
 
 ```{r}
-train_data <- read_rds("data/model/train_data.rds")
-test_data <- read_rds("data/model/test_data.rds")
+
+
+tm_shape(resale_sf_final) +  
+  tm_dots(col = "PRICE",
+          alpha = 0.6,
+          style="quantile") +
+  tm_view(set.zoom.limits = c(11,14))
 ```
 
 ```{r}
-price_mlr <- lm(PRICE ~ 
+tmap_mode("plot")
+```
+
+## 5.2 Hedonic Pricing Modelling in R
+
+```{r}
+condo.slr <- lm(formula=PRICE ~ AREA_SQ, data = resale_sf_final)
+```
+
+```{r}
+summary(condo.slr)
+```
+
+```{r}
+ggplot(data=resale_sf_final,  
+       aes(x=`AREA_SQ`, y=`PRICE`)) +
+  geom_point() +
+  geom_smooth(method = lm)
+```
+
+### 5.2.1 Building a hedonic pricing model using multiple linear regression method
+
+```{r}
+hdb_5_room_.mlr <- lm(formula =PRICE ~ 
                   AREA_SQ +
                   LEASE_Y +
                   PROX_CB + 
@@ -710,46 +783,14 @@ price_mlr <- lm(PRICE ~
                   PROX_SU + 
                   PROX_MR +
                   PROX_CY,
-                data = train_data)
-summary(price_mlr)
+                data =resale_sf_final)
+summary(hdb_5_room_.mlr)
 ```
 
-```{r}
-write_rds(price_mlr, "data/model/price_mlr.rds")
-```
-
-# 5.1 **GWR Predictive Method**
+### 5.2.2 Preparing Publication Quality Table: olsrr method
 
 ```{r}
-training_data_sp <- as_Spatial(train_data)
-training_data_sp
-```
-
-### 5.1.1 **Preparing Coordinates**
-
-```{r}
-coords <- st_coordinates(resale_sf)
-coords_train <- st_coordinates(train_data)
-coords_test <- st_coordinates(test_data)
-```
-
-```{r}
-write_rds(coords_train, "data/model/coords_train.rds")
-write_rds(coords_test, "data/model/coords_test.rds")
-```
-
-```{r}
-train_data <- train_data %>% 
-  st_drop_geometry()
-```
-
-### 5.1.2 **Calibrating Random Forest**
-
-```{r}
-library(ranger)
-
-set.seed(1234)
-rf <- ranger(PRICE ~ 
+hdb_5_room_.mlr1 <- lm(formula = PRICE ~ 
                   AREA_SQ +
                   LEASE_Y +
                   PROX_CB + 
@@ -760,154 +801,105 @@ rf <- ranger(PRICE ~
                   PROX_SU + 
                   PROX_MR +
                   PROX_CY,
-                data = train_data)
-rf # OOB prediction error (MSE) is not the same as Residual standard error as it has not been square-root
+                data =resale_sf_final)
+ols_regress(hdb_5_room_.mlr1)
+```
+
+### 5.2.3 Preparing Publication Quality Table: gtsummary method
+
+```{r}
+
+library(gtsummary)
+
+tbl_regression(hdb_5_room_.mlr1, intercept = TRUE)
 ```
 
 ```{r}
-library(grf)
+tbl_regression(hdb_5_room_.mlr1, 
+               intercept = TRUE) %>% 
+  add_glance_source_note(
+    label = list(sigma ~ "\U03C3"),
+    include = c(r.squared, adj.r.squared, 
+                AIC, statistic,
+                p.value, sigma))
+```
 
-set.seed(1234)
-gwRF_adaptive <- grf(formula = PRICE ~ 
-                  AREA_SQ +
-                  LEASE_Y +
-                  PROX_CB + 
-                  PROX_EL + 
-                  PROX_TO_ +
-                  PROX_HE + 
-                  PROX_SU +                                                                          PROX_TOP +
-                  PROX_SU + 
-                  PROX_MR +
-                  PROX_CY,
-                data = train_data,
-                bw = 55, 
-                kernel = "adaptive", 
-                coords = coords_train)
-gwRF_adaptive 
+### 
+
+#### 5.2.4 Checking for multicolinearity
+
+```{r}
+suppressPackageStartupMessages({
+  library(olsrr)
+})
+
+hdb_5_room_.mlr1 <- lm(mpg ~ disp + hp + wt + drat, data = mtcars)
+
+olsrr::ols_vif_tol(hdb_5_room_.mlr1)
+```
+
+#### 5.2.5 Test for Non-Linearity
+
+```{r}
+ols_plot_resid_fit(hdb_5_room_.mlr1)
+```
+
+#### 5.2.6 Test for Normality Assumption
+
+```{r}
+ols_plot_resid_hist(hdb_5_room_.mlr1)
 ```
 
 ```{r}
-get_coords <- function(add_list){
-  
-  # Create a data frame to store all retrieved coordinates
-  postal_coords <- data.frame()
-    
-  for (i in add_list){
-    #print(i)
+ols_test_normality(hdb_5_room_.mlr1)
+```
 
-    r <- GET('https://developers.onemap.sg/commonapi/search?',
-           query=list(searchVal=i,
-                     returnGeom='Y',
-                     getAddrDetails='Y'))
-    data <- fromJSON(rawToChar(r$content))
-    found <- data$found
-    res <- data$results
-    
-    # Create a new data frame for each address
-    new_row <- data.frame()
-    
-    # If single result, append 
-    if (found == 1){
-      postal <- res$POSTAL 
-      lat <- res$LATITUDE
-      lng <- res$LONGITUDE
-      new_row <- data.frame(address= i, postal = postal, latitude = lat, longitude = lng)
-    }
-    
-    # If multiple results, drop NIL and append top 1
-    else if (found > 1){
-      # Remove those with NIL as postal
-      res_sub <- res[res$POSTAL != "NIL", ]
-      
-      # Set as NA first if no Postal
-      if (nrow(res_sub) == 0) {
-          new_row <- data.frame(address= i, postal = NA, latitude = NA, longitude = NA)
-      }
-      
-      else{
-        top1 <- head(res_sub, n = 1)
-        postal <- top1$POSTAL 
-        lat <- top1$LATITUDE
-        lng <- top1$LONGITUDE
-        new_row <- data.frame(address= i, postal = postal, latitude = lat, longitude = lng)
-      }
-    }
+#### 5.2.7 Testing for Spatial Autocorrelation
 
-    else {
-      new_row <- data.frame(address= i, postal = NA, latitude = NA, longitude = NA)
-    }
-    
-    # Add the row
-    postal_coords <- rbind(postal_coords, new_row)
-  }
-  return(postal_coords)
-}
+```{r}
+mlr.output <- as.data.frame(hdb_5_room_.mlr1$residuals)
 ```
 
 ```{r}
-#coords <- get_coords(add_list)
+library(magrittr)
+library(dplyr)
+
+nrow(resale_sf_final)
+nrow(mlr.output)
+
+merged_data <- merge(resale_sf_final,mlr.output)
+
+names(merged_data)
+
+
+
+hdb_5_room_resale.res.sf <- merged_data %>% 
+  rename(`MLR_RES` = `hdb_5_room_.mlr1$residuals`)
 ```
 
-```{r}
-#coords[(is.na(coords$postal) | is.na(coords$latitude) | is.na(coords$longitude) | coords$postal=="NIL"), ]
-
+```{}
 ```
 
-```{r}
-#rs_coords <- left_join(rs_transform, coords, by = c('address' = 'address'))
+```{}
 ```
 
-```{r}
-#rs_coords$address <- sub("ST. GEORGE'S", "SAINT GEORGE'S", rs_coords$address)
-#rs_invalid <- rs_coords[grepl("SAINT GEORGE'S", rs_coords$address), ]
+```{}
 ```
 
-```{r}
-#add_list <- sort(unique(rs_invalid$address))
-
+```{}
 ```
 
-```{r}
-#rs_invalid_coords <- get_coords(add_list)
-
+```{}
 ```
 
-```{r}
-#rs_invalid_coords[(is.na(rs_invalid_coords$postal) | is.na(rs_invalid_coords$latitude) | is.na(rs_invalid_coords$longitude)), ]
-
-```
+## 5.3 **GWR Predictive Method**
 
 ```{r}
-#rs_coords_final <- rs_coords %>%
-#  left_join(rs_invalid_coords, by = c("address")) %>%
-#  mutate(latitude = ifelse(is.na(postal.x), postal.y, postal.x)) %>%
- # #mutate(latitude = ifelse(is.na(latitude.x), latitude.y, latitude.x)) %>%
-#  mutate(longitude = ifelse(is.na(longitude.x), longitude.y, longitude.x)) %>%
- # select(-c(postal.x, latitude.x, longitude.x, postal.y, latitude.y, longitude.y))
-```
-
-```{r}
-#rs_coords_rds <- write_rds(rs_coords_final, "data/aspatial/rds/rs_coords.rds")
-```
-
-```{r}
-#rs_coords_sf <- st_as_sf(rs_coords,
-         #           coords = c("longitude", 
-   # 3                           "latitude"),
-     #               crs=4326) %>%
- # st_transform(crs = 3414)
-```
-
-```{r}
-#length(which(st_is_valid(rs_coords_sf) == FALSE))
 
 ```
 
-```{r}
-#tmap_mode("view")
-#tm_shape(rs_coords_sf)+
-#  tm_dots(col="blue", size = 0.02)
-#tmap_mode("plot")
+```{}
+```
 
-
+```{}
 ```

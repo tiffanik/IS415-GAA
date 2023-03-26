@@ -877,29 +877,8 @@ hdb_5_room_resale.res.sf <- merged_data %>%
   rename(`MLR_RES` = `hdb_5_room_.mlr1$residuals`)
 ```
 
-```{}
-```
-
-```{}
-```
-
-```{}
-```
-
-```{}
-```
-
-```{}
-```
-
 ## 5.3 **GWR Predictive Method**
 
 ```{r}
 
-```
-
-```{}
-```
-
-```{}
 ```

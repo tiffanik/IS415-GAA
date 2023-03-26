@@ -2,98 +2,788 @@
 title: "Take-home Exercise 3: Predicting HDB Public Housing Resale Pricies using Geographically Weighted Methods"
 ---
 
-# 1 Setting the Scene
+# 1. Setting the Scene
 
 Housing is an essential component of household wealth worldwide. Buying a housing has always been a major investment for most people. The price of housing is affected by many factors. Some of them are global in nature such as the general economy of a country or inflation rate. Others can be more specific to the properties themselves. These factors can be further divided to structural and locational factors. Structural factors are variables related to the property themselves such as the size, fitting, and tenure of the property. Locational factors are variables related to the neighbourhood of the properties such as proximity to childcare centre, public transport service and shopping centre.
 
 Conventional, housing resale prices predictive models were built by using [**Ordinary Least Square (OLS)**](https://en.wikipedia.org/wiki/Ordinary_least_squares) method. However, this method failed to take into consideration that spatial autocorrelation and spatial heterogeneity exist in geographic data sets such as housing transactions. With the existence of spatial autocorrelation, the OLS estimation of predictive housing resale pricing models could lead to biased, inconsistent, or inefficient results (Anselin 1998). In view of this limitation, **Geographical Weighted Models** were introduced for calibrating predictive model for housing resale prices.
 
-more than 2 - norminal
+## The Task
 
-real world phenominal - no negative variable - dont use linear regression use poson
+In this take-home exercise, you are tasked to predict HDB resale prices at the sub-market level (i.e. HDB 3-room, HDB 4-room and HDB 5-room) for the month of January and February 2023 in Singapore. The **predictive models** must be built by using by using conventional OLS method and GWR methods. You are also required to compare the performance of the conventional OLS method versus the geographical weighted methods.
 
-linear regression
+# 2. R Packages
 
--   cannot use for how many pant want to sell
-
--   -5 covid patience
-
--   feed straight line - give best fit
-
--   minimise residue , best fit minimise error ![](images/image-508819485.png)
-
--   beta - parameter estimate / slope of independent var , explain how well I explain , slope can be +/- , not show strength but slope will , +/- only show direction
-
-multi-linear regression
-
--one response variable - number / continuous form
-
--property price can have decimal
-
--dependent var -continuous
-
-goodness of fit : bttr if use avg
-
-f-test stat compare
-
-reject or fear to reject
-
-95% confidence interval
-
-p \< 0.05 reject
-
-this model is btr avg
-
-multiple indeV/ explainatory var - use adjusted R
-
-when add in new var r2 increase
-
-\-
-
-for map
-
-`{##| fig-width: 30}`
+#### **Install and Load R packages**
 
 ```{r}
 
-pacman::p_load(olsrr, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)
+# initialise a list of required packages
+packages = c('sf', 'tidyverse', 'tmap', 'spdep', 
+             'onemapsgapi', 'units', 'matrixStats', 'readxl', 'jsonlite',
+             'olsrr', 'corrplot', 'ggpubr', 'GWmodel',
+             'devtools', 'kableExtra', 'plotly', 'ggthemes')
+
+# for each package, check if installed and if not, install it
+for (p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p,character.only = T)
+}
 
 
 #dont load this corrplot in pacman install seperately to avoid unneeded confict 
 
 ```
 
+# 3. Import Extracted/Self Source Geospatial Data
+
+![](images/image-1252362951.png)
+
+![](images/image-223351039.png)
+
+![](images/image-8057706.png)
+
+#### Base
+
+![](images/singapore--garden-by-the-bay--supertree-grove-638256268-fa59e7e78b6449aaa40f68eafe6ff1a1.jpg)
+
+```{r}
+sg_CostalOutline_sf <- st_read(dsn = "data/geospatial", layer="CostalOutline")
+```
+
+```{r}
+mpsz_sf <- st_read(dsn = "data/geospatial", layer = "MP14_SUBZONE_WEB_PL")
+```
+
+#### Transport![](images/signboard_mot.jpg)
+
+```{r}
+
+#train <- read_csv("data/geospatial/mrtsg.csv")  layer = "MP14_SUBZONE_WEB_PL")
+
+
+#train_sf <- st_as_sf(train, coords = c("Latitude", "Longitude"), crs=4326)
+
+train_sf <-st_read(dsn = "data/geospatial", layer= "Train_Station_Exit_Layer")
+```
+
+```{r}
+bus_sf <- st_read(dsn="data/geospatial", layer="BusStop")
+```
+
+```{r}
+gantry_sf <- st_read(dsn="data/geospatial", layer="Gantry")
+```
+
+#### Health
+
+![](images/singapore%20treatment%201.jpg)
+
+```{r}
+cycling_sf <- st_read(dsn="data/geospatial", layer="CyclingPathGazette")
+```
+
+```{r}
+
+elderly_Care_sf <- st_read(dsn="data/geospatial", layer="ELDERCARE")
+```
+
+```{r}
+gym_sf_2  <- st_read(dsn="data/geospatial/gyms-sg-geojson.geojson")
+gym_sf  <- st_read(dsn="data/geospatial/gyms-sg-kml.kml")
+```
+
+```{r}
+
+organic_sf  <- st_read(dsn="data/geospatial/healthier-eateries.kml")
+```
+
+```{r}
+dengue_sf  <- st_read(dsn="data/geospatial/dengue-clusters-kml.kml")
+dengue_2_sf  <- st_read(dsn="data/geospatial/dengue-clusters-geojson.geojson")
+```
+
+#### Amenities
+
+![](images/images.png){width="654"}
+
+```{r}
+supermarket_sf <- st_read(dsn="data/geospatial/supermarkets.kml")
+```
+
+```{r}
+good_primary_school <- read_csv("data/geospatial/Proximity_to_good_primary_school.csv")
+
+good_primary_school_sf <- st_as_sf(good_primary_school, coords = c( "long","lat"), crs=4326)
+
+
+
+
+```
+
+## **3.1 Data Pre-processing**
+
+#(NAME ) COL 1
+
+good_primary_school_sf \<- good_primary_school_sf %\>%
+
+select(c(1))
+
+```{r}
+
+#( COSTAL_NAM) 4
+sg_CostalOutline_sf <- sg_CostalOutline_sf %>%
+    select(c(4))
+
+
+#( STN_NAM_DE ) 4
+train_sf <- train_sf %>%
+  select(c(1))
+
+
+# ( TYP_CD_DES ) COL 2 
+gantry_sf <- gantry_sf %>%
+  select(c(2))
+
+# ( PLANNING_1 ) COL 2
+cycling_sf <- cycling_sf %>%
+  select(c(2))
+
+
+#( NAME )COL 12
+elderly_Care_sf <- elderly_Care_sf %>%
+  select(c(12))
+
+# (NAME ) COL 1
+gym_sf_2 <- gym_sf_2 %>%
+  select(c(1))
+
+#(NAME ) COL 1
+organic_sf  <- organic_sf %>%
+  select(c(1))
+
+# (NAME ) COL 1
+dengue_sf <- dengue_sf  %>%
+   select(c(1))
+
+#(NAME ) COL 1
+supermarket_sf  <- supermarket_sf   %>%
+    select(c(1))
+
+#(NAME ) COL 1
+good_primary_school_sf  <- good_primary_school_sf  %>%
+    select(c(2,4))
+  
+```
+
+#### **Missing value**
+
+```{r}
+
+#Base
+
+sg_CostalOutline_sf[rowSums(is.na(sg_CostalOutline_sf))!=0,]
+
+mpsz_sf [rowSums(is.na(mpsz_sf))!=0,]
+
+#Transport
+
+train_sf[rowSums(is.na(train_sf))!=0,]
+
+bus_sf[rowSums(is.na(bus_sf))!=0,]
+
+#Health
+
+gantry_sf[rowSums(is.na(gantry_sf))!=0,]
+
+cycling_sf[rowSums(is.na(cycling_sf))!=0,]
+
+elderly_Care_sf[rowSums(is.na(elderly_Care_sf))!=0,]
+
+gym_sf_2[rowSums(is.na(gym_sf_2))!=0,]
+
+organic_sf[rowSums(is.na(organic_sf))!=0,]
+
+dengue_sf[rowSums(is.na(dengue_sf))!=0,]
+
+#Amenities
+supermarket_sf[rowSums(is.na(supermarket_sf))!=0,]
+
+
+
+
+```
+
+**There's a missing value in our cycling_sf , bus_sf datasets, so let's remove the NA observation:**
+
+```{r}
+cycling_sf <- na.omit(cycling_sf,c("PLANNING_1"))
+bus_sf <- na.omit(bus_sf,c("LOC_DESC"))
+
+```
+
+**Check**
+
+```{r}
+cycling_sf[rowSums(is.na(cycling_sf))!=0,]
+bus_sf[rowSums(is.na(bus_sf))!=0,]
+
+```
+
+#### **Invalid Geometries**
+
+```{r}
+length(which(st_is_valid(sg_CostalOutline_sf ) == FALSE))
+length(which(st_is_valid(train_sf) == FALSE))
+length(which(st_is_valid(bus_sf) == FALSE))
+length(which(st_is_valid(gantry_sf) == FALSE))
+length(which(st_is_valid(cycling_sf) == FALSE))
+length(which(st_is_valid(elderly_Care_sf) == FALSE))
+length(which(st_is_valid(gym_sf_2) == FALSE))
+length(which(st_is_valid(organic_sf) == FALSE))
+length(which(st_is_valid(dengue_sf) == FALSE))
+length(which(st_is_valid(supermarket_sf) == FALSE))
+length(which(st_is_valid(good_primary_school_sf) == FALSE))
+
+
+```
+
+### **Verifying + Transforming Coordinate System**
+
+```{r}
+st_crs(sg_CostalOutline_sf)
+
+```
+
+```{r}
+st_crs(mpsz_sf )
+
+```
+
+```{r}
+st_crs(train_sf )
+
+
+```
+
+```{r}
+st_crs(bus_sf )
+
+
+
+```
+
+```{r}
+st_crs(gantry_sf )
+
+
+
+```
+
+```{r}
+st_crs(cycling_sf )
+
+
+
+```
+
+```{r}
+st_crs(elderly_Care_sf )
+
+
+```
+
+```{r}
+st_crs(gym_sf_2 )
+
+
+
+```
+
+```{r}
+st_crs(organic_sf )
+
+
+```
+
+```{r}
+st_crs(dengue_sf )
+
+
+
+```
+
+```{r}
+st_crs(supermarket_sf )
+
+
+
+```
+
+```{r}
+st_crs(good_primary_school_sf )
+
+
+
+```
+
+```{r}
+sg_CostalOutline_sf <- st_set_crs(sg_CostalOutline_sf, 3414)
+mpsz_sf <- st_set_crs(mpsz_sf, 3414)
+train_sf <- st_set_crs(train_sf, 3414)
+bus_sf <- st_set_crs(bus_sf, 3414)
+
+# with st_transform(), we can change from one CRS to another
+gantry_sf <- st_transform(gantry_sf, crs=3414)
+cycling_sf <- st_transform(cycling_sf, crs=3414)
+elderly_Care_sf <- st_transform(elderly_Care_sf, crs=3414)
+gym_sf_2 <- st_transform(gym_sf_2, crs=3414)
+organic_sf <- st_transform(organic_sf, crs=3414)
+supermarket_sf <- st_transform(supermarket_sf, crs=3414)
+
+dengue_sf <- st_transform(dengue_sf, crs=3414)
+good_primary_school_sf <- st_transform(good_primary_school_sf, crs=3414)
+
+
+
+
+```
+
+```{r}
+st_crs(sg_CostalOutline_sf)
+```
+
+```{r}
+st_crs(train_sf)
+```
+
+```{r}
+st_crs(bus_sf)
+```
+
+```{r}
+st_crs(gantry_sf)
+```
+
+```{r}
+st_crs(cycling_sf)
+```
+
+```{r}
+st_crs(elderly_Care_sf)
+```
+
+```{r}
+st_crs(gym_sf_2)
+```
+
+```{r}
+st_crs(organic_sf)
+```
+
+```{r}
+st_crs(dengue_sf )
+```
+
+```{r}
+st_crs(supermarket_sf)
+```
+
+```{r}
+st_crs(good_primary_school_sf)
+```
+
+# 3.2 Plot
+
+```{r}
+plot(st_geometry(sg_CostalOutline_sf))
+```
+
+```{r}
+plot(st_geometry(mpsz_sf))
+```
+
+### Transport 
+
+```{r}
+tmap_mode("view")
+
+tm_shape(mpsz_sf) +
+  tm_borders(alpha = 0.5) +
+  tmap_options(check.and.fix = TRUE) +
+tm_shape(bus_sf) +
+  tm_dots(col="beige", size=0.05) +
+  tm_layout(main.title = "Bus Stops",
+          main.title.position = "center",
+          main.title.size = 1.2,
+          frame = TRUE)+
+tm_shape(gantry_sf) +
+  tm_dots(alpha=0.5,
+          col="green",
+          size=0.05)+
+tm_shape(train_sf ) +
+  tm_dots(col="blue", size=0.05)
+```
+
+### Health
+
+```{r}
+tmap_mode("view")
+
+tm_shape(elderly_Care_sf) +
+  tm_dots(alpha=0.5,
+          col="blue",
+          size=0.05) +
+tm_shape(cycling_sf) +
+  tm_dots(alpha=0.5,
+        col="yellow",
+        size=0.05) +
+tm_shape(gym_sf_2) +
+  tm_dots(alpha=0.5,
+        col="black",
+        size=0.05)+
+tm_shape(organic_sf) +
+  tm_dots(alpha=0.5,
+        col="green",
+        size=0.05)+
+tm_shape(dengue_sf) +
+  tm_dots(alpha=0.5,
+        col="red",
+        size=0.05)+
+tm_shape(supermarket_sf) +
+  tm_dots(alpha=0.5,
+        col="orange",
+        size=0.05)
+
+
+```
+
+```{r}
+tmap_mode("view")
+tm_shape(supermarket_sf) +
+  tm_dots(alpha=0.5,
+          col="blue",
+          size=0.05) +
+tm_shape(good_primary_school_sf) +
+  tm_dots(alpha=0.5,
+        col="yellow",
+        size=0.05) 
+```
+
+# **4. Importing Aspatial Data**
+
+**Aspatial data set:**
+
+For the purpose of this take-home exercise, [`HDB Resale Flat Prices`](https://data.gov.sg/dataset/resale-flat-prices) provided by Data.gov.sg should be used as the core data set. The study should focus on either three-room, four-room or five-room flat and transaction period should be from 1st January 2021 to 31st December 2022. The test data should be January and February 2023 resale prices.
+
+Below is a list of recommended predictors to consider. However, students are free to include other appropriate independent variables.
+
 ```{r}
 require(dplyr)
 
-resale = st_read(
-  dsn = "data/aspatial/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+resale = read_csv("data/aspatial/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv", show_col_types=FALSE)
 
-# Define vector of values to filter
-filter_flat_type <- c("3 ROOM", "4 ROOM", "5 ROOM")
 
-resale_subset <- filter(resale,flat_type  %in% filter_flat_type)%>% 
-                 filter(month >= "2021-01" & month <= "2022-12")
+resale <- resale %>% 
+  filter(flat_type == "5 ROOM") %>%
+  filter(month >= "2021-08" & month < "2022-12")
+
+
 ```
 
 ```{r}
-rs_transform <- resale_subset %>%
-  mutate(resale_subset, address = paste(block,street_name)) %>%
-  mutate(resale_subset, remaining_lease_yr = as.integer(str_sub(remaining_lease, 0, 2))) %>%
-  mutate(resale_subset, remaining_lease_mth = as.integer(str_sub(remaining_lease, 9, 11)))
+resale$street_name <- gsub("ST\\.", "SAINT", resale$street_name)
 ```
 
 ```{r}
-rs_transform$remaining_lease_mth[is.na(rs_transform$remaining_lease_mth)] <- 0
-rs_transform$remaining_lease_yr <- rs_transform$remaining_lease_yr * 12
-rs_transform <- rs_transform %>% 
-  mutate(rs_transform, remaining_lease_mths = rowSums(rs_transform[, c("remaining_lease_yr", "remaining_lease_mth")])) %>%
-  select(month, town, address, block, street_name, flat_type, storey_range, floor_area_sqm, flat_model, 
-         lease_commence_date, remaining_lease_mths, resale_price)
+library(httr)
+geocode <- function(block, streetname) {
+  base_url <- "https://developers.onemap.sg/commonapi/search"
+  address <- paste(block, streetname, sep = " ")
+  query <- list("searchVal" = address, 
+                "returnGeom" = "Y",
+                "getAddrDetails" = "N",
+                "pageNum" = "1")
+  
+  res <- GET(base_url, query = query)
+  restext<-content(res, as="text")
+  
+  output <- fromJSON(restext)  %>% 
+    as.data.frame %>%
+    select(results.LATITUDE, results.LONGITUDE)
+
+  return(output)
+}
 ```
 
 ```{r}
-add_list <- sort(unique(rs_transform$address))
+resale$LATITUDE <- 0
+resale$LONGITUDE <- 0
+
+for (i in 1:nrow(resale)){
+  temp_output <- geocode(resale[i, 4], resale[i, 5])
+  
+  resale$LATITUDE[i] <- temp_output$results.LATITUDE
+  resale$LONGITUDE[i] <- temp_output$results.LONGITUDE
+}
+```
+
+#### **4.1 Structural Factors**
+
+##### Floor level
+
+```{r}
+unique(resale$storey_range)
+```
+
+```{r}
+resale <- resale %>%
+  pivot_wider(names_from = storey_range, values_from = storey_range, 
+              values_fn = list(storey_range = ~1), values_fill = 0) 
+```
+
+##### 
+
+##### Remaining lease
+
+```{r}
+str_list <- str_split(resale$remaining_lease, " ")
+
+for (i in 1:length(str_list)) {
+  if (length(unlist(str_list[i])) > 2) {
+      year <- as.numeric(unlist(str_list[i])[1])
+      month <- as.numeric(unlist(str_list[i])[3])
+      resale$remaining_lease[i] <- year + round(month/12, 2)
+  }
+  else {
+    year <- as.numeric(unlist(str_list[i])[1])
+    resale$remaining_lease[i] <- year
+  }
+}
+```
+
+#### **4.2 Locational Factors**
+
+##### 
+
+##### Proxomity to CBD
+
+```{r}
+lat <- 1.287953
+lng <- 103.851784
+
+cbd_sf <- data.frame(lat, lng) %>%
+  st_as_sf(coords = c("lng", "lat"), crs=4326) %>%
+  st_transform(crs=3414)
+```
+
+#### **4.3 Remaining Data Pre-Processing**
+
+##### **Missing values**
+
+```{r}
+sum(is.na(resale$LATITUDE))
+sum(is.na(resale$LONGITUDE))
+```
+
+##### Convert into SF object + transforming coordinate system
+
+```{r}
+# st_as_sf outputs a simple features data frame
+resale_sf <- st_as_sf(resale, 
+                      coords =c("LONGITUDE", 
+                                 "LATITUDE"),crs=4326) %>%
+                                           st_transform(crs = 3414)
+```
+
+##### **Proximity Distance Calculation**
+
+```{r}
+proximity <- function(df1, df2, varname) {
+  df1_transformed <- st_transform(df1, st_crs(df2))
+  dist_matrix <- st_distance(df1_transformed, df2) %>% drop_units()
+  df1[,varname] <- rowMins(dist_matrix)
+  return(df1)
+}
+```
+
+```{r}
+resale_sf <- 
+  proximity(resale_sf, cbd_sf, "PROX_CBD") %>%
+  proximity(.,elderly_Care_sf, "PROX_ELDERCARE") %>%
+  proximity(., gym_sf_2 , "PROX_TO_GYM") %>%
+  proximity(., organic_sf, "PROX_HEALTHY_EATERIES") %>%
+  proximity(., supermarket_sf, "PROX_SUPERMARKET") %>%
+  proximity(., good_primary_school_sf, "PROX_TOP_PRIMARY") %>%
+  proximity(., train_sf, "PROX_MRT_LRT") %>%
+  proximity(., cycling_sf, "PROX_CYCLING")
+```
+
+### ** 4.4 Facility Count within Radius Calculation**
+
+```{r}
+num_radius <- function(df1, df2, varname, radius) {
+ df1_transformed <- st_transform(df1, st_crs(df2))
+  dist_matrix <- st_distance(df1_transformed, df2) %>% drop_units() %>%
+    as.data.frame()
+  df1[,varname] <- rowSums(dist_matrix <= radius)
+  return(df1)
+}
+```
+
+```{r}
+resale_sf <- 
+  num_radius(resale_sf, train_sf, "NUM_MRT", 350) %>%
+  num_radius(., elderly_Care_sf, "NUM_ELDERLY_CARE", 350) %>%
+  num_radius(., gym_sf_2, "NUM_GYMS", 350) %>%
+  num_radius(., organic_sf, "NUM_HEALTHY_EATERIES", 350) %>%
+  num_radius(., dengue_sf, "NUM_DENGUE_CASES", 350)%>%
+  num_radius(., supermarket_sf , "NUM_SUPERMARKET", 350)%>%
+  num_radius(., good_primary_school_sf  , "NUM_GOOD_PRIMARY_SCHOOL", 350)%>%
+  num_radius(., gantry_sf   , "NUM_ERP", 350)%>%
+  num_radius(., cycling_sf   , "NUM_CYCLING", 350)
+```
+
+### ** 4.5 Saving the Dataset**
+
+```{r}
+resale_sf <- resale_sf %>%
+  mutate() %>%
+  rename("AREA_SQM" = "floor_area_sqm", 
+         "LEASE_YRS" = "remaining_lease", 
+         "PRICE"= "resale_price") %>%
+  relocate(`PRICE`)
+
+st_write(resale_sf, "data/geospatial/resale-final.shp")
+```
+
+# ** 5.0 Predictive Model** 
+
+Task : 
+
+In this take-home exercise, you are tasked to predict HDB resale prices at the sub-market level (i.e. HDB 3-room, HDB 4-room and HDB 5-room) for the month of January and February 2023 in Singapore. The **predictive models** must be built by using by using conventional OLS method and GWR methods. You are also required to compare the performance of the conventional OLS method versus the geographical weighted methods.
+
+```{r}
+resale_sf <- st_read(dsn="data/geospatial", layer="resale-final")
+```
+
+```{r}
+glimpse(resale_sf)
+```
+
+```{r}
+resale_sf$LEASE_Y <- as.numeric(resale_sf$LEASE_Y)
+summary(resale_sf$PRICE)
+```
+
+```{r}
+library(rsample)
+
+set.seed(1234)
+resale_split <- initial_split(resale_sf, # initial_split is from tidymodels
+                              prop = 6.5/10) # 65% will be train, 35% will be test
+train_data <- training(resale_split)
+test_data <- testing(resale_split)
+```
+
+```{r}
+write_rds(train_data, "data/model/train_data.rds")
+write_rds(test_data, "data/model/test_data.rds")
+```
+
+```{r}
+train_data <- read_rds("data/model/train_data.rds")
+test_data <- read_rds("data/model/test_data.rds")
+```
+
+```{r}
+price_mlr <- lm(PRICE ~ 
+                  AREA_SQ +
+                  LEASE_Y +
+                  PROX_CB + 
+                  PROX_EL + 
+                  PROX_TO_ +
+                  PROX_HE + 
+                  PROX_SU +                                                                          PROX_TOP +
+                  PROX_SU + 
+                  PROX_MR +
+                  PROX_CY,
+                data = train_data)
+summary(price_mlr)
+```
+
+```{r}
+write_rds(price_mlr, "data/model/price_mlr.rds")
+```
+
+# 5.1 **GWR Predictive Method**
+
+```{r}
+training_data_sp <- as_Spatial(train_data)
+training_data_sp
+```
+
+### 5.1.1 **Preparing Coordinates**
+
+```{r}
+coords <- st_coordinates(resale_sf)
+coords_train <- st_coordinates(train_data)
+coords_test <- st_coordinates(test_data)
+```
+
+```{r}
+write_rds(coords_train, "data/model/coords_train.rds")
+write_rds(coords_test, "data/model/coords_test.rds")
+```
+
+```{r}
+train_data <- train_data %>% 
+  st_drop_geometry()
+```
+
+### 5.1.2 **Calibrating Random Forest**
+
+```{r}
+library(ranger)
+
+set.seed(1234)
+rf <- ranger(PRICE ~ 
+                  AREA_SQ +
+                  LEASE_Y +
+                  PROX_CB + 
+                  PROX_EL + 
+                  PROX_TO_ +
+                  PROX_HE + 
+                  PROX_SU +                                                                          PROX_TOP +
+                  PROX_SU + 
+                  PROX_MR +
+                  PROX_CY,
+                data = train_data)
+rf # OOB prediction error (MSE) is not the same as Residual standard error as it has not been square-root
+```
+
+```{r}
+library(grf)
+
+set.seed(1234)
+gwRF_adaptive <- grf(formula = PRICE ~ 
+                  AREA_SQ +
+                  LEASE_Y +
+                  PROX_CB + 
+                  PROX_EL + 
+                  PROX_TO_ +
+                  PROX_HE + 
+                  PROX_SU +                                                                          PROX_TOP +
+                  PROX_SU + 
+                  PROX_MR +
+                  PROX_CY,
+                data = train_data,
+                bw = 55, 
+                kernel = "adaptive", 
+                coords = coords_train)
+gwRF_adaptive 
 ```
 
 ```{r}

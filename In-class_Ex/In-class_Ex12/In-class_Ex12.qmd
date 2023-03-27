@@ -11,38 +11,38 @@ odbus<-read_csv("data/aspatial/origin_destination_bus_202210.csv")
 ```
 
 ```{r}
-odbus7_9 <- odbus %>%
-  filter (DAY_TYPE == "WEEKDAY") %>% 
-  filter (TIME_PER_HOUR >= 7 &
-  TIME_PER_HOUR <= 9)%>% 
-  group_by (ORIGIN_PT_CODE,
-DESTINATION_PT_CODE) %>%
-summarise(TRIPS = sum (TOTAL_TRIPS))
+#odbus7_9 <- odbus %>%
+ # filter (DAY_TYPE == "WEEKDAY") %>% 
+# filter (TIME_PER_HOUR >= 7 &
+ # TIME_PER_HOUR <= 9)%>% 
+#  group_by (ORIGIN_PT_CODE,
+#DESTINATION_PT_CODE) %>%
+#summarise(TRIPS = sum (TOTAL_TRIPS))
 ```
 
 ```{r}
-odbus$ORIGIN_PT_CODE <- as.factor(odbus$ORIGIN_PT_CODE)
-odbus$DESTINATION_PT_CODE <-as.factor(odbus$DESTINATION_PT_CODE)
+#odbus$ORIGIN_PT_CODE <- as.factor(odbus$ORIGIN_PT_CODE)
+#odbus$DESTINATION_PT_CODE <-as.factor(odbus$DESTINATION_PT_CODE)
 ```
 
 ```{r}
-write_rds(odbus7_9 , "data/rds/odbus7_9.rds")
+#write_rds(odbus7_9 , "data/rds/odbus7_9.rds")
 
 ```
 
 ```{r}
-odbus7_9 <-read_rds("data/rds/odbus7_9.rds")
+#odbus7_9 <-read_rds("data/rds/odbus7_9.rds")
 ```
 
 ```{r}
-busstop <- st_read(dsn = "data/geospatial",
-                     layer="BusStop")
+#busstop <- st_read(dsn = "data/geospatial",
+#    layer="BusStop")
 ```
 
 ```{r}
-mpsz <- st_read(dsn ="data/geospatial",layer = "MPSZ-2019") %>% st_transform(crs = 3414)
+#mpsz <- st_read(dsn ="data/geospatial",layer = "MPSZ-2019") %>% st_transform(crs = 3414)
 
-mpsz
+
 ```
 
 ```{r}
@@ -53,8 +53,8 @@ mpsz
 
 ```{r}
 #change to factor type (character field, ordinal scale)
-odbus$ORIGIN_PT_CODE <- as.factor(odbus$ORIGIN_PT_CODE)
-odbus$DESTINATION_PT_CODE <- as.factor(odbus$DESTINATION_PT_CODE)
+#odbus$ORIGIN_PT_CODE <- as.factor(odbus$ORIGIN_PT_CODE)
+#odbus$DESTINATION_PT_CODE <- as.factor(odbus$DESTINATION_PT_CODE)
 ```
 
 ```{r}
@@ -126,20 +126,4 @@ odbus$DESTINATION_PT_CODE <- as.factor(odbus$DESTINATION_PT_CODE)
 #distPair < distPair %%
 #rename (orig = Var1,
 #dest = Var2)
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
 ```

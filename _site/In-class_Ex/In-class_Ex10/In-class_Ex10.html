@@ -122,7 +122,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -333,288 +332,86 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="importing-geospatial-data-into-r-environment" class="level3">
 <h3 class="anchored" data-anchor-id="importing-geospatial-data-into-r-environment">Importing geospatial data into R environment</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mdata <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/aspatial/mdata.rds"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>subzone <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/geospatial"</span>, </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">layer =</span> <span class="st">"MP14_SUBZONE_WEB_PL"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mdata &lt;- read_rds("data/aspatial/mdata.rds")</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#3subzone &lt;- st_read(dsn = "data/geospatial", </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#  layer = "MP14_SUBZONE_WEB_PL")</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#3set.seed(123)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#reasale_split &lt;- initial_split(mdata,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                            <span class="co">#   prop = 6.5/10,)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#train_data &lt;- training(reasale_split)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#3test_data &lt;- testing(reasale_split)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write_rds(train_data, "data/model/train_data.rds")</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write_rds(test_data, "data/model/test_data.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#price_mlr &lt;- lm(resale_price ~ floor_area_sqm +</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#            storey_order + remaining_lease_mths +</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>     <span class="co">#           PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="co">#       PROX_MRT + PROX_PARK + PROX_MALL +</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>           <span class="co">#     PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>           <span class="co">#     WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="dv">3</span><span class="co">#      WITHIN_1KM_PRISCH, </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `MP14_SUBZONE_WEB_PL' from data source 
-  `C:\tiffanik\IS415-GAA\In-class_Ex\In-class_Ex10\data\geospatial' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 323 features and 15 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33
-Projected CRS: SVY21</code></pre>
+<pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>reasale_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(mdata,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">prop =</span> <span class="fl">6.5</span><span class="sc">/</span><span class="dv">10</span>,)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(reasale_split)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> <span class="fu">testing</span>(reasale_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>          <span class="co">#      data=train_data)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(price_mlr)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(train_data, <span class="st">"data/model/train_data.rds"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(test_data, <span class="st">"data/model/test_data.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#3write_rds(price_mlr,"data/model/price_mlr.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>price_mlr <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                storey_order <span class="sc">+</span> remaining_lease_mths <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                PROX_CBD <span class="sc">+</span> PROX_ELDERLYCARE <span class="sc">+</span> PROX_HAWKER <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                PROX_MRT <span class="sc">+</span> PROX_PARK <span class="sc">+</span> PROX_MALL <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                PROX_SUPERMARKET <span class="sc">+</span> WITHIN_350M_KINDERGARTEN <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                WITHIN_350M_CHILDCARE <span class="sc">+</span> WITHIN_350M_BUS <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                WITHIN_1KM_PRISCH, </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>train_data)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(price_mlr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = resale_price ~ floor_area_sqm + storey_order + remaining_lease_mths + 
-    PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER + PROX_MRT + PROX_PARK + 
-    PROX_MALL + PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN + 
-    WITHIN_350M_CHILDCARE + WITHIN_350M_BUS + WITHIN_1KM_PRISCH, 
-    data = train_data)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--208178  -39039    -772   36332  329325 
-
-Coefficients:
-                           Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)              116830.933  10760.893  10.857  &lt; 2e-16 ***
-floor_area_sqm             2705.890     90.923  29.760  &lt; 2e-16 ***
-storey_order              14348.939    337.874  42.468  &lt; 2e-16 ***
-remaining_lease_mths        344.750      4.589  75.126  &lt; 2e-16 ***
-PROX_CBD                 -17283.072    200.215 -86.322  &lt; 2e-16 ***
-PROX_ELDERLYCARE         -13474.524    988.563 -13.630  &lt; 2e-16 ***
-PROX_HAWKER              -19645.238   1279.857 -15.350  &lt; 2e-16 ***
-PROX_MRT                 -33962.996   1730.546 -19.626  &lt; 2e-16 ***
-PROX_PARK                 -3640.042   1472.340  -2.472   0.0134 *  
-PROX_MALL                -16608.047   2039.173  -8.145 4.25e-16 ***
-PROX_SUPERMARKET         -22537.436   4137.722  -5.447 5.25e-08 ***
-WITHIN_350M_KINDERGARTEN   8065.517    640.654  12.589  &lt; 2e-16 ***
-WITHIN_350M_CHILDCARE     -4150.670    353.500 -11.742  &lt; 2e-16 ***
-WITHIN_350M_BUS             976.494    222.816   4.383 1.18e-05 ***
-WITHIN_1KM_PRISCH         -8478.903    485.094 -17.479  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 61390 on 10320 degrees of freedom
-Multiple R-squared:  0.7427,    Adjusted R-squared:  0.7424 
-F-statistic:  2128 on 14 and 10320 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#train_data_sp &lt;- as_Spatial(train_data)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#train_data_sp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(price_mlr,<span class="st">"data/model/price_mlr.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coords &lt;- st_coordinates(mdata)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#coords_train &lt;- st_coordinates(train_data)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#coords_test &lt;- st_coordinates(test_data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_data_sp <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(train_data)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>train_data_sp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>class       : SpatialPointsDataFrame 
-features    : 10335 
-extent      : 11597.31, 42623.63, 28217.39, 48741.06  (xmin, xmax, ymin, ymax)
-crs         : +proj=tmerc +lat_0=1.36666666666667 +lon_0=103.833333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-variables   : 17
-names       : resale_price, floor_area_sqm, storey_order, remaining_lease_mths,          PROX_CBD,     PROX_ELDERLYCARE,        PROX_HAWKER,           PROX_MRT,          PROX_PARK,   PROX_GOOD_PRISCH,        PROX_MALL,            PROX_CHAS,     PROX_SUPERMARKET, WITHIN_350M_KINDERGARTEN, WITHIN_350M_CHILDCARE, ... 
-min values  :       230000,             74,            1,                  546, 0.999393538715878, 1.98943787433087e-08, 0.0333358643817954, 0.0220407324774434, 0.0441643212802781, 0.0907500295577619,                0, 6.20621206270077e-09, 1.21715176356525e-07,                        0,                     0, ... 
-max values  :      1186888,            138,           17,                 1164,   19.632402730488,     3.30163731686804,   2.86763031236184,   2.13060636038504,   2.41313695915468,   10.6169590126272, 2.27100643784442,    0.808332738794272,     1.53786629004208,                        7,                    20, ... </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coords_train &lt;- write_rds (coords_train,"data/model/coords_train.rds")</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#coords_test &lt;- write_rds(coords_test,"data/model/coords_test.rds" )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(mdata)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>coords_train <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(train_data)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>coords_test <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(test_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First, we will drop geometry column of the sf data.frame by using </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#st_drop_geometry() #of sf package.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>coords_train <span class="ot">&lt;-</span> <span class="fu">write_rds</span> (coords_train,<span class="st">"data/model/coords_train.rds"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>coords_test <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(coords_test,<span class="st">"data/model/coords_test.rds"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#train_data &lt;- train_data %&gt;% st_drop_geometry()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First, we will drop geometry column of the sf data.frame by using </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#st_drop_geometry() #of sf package.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">##set.seed(1234) # random forest</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#rf &lt;- ranger(resale_price ~ floor_area_sqm +</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>       <span class="co">#         storey_order + remaining_lease_mths +</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>          <span class="co">#      PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>          <span class="co">#      PROX_MRT + PROX_PARK + PROX_MALL +</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>          <span class="co">#      PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            <span class="co">#    WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            <span class="co">#    WITHIN_1KM_PRISCH, </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>             <span class="co">#   data=train_data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(rf)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>) <span class="co"># random forest</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>rf <span class="ot">&lt;-</span> <span class="fu">ranger</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                storey_order <span class="sc">+</span> remaining_lease_mths <span class="sc">+</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                PROX_CBD <span class="sc">+</span> PROX_ELDERLYCARE <span class="sc">+</span> PROX_HAWKER <span class="sc">+</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                PROX_MRT <span class="sc">+</span> PROX_PARK <span class="sc">+</span> PROX_MALL <span class="sc">+</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                PROX_SUPERMARKET <span class="sc">+</span> WITHIN_350M_KINDERGARTEN <span class="sc">+</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                WITHIN_350M_CHILDCARE <span class="sc">+</span> WITHIN_350M_BUS <span class="sc">+</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                WITHIN_1KM_PRISCH, </span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#gwRF_adaptive &lt;- grf(formula = resale_price ~ floor_area_sqm +</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">#        storey_order + remaining_lease_mths +</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>         <span class="co">#       PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>          <span class="co">#      PROX_MRT + PROX_PARK + PROX_MALL +</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>          <span class="co">#      PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>             <span class="co">#   WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>            <span class="co">#    WITHIN_1KM_PRISCH, </span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>             <span class="co">#   dframe = train_data,</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>             <span class="co">#   bw = 55,</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>             <span class="co">#   kernel="adaptive",</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>               <span class="co"># coords=coords_train</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>               <span class="co"># )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ranger result
-
-Call:
- ranger(resale_price ~ floor_area_sqm + storey_order + remaining_lease_mths +      PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER + PROX_MRT + PROX_PARK +      PROX_MALL + PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +      WITHIN_350M_CHILDCARE + WITHIN_350M_BUS + WITHIN_1KM_PRISCH,      data = train_data) 
-
-Type:                             Regression 
-Number of trees:                  500 
-Sample size:                      10335 
-Number of independent variables:  14 
-Mtry:                             3 
-Target node size:                 5 
-Variable importance mode:         none 
-Splitrule:                        variance 
-OOB prediction error (MSE):       692845626 
-R squared (OOB):                  0.9526329 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>gwRF_adaptive <span class="ot">&lt;-</span> <span class="fu">grf</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                storey_order <span class="sc">+</span> remaining_lease_mths <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                PROX_CBD <span class="sc">+</span> PROX_ELDERLYCARE <span class="sc">+</span> PROX_HAWKER <span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                PROX_MRT <span class="sc">+</span> PROX_PARK <span class="sc">+</span> PROX_MALL <span class="sc">+</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                PROX_SUPERMARKET <span class="sc">+</span> WITHIN_350M_KINDERGARTEN <span class="sc">+</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                WITHIN_350M_CHILDCARE <span class="sc">+</span> WITHIN_350M_BUS <span class="sc">+</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                WITHIN_1KM_PRISCH, </span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">dframe =</span> train_data,</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">bw =</span> <span class="dv">55</span>,</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel=</span><span class="st">"adaptive"</span>,</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">coords=</span>coords_train</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Number of Observations: 10335</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Number of Independent Variables: 14</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Kernel: Adaptive
-Neightbours: 55</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
---------------- Global Model Summary ---------------</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ranger result
-
-Call:
- ranger(resale_price ~ floor_area_sqm + storey_order + remaining_lease_mths +      PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER + PROX_MRT + PROX_PARK +      PROX_MALL + PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +      WITHIN_350M_CHILDCARE + WITHIN_350M_BUS + WITHIN_1KM_PRISCH,      data = train_data, num.trees = 500, mtry = 4, importance = "impurity",      num.threads = NULL) 
-
-Type:                             Regression 
-Number of trees:                  500 
-Sample size:                      10335 
-Number of independent variables:  14 
-Mtry:                             4 
-Target node size:                 5 
-Variable importance mode:         impurity 
-Splitrule:                        variance 
-OOB prediction error (MSE):       659289876 
-R squared (OOB):                  0.954927 </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Importance:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          floor_area_sqm             storey_order     remaining_lease_mths 
-            7.430149e+12             1.513816e+13             2.968417e+13 
-                PROX_CBD         PROX_ELDERLYCARE              PROX_HAWKER 
-            5.423595e+13             6.826497e+12             5.919597e+12 
-                PROX_MRT                PROX_PARK                PROX_MALL 
-            7.934040e+12             4.559584e+12             4.328568e+12 
-        PROX_SUPERMARKET WITHIN_350M_KINDERGARTEN    WITHIN_350M_CHILDCARE 
-            2.646233e+12             8.944874e+11             1.627457e+12 
-         WITHIN_350M_BUS        WITHIN_1KM_PRISCH 
-            1.641703e+12             6.961822e+12 </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Mean Square Error (Not OBB): 163612118.188</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>R-squared (Not OBB) %: 98.881</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>AIC (Not OBB): 195495.949</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>AICc (Not OBB): 195495.995</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
---------------- Local Model Summary ---------------</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Residuals OOB:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
--460000.0  -12841.3     363.6     882.6   15025.1  258690.7 </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Residuals Predicted (Not OBB):</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
--71927.94  -3485.72     72.06     47.54   3854.40  87990.10 </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Local Variable Importance:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                               Min          Max        Mean         StD
-floor_area_sqm                   0 362328200653 16470082765 36600905197
-storey_order             279215008 241420066890 16086660255 23294709248
-remaining_lease_mths     603889046 528665975445 32380848687 65667879262
-PROX_CBD                 111426705 297870887161 11351133709 25952250479
-PROX_ELDERLYCARE         100708404 455280706576 10224409284 23490256922
-PROX_HAWKER              119513026 315725438523  9968464930 21216909699
-PROX_MRT                 121885492 323995284526  9987567130 22252691605
-PROX_PARK                110143261 434294047744 10289312785 24022360637
-PROX_MALL                129492954 317836423549 11322092867 26588345724
-PROX_SUPERMARKET         109821718 499584982912 10195271063 25903876318
-WITHIN_350M_KINDERGARTEN         0 206180126806  2232070531  9341940311
-WITHIN_350M_CHILDCARE            0 293099305906  5051211686 16329465439
-WITHIN_350M_BUS                  0 200486628902  4750674051 12123999265
-WITHIN_1KM_PRISCH                0 161529925337  1623962024  6483212989</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Mean squared error (OOB): 895707833.865</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>R-squared (OOB) %: 93.876</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>AIC (OBB): 213066.645</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>AICc (OBB): 213066.692</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Mean squared error Predicted (Not OBB): 68135806.406</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>R-squared Predicted (Not OBB) %: 99.534</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>AIC Predicted (Not OBB): 186442.534</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>AICc Predicted (Not OBB): 186442.58</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Calculation time (in seconds): 29.3161</code></pre>
-</div>
-</div>
-<p>gwRF_adavtive<span class="math inline">\(Glocal.Model\)</span>variable.importance</p>
 
 
 </section>
